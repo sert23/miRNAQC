@@ -1,0 +1,15 @@
+{% extends "Messages/modal_template.html" %}
+{% block id %}NEB{% endblock %}
+{% block title %}
+    NEBnext™ protocol
+{% endblock %}
+{% block text %}
+<p> Preprocessing of samples prepared with <a href="https://international.neb.com/products/e7330-nebnext-small-rna-library-prep-set-for-illumina-multiplex-compatible#Product%20Information" target="_blank">NEBNext</a>):</p>
+    <ul>
+  <li>Detect the adapter sequence: AGATCGGAAGAGCACACGTCT </li>
+  <li>Minimum length of adapter sequence that needs to be aligned: 10 </li>
+  <li>Allowed mismatches between adapter and reference sequences: 1 </li>
+    </ul>
+
+
+{% endblock %}

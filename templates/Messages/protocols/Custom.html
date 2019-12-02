@@ -1,0 +1,18 @@
+{% extends "Messages/modal_template.html" %}
+{% block id %}Custom{% endblock %}
+{% block title %}
+    Customized protocol
+{% endblock %}
+{% block text %}
+<p> If none of the protocols fits your data:</p>
+    <ul>
+  <li>Provide the adapter sequence</li>
+  <li>Guess the adapter sequence</li>
+  <li>Change minimum length of the detected adapter sequence and allowed mismatches</li>
+
+    </ul>
+    If there is one small RNA library preparation protocol you are missing, please
+    <a href="mailto:srnabench@gmail.com">contact us</a> so we can include it in sRNAbench.
+
+
+{% endblock %}

@@ -1,0 +1,228 @@
+{% load staticfiles %}
+
+<title>microQC</title>
+
+<script src="{% static 'js/jquery-1.11.0.js' %}"></script>
+<script src="{% static 'js/jquery-ui-1.12.1/jquery-ui.js' %}"></script>
+<link href="{% static 'bs3/css/bootstrap.min.css' %}" rel="stylesheet"  >
+<script src="{% static 'bs3/js/bootstrap.min.js' %}"></script>
+<link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+<link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/icons8-report-card-100.png' %}">
+
+{% block header %}{% endblock %}
+
+<!------ Include the above in your HEAD tag ---------->
+
+<style>
+
+    #wrapper {
+    padding-left: 0;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#wrapper.toggled {
+    padding-left: 250px;
+}
+
+#sidebar-wrapper {
+    z-index: 1000;
+    position: fixed;
+    left: 250px;
+    width: 0;
+    height: 100%;
+    margin-left: -250px;
+    overflow-y: auto;
+    background: #000;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    width: 250px;
+}
+
+#page-content-wrapper {
+    width: 100%;
+    position: absolute;
+    padding: 15px;
+}
+
+#wrapper.toggled #page-content-wrapper {
+    position: absolute;
+    margin-right: -250px;
+}
+
+/* Sidebar Styles */
+
+.sidebar-nav {
+    position: absolute;
+    top: 0;
+    width: 250px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.sidebar-nav li {
+    text-indent: 20px;
+    line-height: 40px;
+}
+
+.sidebar-nav li a {
+    display: block;
+    text-decoration: none;
+    color: #999999;
+}
+
+.sidebar-nav li a:hover {
+    text-decoration: none;
+    color: #fff;
+    background: rgba(255,255,255,0.2);
+}
+
+.sidebar-nav li a:active,
+.sidebar-nav li a:focus {
+    text-decoration: none;
+}
+
+.sidebar-nav > .sidebar-brand {
+    height: 65px;
+    font-size: 18px;
+    line-height: 60px;
+}
+
+.sidebar-nav > .sidebar-brand a {
+    color: #999999;
+}
+
+.sidebar-nav > .sidebar-brand a:hover {
+    color: #fff;
+    background: none;
+}
+
+@media(min-width:768px) {
+    #wrapper {
+        padding-left: 250px;
+    }
+
+    #wrapper.toggled {
+        padding-left: 0;
+    }
+
+    #sidebar-wrapper {
+        width: 250px;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        width: 0;
+    }
+
+    #page-content-wrapper {
+        padding: 20px;
+        position: relative;
+    }
+
+    #wrapper.toggled #page-content-wrapper {
+        position: relative;
+        margin-right: 0;
+    }
+}
+
+</style>
+
+<style>
+    .fa-clickable {
+    cursor:pointer;
+    outline:none;
+}
+</style>
+
+<style>
+        html {
+          font-size-base: 20px;
+}</style>
+
+<div id="wrapper">
+
+
+            <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+{#                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="sr-only">Toggle navigation</span>#}
+{#                    <span class="icon-bar"></span>#}
+{#                    <span class="icon-bar"></span>#}
+{#                    <span class="icon-bar"></span>#}
+{#                </button>#}
+
+                <a  href="/srnatoolbox"></a> <h4> &nbsp; Comparative quality control of miRNA-seq experiments </h4>
+{#                <a class="navbar-brand" href="/srnatoolbox"></a> <h4> Comparative quality control of miRNA-seq experiments </h4>#}
+            </div>
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+
+                <li class="nav-item">
+                    <p></p>
+                    <a><i class="fa fa-clickable fa-bars fa-2x" style="display:block">  &nbsp;  microQC</i></a>
+{#                    <button id="sidebarToggleTop" class="btn btn-link ">#}
+{#            <i class="fa fa-bars fa-2x" style="display:block"><a href="#">#}
+{##}
+{#                    </a></i>#}
+{#          </button>#}
+
+                </li>
+                <br>
+                <li class="nav-item">
+        <a class="nav-link" href="charts.html">
+           <i class="far fa-lg fa-chart-bar"></i>
+{#          <i class="fas fa-fw fa-chart-area"></i>#}
+          <span>Run new job</span></a>
+      </li>
+
+        <li class="nav-item">
+        <a class="nav-link" href="charts.html">
+           <i class="far fa-lg fa-file-alt"></i>
+{#          <i class="fas fa-fw fa-chart-area"></i>#}
+          <span>Tutorial</span></a>
+      </li>
+
+        <li class="nav-item">
+        <a class="nav-link" href="charts.html">
+           <i class="far fa-lg fa-envelope"></i>
+{#          <i class="fas fa-fw fa-chart-area"></i>#}
+          <span>Contact us</span></a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="charts.html">
+           <i class="far fa-lg fa-question-circle"></i>
+{#          <i class="fas fa-fw fa-chart-area"></i>#}
+          <span>About microQC</span></a>
+      </li>
+            </ul>
+        </div>
+
+
+
+            </nav>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+
+                {% block content %}{% endblock %}
+
+            {% block modals %}
+
+            {% endblock %}
+
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>

@@ -1,0 +1,16 @@
+{% extends "Messages/modal_template.html" %}
+{% block id %}Smarter{% endblock %}
+{% block title %}
+    Clonetech SMARTer™
+{% endblock %}
+{% block text %}
+<p> Preprocessing of samples prepared with <a href="https://www.takarabio.com/assets/documents/User%20Manual/SMARTer%20smRNA-Seq%20Kit%20for%20Illumina%20User%20Manual_040816.pdf" target="_blank">SMARTer (Clonetech)</a>):</p>
+    <ul>
+  <li>Perform a iterative trimming of the 5' end of the read by means of iteratively aligning the reads to the genome sequence trimming unmapped reads by 1 nt (4 rounds of trimming).   </li>
+  <li>Detect the adapter sequence: AAAAAAAAAAAA </li>
+  <li>Minimum length of adapter sequence that needs to be aligned: 10 </li>
+  <li>Allowed mismatches between adapter and reference sequences: 1 </li>
+  </ul>
+
+
+{% endblock %}

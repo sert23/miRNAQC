@@ -1,0 +1,15 @@
+{% extends "Messages/modal_template.html" %}
+{% block id %}Qiagen{% endblock %}
+{% block title %}
+    Qiagen™ (with UMIs)
+{% endblock %}
+{% block text %}
+<p> Preprocessing of samples prepared with <a href="https://www.qiagen.com/us/shop/sequencing/qiaseq-solutions/qiaseq-mirna-ngs/#orderinginformation" target="_blank">QIAseq (Qiagen)</a>):</p>
+    <ul>
+  <li>Detect the adapter sequence AACTGTAGGCACCATCAAT and the position of the UMIs </li>
+  <li>Merge fragment and UMI sequences and remove duplicates </li>
+  <li>Remove UMIs from the reads </li>
+    </ul>
+
+
+{% endblock %}

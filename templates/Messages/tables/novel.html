@@ -1,0 +1,24 @@
+{% extends "Messages/modal_template.html" %}
+{% block id %}novel_tab{% endblock %}
+{% block title %}
+    Novel microRNAs table
+{% endblock %}
+{% block text %}
+<p> You can find more info on how they were predicted on <a href="{{ settings.SUB_SITE }}/static/sRNAbench_article.pdf" target="_blank">sRNAbench original paper</a> and <a href="{{ settings.SUB_SITE }}/static/sRNAtoolbox_manual.pdf" target="_blank">full manual</a> .</p>
+
+    <p> Abbreviations: </p>
+
+    <ul>
+  <li><u> seqName</u>: </li>
+  <li><u> totalRC</u>: total Read Count assigned to that prediction</li>
+  <li><u> 5p</u>: stands for 5'arm</li>
+  <li><u> 3p</u>: stands for 3'arm</li>
+  <li><u> RC</u>: stands for Read Count</li>
+  <li><u> 5pname</u>: name assigned to the 5' arm</li>
+  <li><u> 5pseq</u>: sequence assigned to the 5' arm</li>
+  <li><u> 5pRC</u>: Read Count assigned to the 5' arm</li>
+  <li><u> align</u>: alignment visualisation of the predicted miRNA</li>
+    </ul>
+
+
+{% endblock %}

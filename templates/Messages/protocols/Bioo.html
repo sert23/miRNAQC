@@ -1,0 +1,18 @@
+{% extends "Messages/modal_template.html" %}
+{% block id %}Bioo{% endblock %}
+{% block title %}
+    Bioo Scientific Nextflex™ (v2,v3) protocol
+{% endblock %}
+{% block text %}
+<p> Preprocessing of samples prepared with <a href="https://perkinelmer-appliedgenomics.com/library-preparation-kits/small-rna-library-prep/nextflex-small-rna-seq-kit-v3/" target="_blank">NEXTFLEX v2/v3</a>):</p>
+    <ul>
+  <li>Remove 4 nt barcode from 5' end of reads </li>
+  <li>Detect the adapter sequence: TGGAATTCTCGGGTGCCAAGGG </li>
+  <li>Minimum length of adapter sequence that needs to be aligned: 10 </li>
+  <li>Allowed mismatches between adapter and reference sequences: 1 </li>
+  <li>Remove 4 nt random adapter from 3' end of adapter trimmed reads </li>
+  </ul>
+
+
+
+{% endblock %}
