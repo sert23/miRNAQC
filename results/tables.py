@@ -2,13 +2,17 @@ from collections import OrderedDict
 import results.mqc_table as table
 from multiqc import config
 import pandas
+import os
+from miRQC.settings import MEDIA_ROOT, MEDIA_URL, SUB_SITE, MEDIA_URL
 
 
 #quartiles colors
 # colors:{'Q1':'rgb(164, 207, 99)','Q2':'rgb(232, 213, 89)','Q3':'rgb(251, 163,83)','Q4':'rgb(221,90,78)'},
 
-values_tab = "/Users/ernesto/Desktop/colabo/quality/mock_values.tsv"
-perc_tab = "/Users/ernesto/Desktop/colabo/quality/mock_perc.tsv"
+# values_tab = "/Users/ernesto/Desktop/colabo/quality/mock_values.tsv"
+values_tab = os.path.join(MEDIA_ROOT,"test","mock_values.tsv")
+# perc_tab = "/Users/ernesto/Desktop/colabo/quality/mock_perc.tsv"
+perc_tab = os.path.join(MEDIA_ROOT,"test","mock_perc.tsv")
 
 
 # d2 = {k: f(v) for k, v in d1.items()}
