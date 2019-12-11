@@ -54,7 +54,7 @@ def make_ordinal(n):
 
     x = float(n)
     if math.isnan(x):
-        return n
+        return " "
 
     n = int(n)
 

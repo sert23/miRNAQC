@@ -175,7 +175,7 @@ def make_table (dt):
                 # Percentage suffixes etc
                 if header.get('suffix') == "show_perc":
                     suff_dict = header.get("suffix_dict")
-                    valstring += suff_dict.get(s_name)
+                    valstring += str(suff_dict.get(s_name))
                 else:
                     valstring += header.get('suffix', '')
 
