@@ -6,6 +6,8 @@ import os
 from miRQC.settings import MEDIA_ROOT, MEDIA_URL, SUB_SITE, MEDIA_URL
 import math
 
+import math
+
 #quartiles colors
 # colors:{'Q1':'rgb(164, 207, 99)','Q2':'rgb(232, 213, 89)','Q3':'rgb(251, 163,83)','Q4':'rgb(221,90,78)'},
 
@@ -49,6 +51,11 @@ def make_ordinal(n):
         make_ordinal(122) => '122nd'
         make_ordinal(213) => '213th'
     '''
+
+    x = float(n)
+    if math.isnan(x):
+        return n
+
     n = int(n)
 
     suffix = ['th', 'st', 'nd', 'rd', 'th'][min(n % 10, 4)]
