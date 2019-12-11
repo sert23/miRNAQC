@@ -98,6 +98,7 @@ class launchJob(FormView):
         config = os.path.join(MEDIA_ROOT, jobID, "config.txt")
         launch_line = "java -classpath /opt/mirnaqcDB/java:/opt/mirnaqcDB/java/mariadb-java-client-1.1.7.jar miRNAdb.SummaryQC " + config
         print(launch_line)
+        os.system(launch_line)
         context = {}
         # context["test"] = test
 
