@@ -82,9 +82,10 @@ def plot_heatmap(input_df=None):
     div = plot(fig, show_link=False, auto_open=False, include_plotlyjs=False, output_type="div")
     return div
 
-def ajax_heatmap(jobID):
+def ajax_heatmap(request):
 
-    folder = jobID
+
+    folder = request.GET.get('id', None)
     query_folder = os.path.join(MEDIA_ROOT, folder, "query")
     perc_file = os.path.join(query_folder, "percentil_full.tsv")
 
