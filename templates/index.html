@@ -73,7 +73,7 @@
 
                 $('#run_id').css("data-toggle", "tooltip");
                 $('#run_id').tooltip('show');
-
+                $("#advanced_panel").show();
 
 
 
@@ -92,6 +92,8 @@
     <script>
             $(document).ready(function(){
 
+            $("#advanced_panel").hide();
+
             $('#run_id').on('click', function(){
 
             var launch_url = "{% url 'launch' %}?";
@@ -104,6 +106,17 @@
             });
 
     </script>
+
+    <script>
+
+
+        function showAdvanced() {
+          $("#advanced_panel").show();
+
+        }
+</script>
+
+
 
     <div class="modal fade" id="modal-progress" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog">
@@ -147,7 +160,7 @@
                 <div class="col-lg-4">
                     <div class="panel panel-info">
                         <div class="panel-heading">
-                            <h5 class="m-0 font-weight-bold text-primary"><span style="font-size: 24px;color: #000; ">1. </span> Choose input SRA ID(s) and/or file(s) <span style="font-size: 24px; "> <i class="far fa-clickable fa-question-circle"> </i> </span> </h5>
+                            <h5 class="m-0 font-weight-bold text-primary"><span style="font-size: 24px;color: #000; ">1. </span> Choose input SRA ID(s) and/or file(s) <span style="font-size: 24px; "> <i class="far fa-clickable fa-question-circle" onclick="$('#input_files').modal('show');"> </i> </span> </h5>
 {#                            <h6 class="m-0 font-weight-bold text-primary">Upload input file(s) <span style="font-size: 18px; color: Dodgerblue;"> <i class="far fa-clickable fa-question-circle"> </i> </span> </h6>#}
 
                         </div>
@@ -253,9 +266,13 @@
                 <div class="col-lg-4">
                     <div class="panel panel-info">
                         <div class="panel-heading">
-                  <h5 class="m-0 font-weight-bold text-primary"><span style="font-size: 24px;color: #000; ">2. </span>Provide samples details (optional) <span style="font-size: 24px; "> <i class="far fa-clickable fa-question-circle"> </i> </span></h5>
+                  <h5 class="m-0 font-weight-bold text-primary"><span style="font-size: 24px;color: #000; ">2. </span>Provide samples details (Advanced) <span style="font-size: 24px; "> <i class="far fa-clickable fa-question-circle" onclick="$('#Advanced').modal('show');"> </i> </span>
+                      <span style="font-size: 24px; "> <i class="fas fa-plus-circle fa-clickable" onclick="showAdvanced()"> </i> </span></h5>
+{#                      <span style="font-size: 24px; "> <i class="fas fa-chevron-circle-down fa-clickable" onclick="showAdvanced()"> </i> </span></h5>#}
+{#                      <span style="font-size: 24px; "> <i class="fas fa-plus fa-clickable" onclick="showAdvanced()"> </i> </span></h5>#}
+{#                      <span style="font-size: 24px; "> <i class="fas fa-chevron-down fa-clickable" onclick="showAdvanced()"> </i> </span></h5>#}
                 </div>
-                    <div class="panel-body">
+                    <div class="panel-body" id="advanced_panel">
 
                         <label>Species</label>
                         <div class="form-group">
@@ -361,6 +378,9 @@
 {#            </div>#}
 
         <br>
+
+    {% include "Messages/launch/advanced.html" %}
+    {% include "Messages/launch/input_files.html" %}
 
             <!-- /.col-lg-12 -->
         </div>

@@ -1,0 +1,68 @@
+    <script>
+        {#            Basic Stats button   #}
+        $(document).ready(function(){
+
+            $('#show_basic_perc').on('click', function(){
+            $('#show_basic_vals').removeClass('active');
+            $(this).addClass('active');
+            $('#basic_val_div').css("display", "none");
+            $('#basic_perc_div').css("display", "block");
+
+                        });
+            $('#show_basic_vals').on('click', function(){
+            $('#show_basic_perc').removeClass('active');
+            $(this).addClass('active');
+            $('#basic_perc_div').css("display", "none");
+            $('#basic_val_div').css("display", "block");
+
+                        })
+
+         });
+
+    </script>
+
+
+                        <h2>Basic Statistics</h2>
+                        <div class="btn-group hc_switch_group">
+                        <button class="btn btn-default btn-sm active" id="show_basic_vals">Display values</button>
+                        <button class="btn btn-default btn-sm " id="show_basic_perc">Display percentiles</button>&nbsp;
+                            <span style="font-size: 26px; color:#3889ac; "> <i class="far fa-clickable fa-question-circle" onclick="$('#percentiles').modal('show');"> </i> </span>
+                        </div> <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
+                        <button class="btn btn-success" type="button" onclick="$('#basic_heatmap').modal('show');"> Show Heatmap</button>
+
+                        <br>
+                        <br>
+
+                        <div id="basic_val_div">
+
+                            {{ basic_table|safe }}
+                        </div>
+                        <div id="basic_perc_div" style="display: none;">
+
+                            {{ basic_perc|safe }}
+                        </div>
+            {% include "Messages/basic/heatmap.html" %}
+
+
+ <script>
+
+$('#basic_heatmap').on('shown.bs.modal', function (e) {
+        {#alert("eyo");#}
+        $.ajax({
+        url: '{% url "ajax_hm" %}',
+        data: {
+            "id" : "{{ jobID }}"
+        },
+        dataType: 'json',
+        success: function (data) {
+
+            $("#add_basic_hm").html(data.plot);
+
+
+        }
+      });
+
+});
+
+</script>
+

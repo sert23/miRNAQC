@@ -25,6 +25,7 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
     url(r'^$', startNew.as_view(), name='home'),
+
     url(r'^testqc', testMulti.as_view()),
     url(r'^launch', launchJob.as_view(), name="launch"),
     url(r'^result', include('results.urls')),

@@ -1,0 +1,15 @@
+{% extends "Messages/modal_template.html" %}
+{% block id %}Tutorial{% endblock %}
+{% block title %}
+    Illumina TrueSeq™ (280916) protocol
+{% endblock %}
+{% block text %}
+<p> Preprocessing of samples prepared with <a href="https://www.illumina.com/products/by-type/sequencing-kits/library-prep-kits/truseq-small-rna.html" target="_blank">Illumina TruSeq</a>):</p>
+    <ul>
+  <li>Detect the adapter sequence: TGGAATTCTCGGGTGCCAAGGG </li>
+  <li>Minimum length of adapter sequence that needs to be aligned: 10 </li>
+  <li>Allowed mismatches between adapter and reference sequences: 1 </li>
+    </ul>
+
+
+{% endblock %}

@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views import testMulti
+from .views import testMulti, loadResults, ajax_heatmap
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.conf import settings
@@ -24,6 +24,8 @@ from django.conf.urls.static import static
 urlpatterns = [
 
     url(r'testqc', testMulti.as_view()),
+    url(r'^ajax_recalc$', ajax_heatmap, name='ajax_hm'),
+    url(r'[A-za-z0-9]+', loadResults.as_view(), name="result_page"),
 
 ]
 

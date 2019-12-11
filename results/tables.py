@@ -4,7 +4,7 @@ from multiqc import config
 import pandas
 import os
 from miRQC.settings import MEDIA_ROOT, MEDIA_URL, SUB_SITE, MEDIA_URL
-
+import math
 
 #quartiles colors
 # colors:{'Q1':'rgb(164, 207, 99)','Q2':'rgb(232, 213, 89)','Q3':'rgb(251, 163,83)','Q4':'rgb(221,90,78)'},
@@ -40,27 +40,78 @@ def get_quart_cols(input_val, sense = "desc" ):
             col = 'rgb(164, 207, 99)'
         return col
 
+def make_ordinal(n):
+    '''
+    Convert an integer into its ordinal representation::
+
+        make_ordinal(0)   => '0th'
+        make_ordinal(3)   => '3rd'
+        make_ordinal(122) => '122nd'
+        make_ordinal(213) => '213th'
+    '''
+    n = int(n)
+
+    suffix = ['th', 'st', 'nd', 'rd', 'th'][min(n % 10, 4)]
+    if 11 <= (n % 100) <= 13:
+        suffix = 'th'
+    return suffix
+
+
+
+def get_ordinals(input_dict):
+
+    return {k: make_ordinal(v) for k, v in input_dict.items()}
+
 def gen_col_dict(input_dict, sense):
 
     return {k: get_quart_cols(v,sense) for k, v in input_dict.items()}
 
 
-def table2dict(filepath):
-    table = pandas.read_csv(filepath, sep="\t")
+
+def df2dict(df):
+    table = df
     new_dict = {}
-    samples = table['Sample'].values
+    print(table.columns)
+    samples = table['sample'].values
 
     for sample in samples:
-        subset = table.loc[table['Sample'] == sample]
-        subset = subset.drop(["Sample"],1)
+        subset = table.loc[table['sample'] == sample]
+        subset = subset.drop(["sample"],1)
         new_dict[sample] = subset.to_dict("records")[0]
 
     return new_dict
 
-def cols_dict(input_file):
-    table = pandas.read_csv(input_file, sep="\t", index_col=0)
+
+def table2dict(filepath):
+
+    table = pandas.read_csv(filepath, sep="\t")
+    new_dict = {}
+    samples = table['sample'].values
+
+    for sample in samples:
+        subset = table.loc[table['sample'] == sample]
+        subset = subset.drop(["sample"],1)
+        new_dict[sample] = subset.to_dict("records")[0]
+
+    return new_dict
+
+#
+# def cols_dict(input_file):
+#     table = pandas.read_csv(input_file, sep="\t", index_col=0)
+#     new_dict = {}
+#     columns = table.columns
+#     for column in columns:
+#         subset = table[column]
+#         new_dict[column] = subset.to_dict()
+#         # print(column)
+#     return new_dict
+
+def cols_dict(df):
+    table = df.copy()
+    table.set_index("sample", inplace=True)
     new_dict = {}
     columns = table.columns
+    print(columns)
     for column in columns:
         subset = table[column]
         new_dict[column] = subset.to_dict()
@@ -88,7 +139,7 @@ data = {
 }
 
 
-data = table2dict(values_tab)
+# data = table2dict(values_tab)
 
 
 headers = OrderedDict()
@@ -132,13 +183,13 @@ def tables_yield(val_file, perc_file):
     columns_dict = cols_dict(perc_file)
     perc_dict = table2dict(perc_file)
     headers = OrderedDict()
-    # rawN	analysisP	microP	detectedN	uniqueP
-    headers["rawN"] = {
+    # rawReads_orig	reads	adapterDimer	detectedMatureSA
+    headers["rawReads_orig"] = {
         'title': 'Input reads',
         'description': 'Total number of reads sequenced',
         'scale': "quart",
-        'col_dict': gen_col_dict(columns_dict["rawN"], "desc"),
-        'bar_dict': columns_dict["rawN"],
+        'col_dict': gen_col_dict(columns_dict["rawReads_orig"], "desc"),
+        'bar_dict': columns_dict["rawReads_orig"],
         # 'max': 100,
         # 'min': 0,
 
@@ -149,7 +200,7 @@ def tables_yield(val_file, perc_file):
         'scale': "quart",
         'col_dict': gen_col_dict(columns_dict["analysisP"], "desc"),
         'bar_dict': columns_dict["analysisP"],
-        # 'suffix': '%',
+        'suffix': '%',
         'max': 100,
         'min': 0,
 
@@ -160,7 +211,7 @@ def tables_yield(val_file, perc_file):
         'scale': "quart",
         'col_dict': gen_col_dict(columns_dict["microP"], "desc"),
         'bar_dict': columns_dict["microP"],
-        # 'suffix': '%',
+        'suffix': '%',
         'max': 100,
         'min': 0,
 
@@ -180,7 +231,7 @@ def tables_yield(val_file, perc_file):
         'scale': "quart",
         'col_dict': gen_col_dict(columns_dict["uniqueP"], "desc"),
         'bar_dict': columns_dict["uniqueP"],
-        # 'suffix': '%',
+        'suffix': '%',
         'max': 100,
         'min': 0,
 
@@ -188,19 +239,19 @@ def tables_yield(val_file, perc_file):
 
     val_tab = table.plot(vals_dict, headers)
 
-    headers["rawN"] = {
+    headers["rawReads_orig"] = {
         'title': 'Input reads',
-        'description': 'Total number of reads sequenced',
+        'description': 'Total number of reads sequenced (percentile)',
         'scale': "quart",
-        'col_dict': gen_col_dict(columns_dict["rawN"], "desc"),
-        'bar_dict': columns_dict["rawN"],
+        'col_dict': gen_col_dict(columns_dict["rawReads_orig"], "desc"),
+        'bar_dict': columns_dict["rawReads_orig"],
         # 'max': 100,
         # 'min': 0,
 
     }
     headers["analysisP"] = {
         'title': '% Reads in Analysis',
-        'description': 'Percentage of reads included in the analysis',
+        'description': 'Percentage of reads included in the analysis (percentile)',
         'scale': "quart",
         'col_dict': gen_col_dict(columns_dict["analysisP"], "desc"),
         'bar_dict': columns_dict["analysisP"],
@@ -211,7 +262,7 @@ def tables_yield(val_file, perc_file):
     }
     headers["microP"] = {
         'title': '% miRNAs reads',
-        'description': 'Percentage of reads mapping to miRNA libraries',
+        'description': 'Percentage of reads mapping to miRNA libraries (percentile)',
         'scale': "quart",
         'col_dict': gen_col_dict(columns_dict["microP"], "desc"),
         'bar_dict': columns_dict["microP"],
@@ -222,7 +273,7 @@ def tables_yield(val_file, perc_file):
     }
     headers["detectedN"] = {
         'title': 'miRNAs detected',
-        'description': 'Number of miRNAs detected',
+        'description': 'Number of miRNAs detected (percentile)',
         'scale': "quart",
         'col_dict': gen_col_dict(columns_dict["detectedN"], "desc"),
         'bar_dict': columns_dict["detectedN"],
@@ -230,11 +281,13 @@ def tables_yield(val_file, perc_file):
     }
     headers["uniqueP"] = {
         'title': '% Unique reads',
-        'description': 'Percentage of unique reads',
+        'description': 'Percentage of unique reads (percentile)',
         'scale': "quart",
         'col_dict': gen_col_dict(columns_dict["uniqueP"], "desc"),
         'bar_dict': columns_dict["uniqueP"],
         # 'suffix': '%',
+        'suffix': "show_perc",
+        "suffix_dict": get_ordinals(columns_dict["uniqueP"]),
         'max': 100,
         'min': 0,
 
@@ -247,12 +300,307 @@ def tables_yield(val_file, perc_file):
     return val_tab, perc_tab
     # return val_tab, perc_tab
 
-
-def test_table():
-
-    return tables_yield(values_tab,perc_tab)
-
 #
 # def test_table():
 #
-#     return table.plot(data, headers, config_p)
+#     return tables_yield(values_tab,perc_tab)
+
+def basic_table(val_df,perc_df):
+
+    vals_dict = df2dict(val_df)
+    columns_dict = cols_dict(perc_df)
+
+    perc_dict = df2dict(perc_df)
+    headers = OrderedDict()
+
+    #headers
+
+    # readsRaw     # readsPerc     # adapterDimerPerc     # detectedMatureSA     # maturePercofReads
+    #  meanofp50     # mainPeakMiRNAlength     # stdDevMiRNAlength
+    if True:
+        headers["readsRaw"] = {
+            'title': 'Input reads',
+            'description': 'Total number of reads sequenced',
+            'scale': "quart",
+            'col_dict': gen_col_dict(columns_dict["readsRaw"], "desc"),
+            'bar_dict': columns_dict["readsRaw"],
+            # 'max': 100,
+            # 'min': 0,
+
+        }
+
+        headers["readsPerc"] = {
+            'title': '% reads in analysis',
+            'description': 'Percentage of reads used for the analysis after filtering',
+            'scale': "quart",
+            'col_dict': gen_col_dict(columns_dict["readsPerc"], "desc"),
+            'bar_dict': columns_dict["readsPerc"],
+            'suffix': '%',
+            # 'max': 100,
+
+            # 'min': 0,
+
+        }
+        headers["adapterDimerPerc"] = {
+            'title': '% Adapter - dimer reads',
+            'description': 'The percentage of reads that correspond to adapter-dimer, i.e. those that are shorter or equel to 2nt after adapter trimming ',
+            'scale': "quart",
+            'col_dict': gen_col_dict(columns_dict["adapterDimerPerc"], "asc"),
+            'bar_dict': columns_dict["adapterDimerPerc"],
+            'suffix': '%',
+        }
+        headers["detectedMatureSA"] = {
+            'title': 'Detected microRNAs',
+            'description': 'Total number of mature miRNAs detected',
+            'scale': "quart",
+            'col_dict': gen_col_dict(columns_dict["detectedMatureSA"], "desc"),
+            'bar_dict': columns_dict["detectedMatureSA"],
+            # 'max': 100,
+            # 'min': 0,
+
+        }
+        headers["maturePercofReads"] = {
+            'title': '% microRNA reads',
+            'description': 'Percentage of effective reads assigned to mature microRNAs',
+            'scale': "quart",
+            'col_dict': gen_col_dict(columns_dict["maturePercofReads"], "desc"),
+            'bar_dict': columns_dict["maturePercofReads"],
+            'suffix': '%',
+            # 'max': 100,
+            # 'min': 0,
+        }
+
+        headers["meanofp50"] = {
+            'title': 'Phred score',
+            'description': 'Average Phred Score of the per position score median',
+            'scale': "quart",
+            'col_dict': gen_col_dict(columns_dict["meanofp50"], "desc"),
+            'bar_dict': columns_dict["meanofp50"],
+            # 'suffix': '%',
+            # 'max': 100,
+            # 'min': 0,
+        }
+
+        headers["mainPeakMiRNAlength"] = {
+            'title': '% miRNAs "peak"',
+            # 'title': '% main miRNA lengths',
+            'description': 'Percentage of miRNA reads of lengths 21, 22 and 23',
+            'scale': "quart",
+            'col_dict': gen_col_dict(columns_dict["mainPeakMiRNAlength"], "desc"),
+            'bar_dict': columns_dict["mainPeakMiRNAlength"],
+            'suffix': '%',
+            # 'max': 100,
+            # 'min': 0,
+        }
+        headers["stdDevMiRNAlength"] = {
+            'title': 'microRNA SD',
+            # 'title': 'microRNA mapping reads length SD',
+            'description': 'Read length standard deviation of miRNA mapping reads',
+            'scale': "quart",
+            'col_dict': gen_col_dict(columns_dict["stdDevMiRNAlength"], "asc"),
+            'bar_dict': columns_dict["stdDevMiRNAlength"],
+            # 'suffix': '%',
+            # 'max': 100,
+            # 'min': 0,
+        }
+
+
+
+    val_tab = table.plot(vals_dict, headers)
+
+
+    for k in list(headers.keys()):
+        c_dict = headers.get(k)
+        description = c_dict["description"]
+        c_dict["description"] = description + " (percentile)"
+        c_dict['suffix'] = "show_perc"
+        c_dict["suffix_dict"] = get_ordinals(columns_dict[k])
+
+    # if True:
+    #
+    #
+    #     headers["readsRaw"] = {
+    #         'title': 'Input reads',
+    #         'description': 'Total number of reads sequenced',
+    #         'scale': "quart",
+    #         'col_dict': gen_col_dict(columns_dict["readsRaw"], "desc"),
+    #         'bar_dict': columns_dict["readsRaw"],
+    #         'suffix': "show_perc",
+    #         "suffix_dict": get_ordinals(columns_dict["readsRaw"]),
+    #         # 'max': 100,
+    #         # 'min': 0,
+    #
+    #     }
+    #
+    #     headers["reads"] = {
+    #         'title': '% reads in analysis',
+    #         'description': 'Total number of reads used for the analysis after filtering',
+    #         'scale': "quart",
+    #         'col_dict': gen_col_dict(columns_dict["reads"], "desc"),
+    #         'bar_dict': columns_dict["reads"],
+    #         'suffix': "show_perc",
+    #         "suffix_dict": get_ordinals(columns_dict["reads"]),
+    #         # 'max': 100,
+    #         # 'min': 0,
+    #
+    #     }
+
+    perc_tab = table.plot(perc_dict, headers)
+
+    return val_tab,perc_tab
+
+def seqYield_table(val_df,perc_df):
+
+    vals_dict = df2dict(val_df)
+    columns_dict = cols_dict(perc_df)
+
+    perc_dict = df2dict(perc_df)
+    headers = OrderedDict()
+
+    #headers
+
+    #readsRaw  # reads # readsAdapterFound # readsAdapterFoundPerc # readsAdapterNotFound
+    #  readsAdapterNotFoundPerc # readsUnique # avgRCperUnique # detectedMatureSA
+
+    if True:
+        headers["readsRaw"] = {
+            'title': 'Input reads',
+            'description': 'Total number of reads sequenced',
+            'scale': "quart",
+            'col_dict': gen_col_dict(columns_dict["readsRaw"], "desc"),
+            'bar_dict': columns_dict["readsRaw"],
+            # 'max': 100,
+            # 'min': 0,
+
+        }
+
+        headers["reads"] = {
+            'title': '% reads in analysis',
+            'description': 'Total number of reads used for the analysis after filtering',
+            'scale': "quart",
+            'col_dict': gen_col_dict(columns_dict["reads"], "desc"),
+            'bar_dict': columns_dict["reads"],
+            'suffix': '%',
+
+        }
+
+
+        # headers["readsAdapterFound"] = {
+        #     'title': 'Adapter trimmed reads',
+        #     'description': '',
+        #     'scale': "quart",
+        #     'col_dict': gen_col_dict(columns_dict["readsAdapterFound"], "desc"),
+        #     'bar_dict': columns_dict["readsAdapterFound"],
+        #     # 'suffix': '%',
+        #     # 'max': 100,
+        #     # 'min': 0,
+        # }
+
+        # headers["readsAdapterFoundPerc"] = {
+        #     'title': '% Adapter trimmed reads',
+        #     'description': 'Percentage of reads for which the adapter was found',
+        #     'scale': "quart",
+        #     'col_dict': gen_col_dict(columns_dict["readsAdapterFoundPerc"], "desc"),
+        #     'bar_dict': columns_dict["readsAdapterFoundPerc"],
+        #     'suffix': '%',
+        #     # 'max': 100,
+        #     # 'min': 0,
+        # }
+
+        # headers["readsAdapterNotFound"] = {
+        #     'title': 'Adapter not found',
+        #     # 'title': '% main miRNA lengths',
+        #     'description': 'The number of reads for which the adapter was not found',
+        #     'scale': "quart",
+        #     'col_dict': gen_col_dict(columns_dict["readsAdapterNotFound"], "desc"),
+        #     'bar_dict': columns_dict["readsAdapterNotFound"],
+        #     # 'suffix': '%',
+        #     # 'max': 100,
+        #     # 'min': 0,
+        # }
+        # headers["readsAdapterNotFoundPerc"] = {
+        #     'title': '% Adapter not found',
+        #     'description': 'Percentage of reads for which the adapter was not found',
+        #     'scale': "quart",
+        #     'col_dict': gen_col_dict(columns_dict["readsAdapterNotFoundPerc"], "desc"),
+        #     'bar_dict': columns_dict["readsAdapterNotFoundPerc"],
+        #     'suffix': '%',
+        #     # 'max': 100,
+        #     # 'min': 0,
+        # }
+        # headers["readsUnique"] = {
+        #     'title': 'Unique sequences',
+        #     # 'title': 'microRNA mapping reads length SD',
+        #     'description': 'Number of unique sequences',
+        #     'scale': "quart",
+        #     'col_dict': gen_col_dict(columns_dict["readsUnique"], "asc"),
+        #     'bar_dict': columns_dict["readsUnique"],
+        #     # 'suffix': '%',
+        #     # 'max': 100,
+        #     # 'min': 0,
+        # }
+        headers["avgRCperUnique"] = {
+            'title': 'Reads per unique read',
+            'description': 'Number of reads in analysis divided by number of unique reads',
+            'scale': "quart",
+            'col_dict': gen_col_dict(columns_dict["detectedMatureSA"], "desc"),
+            'bar_dict': columns_dict["detectedMatureSA"],
+            # 'max': 100,
+            # 'min': 0,
+
+        }
+        headers["detectedMatureSA"] = {
+            'title': 'Detected microRNAs',
+            'description': 'Total number of mature miRNAs detected',
+            'scale': "quart",
+            'col_dict': gen_col_dict(columns_dict["detectedMatureSA"], "desc"),
+            'bar_dict': columns_dict["detectedMatureSA"],
+            # 'max': 100,
+            # 'min': 0,
+
+        }
+
+
+
+    val_tab = table.plot(vals_dict, headers)
+
+
+    for k in list(headers.keys()):
+        c_dict = headers.get(k)
+        description = c_dict["description"]
+        c_dict["description"] = description + " (percentile)"
+        c_dict['suffix'] = "show_perc"
+        c_dict["suffix_dict"] = get_ordinals(columns_dict[k])
+
+    # if True:
+    #
+    #
+    #     headers["readsRaw"] = {
+    #         'title': 'Input reads',
+    #         'description': 'Total number of reads sequenced',
+    #         'scale': "quart",
+    #         'col_dict': gen_col_dict(columns_dict["readsRaw"], "desc"),
+    #         'bar_dict': columns_dict["readsRaw"],
+    #         'suffix': "show_perc",
+    #         "suffix_dict": get_ordinals(columns_dict["readsRaw"]),
+    #         # 'max': 100,
+    #         # 'min': 0,
+    #
+    #     }
+    #
+    #     headers["reads"] = {
+    #         'title': '% reads in analysis',
+    #         'description': 'Total number of reads used for the analysis after filtering',
+    #         'scale': "quart",
+    #         'col_dict': gen_col_dict(columns_dict["reads"], "desc"),
+    #         'bar_dict': columns_dict["reads"],
+    #         'suffix': "show_perc",
+    #         "suffix_dict": get_ordinals(columns_dict["reads"]),
+    #         # 'max': 100,
+    #         # 'min': 0,
+    #
+    #     }
+
+    perc_tab = table.plot(perc_dict, headers)
+
+    return val_tab,perc_tab

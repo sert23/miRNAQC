@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+{% block header %}
+
+    {% include "multiqc_header.html" %}
+
+{% endblock %}
+
+</head>
+
+
+<body>
+
+{% block content %}
+
+<script>
+
+        $(document).ready(function(){
+
+            $('#show_yield_perc').on('click', function(){
+            $('#show_yield_vals').removeClass('active');
+            $(this).addClass('active');
+            $('#yield_val_id').css("display", "none");
+            $('#yield_perc_id').css("display", "block");
+
+                        });
+            $('#show_yield_vals').on('click', function(){
+            $('#show_yield_perc').removeClass('active');
+            $(this).addClass('active');
+            $('#yield_perc_id').css("display", "none");
+            $('#yield_val_id').css("display", "block");
+
+                        })
+
+         });
+
+    </script>
+
+
+    <script>
+        {#            Basic Stats button   #}
+        $(document).ready(function(){
+
+            $('#show_basic_perc').on('click', function(){
+            $('#show_basic_vals').removeClass('active');
+            $(this).addClass('active');
+            $('#basic_val_div').css("display", "none");
+            $('#basic_perc_div').css("display", "block");
+
+                        });
+            $('#show_basic_vals').on('click', function(){
+            $('#show_basic_perc').removeClass('active');
+            $(this).addClass('active');
+            $('#basic_perc_div').css("display", "none");
+            $('#basic_val_div').css("display", "block");
+
+                        })
+
+         });
+
+    </script>
+
+    <script>
+        {#            Sequencing Yield button   #}
+        $(document).ready(function(){
+
+            $('#show_yield_perc').on('click', function(){
+            $('#show_yield_vals').removeClass('active');
+            $(this).addClass('active');
+            $('#yield_val_div').css("display", "none");
+            $('#yield_perc_div').css("display", "block");
+
+                        });
+            $('#show_yield_vals').on('click', function(){
+            $('#show_yield_perc').removeClass('active');
+            $(this).addClass('active');
+            $('#yield_perc_div').css("display", "none");
+            $('#yield_val_div').css("display", "block");
+
+                        })
+
+         });
+
+    </script>
+
+{#<div class="btn-group hc_switch_group">#}
+{#<button class="btn btn-default btn-sm active" id="show_yield_vals">Display values</button>#}
+{#<button class="btn btn-default btn-sm " id="show_yield_perc">Display percentiles</button>&nbsp; <span style="font-size: 26px; color:#3889ac; "> <i class="far fa-clickable fa-question-circle"> </i> </span>#}
+{#</div>#}
+
+
+<div class="row">
+            <div class="col-lg-12">
+                <h3 class="page-header">Showing results for job ID: <a href="{{ settings.SUB_SITE }}/jobstatus/{{ id }}" class="alert-link">{{ id }}</a> </h3>
+
+            </div>
+</div>
+{#    <br>#}
+{#    <br>#}
+<div id="general_stats" class="mqc-module-section">
+
+        <br>
+        <ul class="nav nav-pills" id="myTab">
+
+            <li class="active"><a href="#Basic" data-toggle="tab">Basic Statistics</a>
+            </li>
+            <li ><a href="#Sequencing" data-toggle="tab">Sequencing quality</a>
+            </li>
+            <li ><a href="#Yield" data-toggle="tab">Sequencing yield</a>
+            </li>
+            <li ><a href="#Basic2" data-toggle="tab">Other</a>
+            </li>
+        </ul>
+
+    <div class="tab-content">
+
+
+                <div class="tab-pane fade in active" id="Basic">
+
+                    <div class="col-lg-12">
+                        <h2>Basic Statistics</h2>
+                        <div class="btn-group hc_switch_group">
+                        <button class="btn btn-default btn-sm active" id="show_basic_vals">Display values</button>
+                        <button class="btn btn-default btn-sm " id="show_basic_perc">Display percentiles</button>&nbsp;
+                            <span style="font-size: 26px; color:#3889ac; "> <i class="far fa-clickable fa-question-circle"> </i> </span>
+                        </div>
+
+                        <br>
+                        <br>
+
+                        <div id="basic_val_div">
+                            {{ test_div|safe }}
+                            {{ basic_table|safe }}
+                        </div>
+                        <div id="basic_perc_div" style="display: none;">
+
+                            {{ basic_perc|safe }}
+                        </div>
+
+
+
+                        </div>
+                </div>
+                <div class="tab-pane fade" id="Sequencing">
+                    <div class="col-lg-12">
+                    <h2>Sequencing Quality</h2>
+
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="Yield">
+                    <div class="col-lg-12">
+                    <h2>Sequencing Yield</h2>
+                        <div class="btn-group hc_switch_group">
+                        <button class="btn btn-default btn-sm active" id="show_yield_vals">Display values</button>
+                        <button class="btn btn-default btn-sm " id="show_yield_perc">Display percentiles</button>&nbsp;
+                            <span style="font-size: 26px; color:#3889ac; "> <i class="far fa-clickable fa-question-circle"> </i> </span>
+                        </div>
+
+                        <br>
+                        <br>
+
+                        <div id="yield_val_div">
+
+                            {{ seqYield_table|safe }}
+                        </div>
+                        <div id="yield_perc_div" style="display: none;">
+
+                            {{ seqYield_perc|safe }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="Basic2">
+                </div>
+    </div>
+
+
+
+
+
+{#    <div id="yield_val_id">#}
+{#    <p>1 test</p>#}
+{#        {{ test_table|safe }}#}
+{#    </div>#}
+{#    <div id="yield_perc_id" style="display: none;">#}
+{#    <p>2</p>#}
+{#        {{ test_table2|safe }}#}
+{#    </div>#}
+
+
+
+
+
+{% endblock %}
+
+</div>

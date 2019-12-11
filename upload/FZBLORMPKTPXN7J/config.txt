@@ -1,6 +1,0 @@
-input=SRR1563060
-input=SRR1563062
-species=GRCh38_p10_mp
-microRNA=hsa
-output=/Users/ernesto/PycharmProjects/miRQC/upload/FZBLORMPKTPXN7J/query
-p=6

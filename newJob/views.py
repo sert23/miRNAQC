@@ -55,7 +55,7 @@ def make_config(req_obj):
     with open(dest_file,"w") as cf:
         cf.write(file_content)
 
-    return param_dict.get("test")
+    return jobID
 
 
 
@@ -94,9 +94,13 @@ class testMulti(FormView):
 class launchJob(FormView):
 
     def get(self, request):
-        test = make_config(request)
+        jobID = make_config(request)
+        config = os.path.join(MEDIA_ROOT, jobID, "config.txt")
+        launch_line = "java -classpath /opt/mirnaqcDB/java:/opt/mirnaqcDB/java/mariadb-java-client-1.1.7.jar miRNAdb.SummaryQC " + config
+        print(launch_line)
         context = {}
-        context["test"] = test
+        # context["test"] = test
+
         # ?name1=value1
         return render(self.request, 'launch.html', context)
 

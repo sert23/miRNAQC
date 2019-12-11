@@ -173,7 +173,11 @@ def make_table (dt):
                 valstring = valstring.replace('DECIMAL', config.decimalPoint_format).replace('THOUSAND', config.thousandsSep_format)
 
                 # Percentage suffixes etc
-                valstring += header.get('suffix', '')
+                if header.get('suffix') == "show_perc":
+                    suff_dict = header.get("suffix_dict")
+                    valstring += suff_dict.get(s_name)
+                else:
+                    valstring += header.get('suffix', '')
 
                 # Conditional formatting
                 cmatches = { cfck: False for cfc in config.table_cond_formatting_colours for cfck in cfc }
@@ -268,12 +272,44 @@ def make_table (dt):
     if not config.simple_output:
 
         # Copy Table Button
-        html += """
+        html += """<div class="row">
+                    <div class="col-sm-2">
         <button type="button" class="mqc_table_copy_btn btn btn-default btn-sm" data-clipboard-target="#{tid}">
             <span class="glyphicon glyphicon-copy"></span> Copy table
         </button>
+        </div>
         """.format(tid=table_id)
 
+        # <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 20%">
+        #                 <span class="sr-only">20% Complete (warning)</span>
+        #               </div>
+        #               <div class="progress-bar progress-bar-danger" style="width: 10%">
+        #                 <span class="sr-only">10% Complete (danger)</span>
+        #               </div>
+
+        html += """ <div class="col-sm-2">
+            <div class="progress">
+              <div class="progress-bar progress-bar-q1" style="width: 25%">
+                <span class="sr-only">35% Complete (success)</span> Q1
+              </div>
+            
+              <div class="progress-bar progress-bar-q2" style="width: 25%">
+                <span class="sr-only">35% Complete (success)</span> Q2
+              </div>
+           
+              <div class="progress-bar progress-bar-q3" style="width: 25%">
+                <span class="sr-only">35% Complete (success)</span> Q3
+              </div>
+              
+              <div class="progress-bar progress-bar-q4" style="width: 25%">
+                <span class="sr-only">35% Complete (success)</span> Q4
+              </div>
+            </div>
+                     </div>
+                     </div>
+                     </div>
+        
+        """
         # Configure Columns Button
         # if len(t_headers) > 1:
         #     html += """
@@ -303,6 +339,12 @@ def make_table (dt):
         # html += """
         # <small id="{tid}_numrows_text" class="mqc_table_numrows_text">Showing <sup id="{tid}_numrows" class="mqc_table_numrows">{nvisrows}</sup>/<sub>{nrows}</sub> rows and <sup id="{tid}_numcols" class="mqc_table_numcols">{ncols_vis}</sup>/<sub>{ncols}</sub> columns.</small>
         # """.format(tid=table_id, nvisrows=len(visible_rows), nrows=len(t_rows), ncols_vis = (len(t_headers)+1)-hidden_cols, ncols=len(t_headers))
+
+        #Add text
+        # html += """
+        #         <small id="{tid}_numrows_text" class="mqc_table_numrows_text">Showing <sup id="{tid}_numrows" class="mqc_table_numrows">{nvisrows}</sup>/<sub>{nrows}</sub> rows and <sup id="{tid}_numcols" class="mqc_table_numcols">{ncols_vis}</sup>/<sub>{ncols}</sub> columns.</small>
+        #         """.format(tid=table_id, nvisrows=len(visible_rows), nrows=len(t_rows),
+        #                    ncols_vis=(len(t_headers) + 1) - hidden_cols, ncols=len(t_headers))
 
     # Build the table itself
     collapse_class = 'mqc-table-collapse' if len(t_rows) > 10 and config.collapse_tables else ''
