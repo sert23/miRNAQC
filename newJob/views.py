@@ -3,7 +3,7 @@ from django.views.generic import FormView, DetailView
 import string
 import random
 import os
-from miRQC.settings import MEDIA_ROOT, MEDIA_URL, SUB_SITE, MEDIA_URL
+from miRQC.settings import MEDIA_ROOT, MEDIA_URL, SUB_SITE, MEDIA_URL, MAIN_SITE
 from django.http import JsonResponse
 from .forms import FileForm,SpeciesForm
 import shutil
@@ -138,6 +138,7 @@ class checkStatus(FormView):
         folder = path.split("/")[-1]
         context["jobID"] = folder
         context["result_url"] = reverse_lazy("check_status") + "/" + folder
+        context["absolute_url"] = MAIN_SITE
         logfile = os.path.join(MEDIA_ROOT,folder,"query","summaryqc.log")
         if os.path.exists(logfile):
             launched = True
@@ -148,7 +149,7 @@ class checkStatus(FormView):
             message, finished = parse_web_log(logfile)
             context["message"] = message
             if finished:
-                print("pos")
+                # print("pos")
                 return redirect(reverse_lazy("result_page") + "/" + folder)
             else:
                 return render(self.request, 'status.html', context)
