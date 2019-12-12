@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import FormView, DetailView
 import string
 import random
@@ -8,6 +8,8 @@ from django.http import JsonResponse
 from .forms import FileForm,SpeciesForm
 import shutil
 from .models import Species
+import subprocess
+from django.urls import reverse_lazy
 
 # Create your views here.
 
@@ -96,15 +98,56 @@ class launchJob(FormView):
     def get(self, request):
         jobID = make_config(request)
         config = os.path.join(MEDIA_ROOT, jobID, "config.txt")
+        os.mkdir(os.path.join(MEDIA_ROOT, jobID,"query"))
+        os.system("touch " + os.path.join(MEDIA_ROOT, jobID,"query", "summaryqc.log"))
         launch_line = "java -classpath /opt/mirnaqcDB/java:/opt/mirnaqcDB/java/mariadb-java-client-1.1.7.jar miRNAdb.SummaryQC " + config
         print(launch_line)
-        os.system(launch_line)
+        subprocess.Popen(launch_line.split(" "))
         context = {}
         # context["test"] = test
-
+        context["redirection_url"] = reverse_lazy("check_status") + "/" + jobID
         # ?name1=value1
         return render(self.request, 'launch.html', context)
 
+def parse_web_log(log_path):
+
+    tagged = ""
+    if os.path.exists(log_path):
+        with open(log_path,"r") as log_file:
+            for line in log_file.readlines():
+                if "INFO" in line:
+                    rem,keep = line.rstrip().split("INFO:")
+                    tagged = tagged + keep +"<br>"
+
+        return tagged
+    else:
+        return None
+
+class checkStatus(FormView):
+
+    def get(self, request):
+        context = {}
+        path = request.path
+        # get folder from path
+        folder = path.split("/")[-1]
+        context["jobID"] = folder
+        context["result_url"] = reverse_lazy("check_status") + "/" + folder
+        logfile = os.path.join(MEDIA_ROOT,folder,"query","logFile.txt")
+        if os.path.exists(logfile):
+            launched = True
+        else:
+            launched = False
+
+        if launched:
+            message = parse_web_log(logfile)
+            context["message"] = message
+            if "JOB HAS FINISHED" in message:
+                return redirect(reverse_lazy("result_page") + "/" + folder)
+            else:
+                return render(self.request, 'status.html', context)
+        else:
+            context["message"] = "Your Job is in queue"
+            return render(self.request, 'status.html', context)
 
 
 class startNew(FormView):
