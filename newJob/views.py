@@ -111,6 +111,7 @@ class launchJob(FormView):
 
 def parse_web_log(log_path):
 
+    finished = False
     tagged = ""
     if os.path.exists(log_path):
         with open(log_path,"r") as log_file:
@@ -120,9 +121,12 @@ def parse_web_log(log_path):
                     tagged = tagged + keep +"<br>"
                 elif "ERROR:" in line:
                     tagged = tagged + line + "<br>"
-        return tagged
+                if " SUCCESS: Found " in line:
+                    finished = True
+
+        return tagged,finished
     else:
-        return None
+        return None,finished
 
 class checkStatus(FormView):
 
@@ -130,6 +134,7 @@ class checkStatus(FormView):
         context = {}
         path = request.path
         # get folder from path
+        finished = False
         folder = path.split("/")[-1]
         context["jobID"] = folder
         context["result_url"] = reverse_lazy("check_status") + "/" + folder
@@ -140,9 +145,9 @@ class checkStatus(FormView):
             launched = False
 
         if launched:
-            message = parse_web_log(logfile)
+            message, finished = parse_web_log(logfile)
             context["message"] = message
-            if " SUCCESS: Found " in message:
+            if finished:
                 print("pos")
                 return redirect(reverse_lazy("result_page") + "/" + folder)
             else:
