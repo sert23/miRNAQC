@@ -17,28 +17,7 @@
 
 {% block content %}
 
-<script>
 
-        $(document).ready(function(){
-
-            $('#show_yield_perc').on('click', function(){
-            $('#show_yield_vals').removeClass('active');
-            $(this).addClass('active');
-            $('#yield_val_id').css("display", "none");
-            $('#yield_perc_id').css("display", "block");
-
-                        });
-            $('#show_yield_vals').on('click', function(){
-            $('#show_yield_perc').removeClass('active');
-            $(this).addClass('active');
-            $('#yield_perc_id').css("display", "none");
-            $('#yield_val_id').css("display", "block");
-
-                        })
-
-         });
-
-    </script>
 
 
 
@@ -98,7 +77,7 @@
     <div class="tab-content">
 
 
-                <div class="tab-pane fade in active" id="Basic">
+                <div class="tab-pane in fade active" id="Basic">
 
                     <div class="col-lg-12">
                         {% include "results/basic.html" %}
@@ -108,7 +87,7 @@
                 <div class="tab-pane fade" id="Sequencing">
                     <div class="col-lg-12">
                     <h2>Sequencing Quality</h2>
-                        {{ test_hm|safe }}
+{#                        {{ test_hm|safe }}#}
                     </div>
                 </div>
 

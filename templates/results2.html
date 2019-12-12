@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+
+{% block header %}
+
+    {% include "multiqc_header.html" %}
+
+{% endblock %}
+
+
+
+
+{% block content %}
+
+
+
+
+
+
+
+
+<div class="row">
+            <div class="col-lg-12">
+                <h3 class="page-header">Showing results for job ID: <a href="{{ settings.SUB_SITE }}/jobstatus/{{ id }}" class="alert-link">{{ jobID }}</a> </h3>
+
+            </div>
+</div>
+    <div style="display: none;">
+         {{ basic_table|safe }}
+    </div>
+
+{#    <br>#}
+{#    <br>#}
+
+
+
+{% endblock %}
+
