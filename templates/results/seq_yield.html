@@ -1,0 +1,43 @@
+<script>
+        {#            Basic Stats button   #}
+        $(document).ready(function(){
+
+            $('#show_yield_perc').on('click', function(){
+            $('#show_yield_vals').removeClass('active');
+            $(this).addClass('active');
+            $('#yield_val_div').css("display", "none");
+            $('#yield_perc_div').css("display", "block");
+
+                        });
+            $('#show_yield_vals').on('click', function(){
+            $('#show_yield_perc').removeClass('active');
+            $(this).addClass('active');
+            $('#yield_perc_div').css("display", "none");
+            $('#yield_val_div').css("display", "block");
+
+                        })
+
+         });
+
+    </script>
+
+
+                        <h2>Sequencing Yield</h2>
+                        <div class="btn-group hc_switch_group">
+                        <button class="btn btn-default btn-sm active" id="show_yield_vals">Display values</button>
+                        <button class="btn btn-default btn-sm " id="show_yield_perc">Display percentiles</button>&nbsp;
+                            <span style="font-size: 26px; color:#3889ac; "> <i class="far fa-clickable fa-question-circle" onclick="$('#percentiles').modal('show');"> </i> </span>
+                        </div> <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
+{#                        <button class="btn btn-success" type="button" onclick="$('#basic_heatmap').modal('show');"> Show Heatmap</button>#}
+
+                        <br>
+                        <br>
+
+                        <div id="yield_val_div">
+
+                            1
+                        </div>
+                        <div id="yield_perc_div" style="display: none;">
+
+                            2
+                        </div>

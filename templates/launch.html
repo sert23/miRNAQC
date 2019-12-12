@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 
+{% block header %}
+
+  <meta http-equiv='refresh' content='0; URL={{ redirection_url }}'>
+
+{% endblock %}
+
 {% block content %}
     <script src="{% static 'js/jquery-file-upload/vendor/jquery.ui.widget.js' %}"></script>
   <script src="{% static 'js/jquery-file-upload/jquery.iframe-transport.js' %}"></script>
