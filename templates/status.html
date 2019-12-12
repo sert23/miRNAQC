@@ -45,7 +45,7 @@
                 <div class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title" style="display: inline;">
-                    Your results will be available on this link <span style="color:#3889ac; "><a id="res_url" href="{{ result_url }}">{{ request.scheme }}://{{ request.get_host }}{{ result_url }}</a></span>
+                    Your results will be available on this link <span style="color:#3889ac; "><a id="res_url" href="{{ result_url }}">{{ absolute_url }}{{ result_url }}</a></span>
                 </h4> <span> &nbsp; &nbsp; &nbsp;</span><button type="button" class=" btn-default btn-sm"  onclick="copyToClipboard('#p1')" style="display: inline;">
             <span class="glyphicon glyphicon-copy"></span> Copy to clipboard
         </button>
