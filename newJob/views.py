@@ -115,10 +115,11 @@ def parse_web_log(log_path):
     if os.path.exists(log_path):
         with open(log_path,"r") as log_file:
             for line in log_file.readlines():
-                if "INFO" in line:
-                    rem,keep = line.rstrip().split("INFO:")
+                if "SUCCESS:" in line:
+                    rem,keep = line.rstrip().split("SUCCESS:")
                     tagged = tagged + keep +"<br>"
-
+                elif "ERROR:" in line:
+                    tagged = tagged + line + "<br>"
         return tagged
     else:
         return None
@@ -132,7 +133,7 @@ class checkStatus(FormView):
         folder = path.split("/")[-1]
         context["jobID"] = folder
         context["result_url"] = reverse_lazy("check_status") + "/" + folder
-        logfile = os.path.join(MEDIA_ROOT,folder,"query","logFile.txt")
+        logfile = os.path.join(MEDIA_ROOT,folder,"query","summaryqc.log")
         if os.path.exists(logfile):
             launched = True
         else:
@@ -141,7 +142,8 @@ class checkStatus(FormView):
         if launched:
             message = parse_web_log(logfile)
             context["message"] = message
-            if "JOB HAS FINISHED" in message:
+            if " SUCCESS: Found " in message:
+                print("pos")
                 return redirect(reverse_lazy("result_page") + "/" + folder)
             else:
                 return render(self.request, 'status.html', context)
