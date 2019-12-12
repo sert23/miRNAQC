@@ -31,7 +31,7 @@
     <div id="page-wrapper">
 
 
-        <p id="p1" style="display: none;">{{ request.scheme }}://{{ request.get_host }}{{ result_url }}</p>
+        <p id="p1" style="display: none;">{{ absolute_url }}{{ result_url }}</p>
 
 {#<button type="button" class=" btn-default btn-sm" data-clipboard-target="#table_etpr" onclick="copyToClipboard('#p1')">#}
 {#            <span class="glyphicon glyphicon-copy"></span> Copy to clipboard#}
