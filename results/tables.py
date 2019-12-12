@@ -54,7 +54,7 @@ def make_ordinal(n):
 
     x = float(n)
     if math.isnan(x):
-        return " "
+        return " _"
 
     n = int(n)
 
@@ -71,7 +71,10 @@ def get_ordinals(input_dict):
 
 def gen_col_dict(input_dict, sense):
 
-    return {k: get_quart_cols(v,sense) for k, v in input_dict.items()}
+    if input_dict:
+        return {k: get_quart_cols(v,sense) for k, v in input_dict.items()}
+    else:
+        return None
 
 
 
@@ -125,50 +128,6 @@ def cols_dict(df):
         # print(column)
     return new_dict
 
-# print(cols_dict(perc_tab))
-
-
-# print(table2dict(values_tab))
-#
-# exit()
-
-data = {
-    'sample 1': {
-        'aligned': 235420000000000,
-        'not_aligned': 343,
-        'aligned_percent': 98.563952271
-    },
-    'sample 2': {
-        'aligned': 12750000000000,
-        'not_aligned': 7328,
-        'aligned_percent': 14.820411484
-    }
-}
-
-
-# data = table2dict(values_tab)
-
-
-headers = OrderedDict()
-
-
-
-headers['aligned_percent'] = {
-    'scale': "quart",
-    'col_dict': {'sample 1':  "rgb(164, 207, 99)", 'sample 2' : 'rgb(232, 213, 89)'},
-    'title': '% Aligned',
-    'description': 'Percentage of reads that aligned',
-    'suffix': '%',
-    'max': 200,
-    'format': '{:,.0f}' # No decimal places please
-}
-headers['aligned'] = {
-    'title': '{} Aligned'.format(config.read_count_prefix),
-    'description': 'Aligned Reads ({})'.format(config.read_count_desc),
-    'shared_key': 'read_count',
-    # 'modify': lambda x: x * config.read_count_multiplier
-}
-
 
 
 config_p = {
@@ -184,133 +143,115 @@ config_p = {
 
 
 
-def tables_yield(val_file, perc_file):
+def tables_yield(val_df, perc_df):
 
-    vals_dict = table2dict(val_file)
-    columns_dict = cols_dict(perc_file)
-    perc_dict = table2dict(perc_file)
+
+    vals_dict = df2dict(val_df)
+    columns_dict = cols_dict(perc_df)
+
+    perc_dict = df2dict(perc_df)
     headers = OrderedDict()
     # rawReads_orig	reads	adapterDimer	detectedMatureSA
-    headers["rawReads_orig"] = {
-        'title': 'Input reads',
-        'description': 'Total number of reads sequenced',
-        'scale': "quart",
-        'col_dict': gen_col_dict(columns_dict["rawReads_orig"], "desc"),
-        'bar_dict': columns_dict["rawReads_orig"],
-        # 'max': 100,
-        # 'min': 0,
 
-    }
-    headers["analysisP"] = {
-        'title': '% Reads in Analysis',
-        'description': 'Percentage of reads included in the analysis',
-        'scale': "quart",
-        'col_dict': gen_col_dict(columns_dict["analysisP"], "desc"),
-        'bar_dict': columns_dict["analysisP"],
-        'suffix': '%',
-        'max': 100,
-        'min': 0,
+    if True:
+        headers["readsRaw"] = {
+            'title': 'Input reads',
+            'description': 'Total number of reads sequenced',
+            'scale': "quart",
+            'col_dict': gen_col_dict(columns_dict.get("readsRaw"), "desc"),
+            'bar_dict': columns_dict.get("readsRaw"),
+            # 'max': 100,
+            # 'min': 0,
 
-    }
-    headers["microP"] = {
-        'title': '% miRNAs reads',
-        'description': 'Percentage of reads mapping to miRNA libraries',
-        'scale': "quart",
-        'col_dict': gen_col_dict(columns_dict["microP"], "desc"),
-        'bar_dict': columns_dict["microP"],
-        'suffix': '%',
-        'max': 100,
-        'min': 0,
+        }
+        headers["analysisP"] = {
+            'title': '% Reads in Analysis',
+            'description': 'Percentage of reads included in the analysis',
+            'scale': "quart",
+            'col_dict': gen_col_dict(columns_dict.get("analysisP"), "desc"),
+            'bar_dict': columns_dict.get("analysisP"),
+            'suffix': '%',
+            'max': 100,
+            'min': 0,
 
-    }
-    headers["detectedN"] = {
-        'title': 'miRNAs detected',
-        'description': 'Number of miRNAs detected',
-        'scale': "quart",
-        'col_dict': gen_col_dict(columns_dict["detectedN"], "desc"),
-        'bar_dict': columns_dict["detectedN"],
+        }
+        headers["microP"] = {
+            'title': '% miRNAs reads',
+            'description': 'Percentage of reads mapping to miRNA libraries',
+            'scale': "quart",
+            'col_dict': gen_col_dict(columns_dict.get("microP"), "desc"),
+            'bar_dict': columns_dict.get("microP"),
+            'suffix': '%',
+            'max': 100,
+            'min': 0,
+
+        }
+        headers["detectedN"] = {
+            'title': 'miRNAs detected',
+            'description': 'Number of miRNAs detected',
+            'scale': "quart",
+            'col_dict': gen_col_dict(columns_dict.get("detectedN"), "desc"),
+            'bar_dict': columns_dict.get("detectedN"),
 
 
-    }
-    headers["uniqueP"] = {
-        'title': '% Unique reads',
-        'description': 'Percentage of unique reads',
-        'scale': "quart",
-        'col_dict': gen_col_dict(columns_dict["uniqueP"], "desc"),
-        'bar_dict': columns_dict["uniqueP"],
-        'suffix': '%',
-        'max': 100,
-        'min': 0,
+        }
+        headers["uniqueP"] = {
+            'title': '% Unique reads',
+            'description': 'Percentage of unique reads',
+            'scale': "quart",
+            'col_dict': gen_col_dict(columns_dict.get("uniqueP"), "desc"),
+            'bar_dict': columns_dict.get("uniqueP"),
+            'suffix': '%',
+            'max': 100,
+            'min': 0,
 
-    }
+        }
+    #     readsRaw
+    # reads    # readsAdapterFound    # readsAdapterFoundPerc
+    # readsAdapterNotFound    # readsAdapterNotFoundPerc    # readsUnique
+    # avgRCperUnique
+    # detectedMatureSA
+    to_keep = ["readsRaw", "reads", "readsAdapterFound", "readsAdapterFoundPerc", "readsUnique", "avgRCperUnique", "detectedMatureSA"]
+    keep = set(to_keep).intersection( list(val_df.columns))
+    print("eo")
+    print(keep)
+    clean_headers = {k: headers[k] for k in headers.keys() if k in keep}
+    print(list(clean_headers.keys()))
+    val_tab = table.plot(vals_dict, clean_headers)
 
-    val_tab = table.plot(vals_dict, headers)
+    for k in list(headers.keys()):
+        c_dict = headers.get(k)
+        description = c_dict["description"]
+        c_dict["description"] = description + " (percentile)"
+        if k in keep:
+            c_dict['suffix'] = "show_perc"
+            c_dict["suffix_dict"] = get_ordinals(columns_dict[k])
 
-    headers["rawReads_orig"] = {
-        'title': 'Input reads',
-        'description': 'Total number of reads sequenced (percentile)',
-        'scale': "quart",
-        'col_dict': gen_col_dict(columns_dict["rawReads_orig"], "desc"),
-        'bar_dict': columns_dict["rawReads_orig"],
-        # 'max': 100,
-        # 'min': 0,
 
-    }
-    headers["analysisP"] = {
-        'title': '% Reads in Analysis',
-        'description': 'Percentage of reads included in the analysis (percentile)',
-        'scale': "quart",
-        'col_dict': gen_col_dict(columns_dict["analysisP"], "desc"),
-        'bar_dict': columns_dict["analysisP"],
-        # 'suffix': '%',
-        'max': 100,
-        'min': 0,
+    clean_headers = {k: headers[k] for k in headers.keys() if k in keep}
 
-    }
-    headers["microP"] = {
-        'title': '% miRNAs reads',
-        'description': 'Percentage of reads mapping to miRNA libraries (percentile)',
-        'scale': "quart",
-        'col_dict': gen_col_dict(columns_dict["microP"], "desc"),
-        'bar_dict': columns_dict["microP"],
-        # 'suffix': '%',
-        'max': 100,
-        'min': 0,
+    perc_tab = table.plot(perc_dict, clean_headers)
 
-    }
-    headers["detectedN"] = {
-        'title': 'miRNAs detected',
-        'description': 'Number of miRNAs detected (percentile)',
-        'scale': "quart",
-        'col_dict': gen_col_dict(columns_dict["detectedN"], "desc"),
-        'bar_dict': columns_dict["detectedN"],
+    return val_tab, perc_tab
 
-    }
-    headers["uniqueP"] = {
-        'title': '% Unique reads',
-        'description': 'Percentage of unique reads (percentile)',
-        'scale': "quart",
-        'col_dict': gen_col_dict(columns_dict["uniqueP"], "desc"),
-        'bar_dict': columns_dict["uniqueP"],
-        # 'suffix': '%',
-        'suffix': "show_perc",
-        "suffix_dict": get_ordinals(columns_dict["uniqueP"]),
-        'max': 100,
-        'min': 0,
 
-    }
+def sequencing_qual(val_df,perc_df):
+    vals_dict = df2dict(val_df)
+    columns_dict = cols_dict(perc_df)
 
-    perc_tab = table.plot(perc_dict, headers)
+    perc_dict = df2dict(perc_df)
+    headers = OrderedDict()
 
+    #headers
+    #meanofmeans
+    # meanofp10
+    # meanofp25
+    # meanofp50
+    # meanofp75
+    # meanofp90
 
 
     return val_tab, perc_tab
-    # return val_tab, perc_tab
-
-#
-# def test_table():
-#
-#     return tables_yield(values_tab,perc_tab)
 
 def basic_table(val_df,perc_df):
 
@@ -423,34 +364,7 @@ def basic_table(val_df,perc_df):
         c_dict['suffix'] = "show_perc"
         c_dict["suffix_dict"] = get_ordinals(columns_dict[k])
 
-    # if True:
-    #
-    #
-    #     headers["readsRaw"] = {
-    #         'title': 'Input reads',
-    #         'description': 'Total number of reads sequenced',
-    #         'scale': "quart",
-    #         'col_dict': gen_col_dict(columns_dict["readsRaw"], "desc"),
-    #         'bar_dict': columns_dict["readsRaw"],
-    #         'suffix': "show_perc",
-    #         "suffix_dict": get_ordinals(columns_dict["readsRaw"]),
-    #         # 'max': 100,
-    #         # 'min': 0,
-    #
-    #     }
-    #
-    #     headers["reads"] = {
-    #         'title': '% reads in analysis',
-    #         'description': 'Total number of reads used for the analysis after filtering',
-    #         'scale': "quart",
-    #         'col_dict': gen_col_dict(columns_dict["reads"], "desc"),
-    #         'bar_dict': columns_dict["reads"],
-    #         'suffix': "show_perc",
-    #         "suffix_dict": get_ordinals(columns_dict["reads"]),
-    #         # 'max': 100,
-    #         # 'min': 0,
-    #
-    #     }
+
 
     perc_tab = table.plot(perc_dict, headers)
 

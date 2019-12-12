@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import FormView, DetailView
-from .tables import basic_table,seqYield_table
+from .tables import basic_table,seqYield_table, tables_yield
 from miRQC.settings import MEDIA_ROOT, MEDIA_URL, SUB_SITE, MEDIA_URL
 import os
 import pandas
@@ -129,7 +129,7 @@ class loadResults(FormView):
         #read files into dfs
         val_df = pandas.read_csv(val_file, sep="\t")
         perc_df = pandas.read_csv(perc_file, sep="\t")
-        context["basic_hm"] = plot_heatmap(perc_df)
+        # context["basic_hm"] = plot_heatmap(perc_df)
 
         #basic statistics
         basic_tab,basic_perc = basic_table(val_df, perc_df)
@@ -139,7 +139,7 @@ class loadResults(FormView):
 
 
         #sequencing yield
-        seqYield_tab, seqYield_perc = seqYield_table(val_df, perc_df)
+        seqYield_tab, seqYield_perc = tables_yield(val_df, perc_df)
         context["seqYield_table"] = seqYield_tab
         context["seqYield_perc"] = seqYield_perc
 

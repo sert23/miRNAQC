@@ -8,11 +8,13 @@ import random
 
 from multiqc.utils import config, report, util_functions, mqc_colour
 from multiqc.plots import table_object, beeswarm
+
 logger = logging.getLogger(__name__)
 
 letters = 'abcdefghijklmnopqrstuvwxyz'
 
-def plot (data, headers=None, pconfig=None):
+
+def plot(data, headers=None, pconfig=None):
     """ Return HTML for a MultiQC table.
     :param data: 2D dict, first keys as sample names, then x:y data pairs
     :param headers: list of optional dicts with column config in key:value pairs.
@@ -42,21 +44,21 @@ def plot (data, headers=None, pconfig=None):
     if len(s_names) >= 100 and pconfig.get('no_beeswarm') is not True:
         logger.debug('Plotting beeswarm instead of table, {} samples'.format(len(s_names)))
         warning = '<p class="text-muted"><span class="glyphicon glyphicon-exclamation-sign" ' \
-            'title="A beeswarm plot has been generated instead because of the large number of samples. '\
-            'See http://multiqc.info/docs/#tables--beeswarm-plots"'\
-            ' data-toggle="tooltip"></span> Showing {} samples.</p>'.format(len(s_names))
-        return warning + beeswarm.make_plot( dt )
+                  'title="A beeswarm plot has been generated instead because of the large number of samples. ' \
+                  'See http://multiqc.info/docs/#tables--beeswarm-plots"' \
+                  ' data-toggle="tooltip"></span> Showing {} samples.</p>'.format(len(s_names))
+        return warning + beeswarm.make_plot(dt)
     else:
-        return make_table ( dt )
+        return make_table(dt)
 
 
-def make_table (dt):
+def make_table(dt):
     """
     Build the HTML needed for a MultiQC table.
     :param data: MultiQC datatable object
     """
 
-    table_id = dt.pconfig.get('id', 'table_{}'.format(''.join(random.sample(letters, 4))) )
+    table_id = dt.pconfig.get('id', 'table_{}'.format(''.join(random.sample(letters, 4))))
     table_id = report.save_htmlid(table_id)
     t_headers = OrderedDict()
     t_modal_headers = OrderedDict()
@@ -95,9 +97,7 @@ def make_table (dt):
                 .format(header['namespace'], header['description'], header['title'])
         else:
             cell_contents = '<span class="mqc_table_tooltip" title="{} {}">{}</span>' \
-            .format(header['namespace'], header['description'], header['title'])
-
-
+                .format(header['namespace'], header['description'], header['title'])
 
         t_headers[rid] = '<th id="header_{rid}" class="{rid} {h}" {da}>{c}</th>' \
             .format(rid=rid, h=hide, da=data_attr, c=cell_contents)
@@ -117,17 +117,17 @@ def make_table (dt):
           <td>{col_id}</td>
           <td>{sk}</td>
         </tr>""".format(
-                rid = rid,
-                muted = muted,
-                checked = checked,
-                tid = table_id,
-                col = header['colour'],
-                name = header['namespace'],
-                title = header['title'],
-                desc = header['description'],
-                col_id = '<code>{}</code>'.format(k),
-                sk = header.get('shared_key', '')
-            )
+            rid=rid,
+            muted=muted,
+            checked=checked,
+            tid=table_id,
+            col=header['colour'],
+            name=header['namespace'],
+            title=header['title'],
+            desc=header['description'],
+            col_id='<code>{}</code>'.format(k),
+            sk=header.get('shared_key', '')
+        )
 
         # Make a colour scale
         if header['scale'] == False:
@@ -151,7 +151,7 @@ def make_table (dt):
                     percentage = ((float(val) - dmin) / (dmax - dmin)) * 100
                     percentage = min(percentage, 100)
                     percentage = max(percentage, 0)
-                except (ZeroDivisionError,ValueError):
+                except (ZeroDivisionError, ValueError):
                     percentage = 0
 
                 try:
@@ -170,7 +170,8 @@ def make_table (dt):
                 if config.decimalPoint_format is None:
                     config.decimalPoint_format = '.'
                 valstring = valstring.replace('.', 'DECIMAL').replace(',', 'THOUSAND')
-                valstring = valstring.replace('DECIMAL', config.decimalPoint_format).replace('THOUSAND', config.thousandsSep_format)
+                valstring = valstring.replace('DECIMAL', config.decimalPoint_format).replace('THOUSAND',
+                                                                                             config.thousandsSep_format)
 
                 # Percentage suffixes etc
                 if header.get('suffix') == "show_perc":
@@ -180,7 +181,7 @@ def make_table (dt):
                     valstring += header.get('suffix', '')
 
                 # Conditional formatting
-                cmatches = { cfck: False for cfc in config.table_cond_formatting_colours for cfck in cfc }
+                cmatches = {cfck: False for cfc in config.table_cond_formatting_colours for cfck in cfc}
                 # Find general rules followed by column-specific rules
                 for cfk in ['all_columns', rid]:
                     if cfk in config.table_cond_formatting_rules:
@@ -205,11 +206,12 @@ def make_table (dt):
                                     if 'lt' in cmp and float(cmp['lt']) > float(val):
                                         cmatches[ftype] = True
                                 except:
-                                    logger.warn("Not able to apply table conditional formatting to '{}' ({})".format(val, cmp))
+                                    logger.warn(
+                                        "Not able to apply table conditional formatting to '{}' ({})".format(val, cmp))
                 # Apply HTML in order of config keys
                 bgcol = None
                 for cfc in config.table_cond_formatting_colours:
-                    for cfck in cfc: # should always be one, but you never know
+                    for cfck in cfc:  # should always be one, but you never know
                         if cmatches[cfck]:
                             bgcol = cfc[cfck]
                 if bgcol is not None:
@@ -221,7 +223,7 @@ def make_table (dt):
                         t_rows[s_name] = dict()
                     t_rows[s_name][rid] = '<td class="{rid} {h}">{v}</td>'.format(rid=rid, h=hide, v=valstring)
 
-                #coloring with quartiles
+                # coloring with quartiles
                 elif header['scale'] == "quart":
 
                     col_dict = header['col_dict']
@@ -231,13 +233,14 @@ def make_table (dt):
                         bar_html = '<span class="bar" style="width:{}%;{}"></span>'.format(bar_dict.get(s_name), col)
                     else:
                         bar_html = '<span class="bar" style="width:{}%;{}"></span>'.format(percentage, col)
-                    #bar percentage here
+                    # bar percentage here
 
                     val_html = '<span class="val">{}</span>'.format(valstring)
                     wrapper_html = '<div class="wrapper">{}{}</div>'.format(bar_html, val_html)
                     if s_name not in t_rows:
                         t_rows[s_name] = dict()
-                    t_rows[s_name][rid] = '<td class="data-coloured {rid} {h}">{c}</td>'.format(rid=rid, h=hide, c=wrapper_html)
+                    t_rows[s_name][rid] = '<td class="data-coloured {rid} {h}">{c}</td>'.format(rid=rid, h=hide,
+                                                                                                c=wrapper_html)
 
                 else:
                     if c_scale is not None:
@@ -250,7 +253,8 @@ def make_table (dt):
 
                     if s_name not in t_rows:
                         t_rows[s_name] = dict()
-                    t_rows[s_name][rid] = '<td class="data-coloured {rid} {h}">{c}</td>'.format(rid=rid, h=hide, c=wrapper_html)
+                    t_rows[s_name][rid] = '<td class="data-coloured {rid} {h}">{c}</td>'.format(rid=rid, h=hide,
+                                                                                                c=wrapper_html)
 
                 # Is this cell hidden or empty?
                 if s_name not in t_rows_empty:
@@ -270,7 +274,6 @@ def make_table (dt):
     # Buttons above the table
     html = ''
     if not config.simple_output:
-
         # Copy Table Button
         html += """<div class="row">
                     <div class="col-sm-2">
@@ -292,23 +295,24 @@ def make_table (dt):
               <div class="progress-bar progress-bar-q1" style="width: 25%">
                 <span class="sr-only">35% Complete (success)</span> Q1
               </div>
-            
+
               <div class="progress-bar progress-bar-q2" style="width: 25%">
                 <span class="sr-only">35% Complete (success)</span> Q2
               </div>
-           
+
               <div class="progress-bar progress-bar-q3" style="width: 25%">
                 <span class="sr-only">35% Complete (success)</span> Q3
               </div>
-              
+
               <div class="progress-bar progress-bar-q4" style="width: 25%">
                 <span class="sr-only">35% Complete (success)</span> Q4
               </div>
             </div>
                      </div>
                      </div>
-                     </div>
-        
+                     
+                     
+
         """
         # Configure Columns Button
         # if len(t_headers) > 1:
@@ -334,13 +338,13 @@ def make_table (dt):
         #     """.format(tid=table_id)
 
         # "Showing x of y columns" text
-        row_visibilities = [ all(t_rows_empty[s_name].values()) for s_name in t_rows_empty ]
-        visible_rows = [ x for x in row_visibilities if not x ]
+        row_visibilities = [all(t_rows_empty[s_name].values()) for s_name in t_rows_empty]
+        visible_rows = [x for x in row_visibilities if not x]
         # html += """
         # <small id="{tid}_numrows_text" class="mqc_table_numrows_text">Showing <sup id="{tid}_numrows" class="mqc_table_numrows">{nvisrows}</sup>/<sub>{nrows}</sub> rows and <sup id="{tid}_numcols" class="mqc_table_numcols">{ncols_vis}</sup>/<sub>{ncols}</sub> columns.</small>
         # """.format(tid=table_id, nvisrows=len(visible_rows), nrows=len(t_rows), ncols_vis = (len(t_headers)+1)-hidden_cols, ncols=len(t_headers))
 
-        #Add text
+        # Add text
         # html += """
         #         <small id="{tid}_numrows_text" class="mqc_table_numrows_text">Showing <sup id="{tid}_numrows" class="mqc_table_numrows">{nvisrows}</sup>/<sub>{nrows}</sub> rows and <sup id="{tid}_numcols" class="mqc_table_numcols">{ncols_vis}</sup>/<sub>{ncols}</sub> columns.</small>
         #         """.format(tid=table_id, nvisrows=len(visible_rows), nrows=len(t_rows),
@@ -352,7 +356,7 @@ def make_table (dt):
         <div id="{tid}_container" class="mqc_table_container">
             <div class="table-responsive mqc-table-responsive {cc}">
                 <table id="{tid}" class="table table-condensed mqc_table" data-title="{title}">
-        """.format( tid=table_id, title=table_title, cc=collapse_class)
+        """.format(tid=table_id, title=table_title, cc=collapse_class)
 
     # Build the header row
     col1_header = dt.pconfig.get('col1_header', 'Sample Name')
@@ -365,7 +369,7 @@ def make_table (dt):
         t_row_keys = sorted(t_row_keys)
     for s_name in t_row_keys:
         # Hide the row if all cells are empty or hidden
-        row_hidden = ' style="display:none"' if all(t_rows_empty[s_name].values()) else  ''
+        row_hidden = ' style="display:none"' if all(t_rows_empty[s_name].values()) else ''
         html += '<tr{}>'.format(row_hidden)
         # Sample name row header
         html += '<th class="rowheader" data-original-sn="{sn}">{sn}</th>'.format(sn=s_name)
@@ -416,8 +420,8 @@ def make_table (dt):
 
     # Save the raw values to a file if requested
     if dt.pconfig.get('save_file') is True:
-        fn = dt.pconfig.get('raw_data_fn', 'multiqc_{}'.format(table_id) )
-        util_functions.write_data_file(dt.raw_vals, fn )
+        fn = dt.pconfig.get('raw_data_fn', 'multiqc_{}'.format(table_id))
+        util_functions.write_data_file(dt.raw_vals, fn)
         report.saved_raw_data[fn] = dt.raw_vals
 
     return html
