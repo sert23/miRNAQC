@@ -121,7 +121,7 @@ def parse_web_log(log_path):
                     tagged = tagged + keep +"<br>"
                 elif "ERROR:" in line:
                     tagged = tagged + line + "<br>"
-                if " SUCCESS: Found " in line:
+                if "SUCCESS: Analysis finished" in line:
                     finished = True
 
         return tagged,finished
