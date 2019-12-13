@@ -230,7 +230,7 @@ def make_table(dt):
                     bar_dict = header.get('bar_dict')
                     col = ' background-color:{};'.format(col_dict.get(s_name))
                     if bar_dict:
-                        bar_html = '<span class="bar" style="width:{}%;{}"></span>'.format(bar_dict.get(s_name), col)
+                        bar_html = '<span class="bar" style="width:{}%;{}"></span>'.format(bar_dict.get(s_name)+3, col)
                     else:
                         bar_html = '<span class="bar" style="width:{}%;{}"></span>'.format(percentage, col)
                     # bar percentage here

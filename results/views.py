@@ -1,13 +1,15 @@
 from django.shortcuts import render
 from django.views.generic import FormView, DetailView
-from .tables import basic_table,seqYield_table, tables_yield
-from miRQC.settings import MEDIA_ROOT, MEDIA_URL, SUB_SITE, MEDIA_URL
+from .tables import basic_table,seqYield_table, tables_yield, cols_dict, seq_qual_tab
+from miRQC.settings import MEDIA_ROOT, MEDIA_URL, SUB_SITE, MEDIA_URL, MAIN_SITE
 import os
 import pandas
 import plotly.graph_objs as go
 from plotly.offline import plot
 import numpy as np
 from django.http import JsonResponse
+from django.urls import reverse_lazy
+
 # Create your views here.
 
 def discrete_colorscale(bvals, colors):
@@ -122,26 +124,35 @@ class loadResults(FormView):
         #get folder from path
         folder = path.split("/")[-1]
         context["jobID"] = folder
+        context["result_url"] = reverse_lazy("check_status") + "/" + folder
+        context["absolute_url"] = MAIN_SITE
         query_folder = os.path.join(MEDIA_ROOT,folder,"query")
         val_file = os.path.join(query_folder,"value_full.tsv")
         perc_file = os.path.join(query_folder,"percentil_full.tsv")
+        context["vals_link"] = val_file.replace(MEDIA_ROOT,MEDIA_URL)
+        context["perc_link"] = perc_file.replace(MEDIA_ROOT,MEDIA_URL)
 
         #read files into dfs
         val_df = pandas.read_csv(val_file, sep="\t")
         perc_df = pandas.read_csv(perc_file, sep="\t")
+        columns = cols_dict(perc_df)
         # context["basic_hm"] = plot_heatmap(perc_df)
 
         #basic statistics
-        basic_tab,basic_perc = basic_table(val_df, perc_df)
+        basic_tab,basic_perc = basic_table(val_df, perc_df, columns)
         context["basic_table"] = basic_tab
         context["basic_perc"] = basic_perc
 
-
-
         #sequencing yield
-        seqYield_tab, seqYield_perc = tables_yield(val_df, perc_df)
+        seqYield_tab, seqYield_perc = tables_yield(val_df, perc_df, columns)
         context["seqYield_table"] = seqYield_tab
         context["seqYield_perc"] = seqYield_perc
+
+        #sequencing quality
+        seqQual_tab, seqQual_perc = seq_qual_tab(val_df, perc_df, columns)
+        context["seqQual_table"] = seqQual_tab
+        context["seqQual_perc"] = seqQual_perc
+
 
         # t1,t2 = test_table()
         # context["test_table"] = t1
