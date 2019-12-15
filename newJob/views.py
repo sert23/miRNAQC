@@ -82,6 +82,8 @@ def new_rand_folder():
         new_folder = os.path.join(MEDIA_ROOT,new_id)
         if not os.path.exists(new_folder):
             os.mkdir(new_folder)
+            os.mkdir(os.path.join(new_folder,"uploaded"))
+            os.mkdir(os.path.join(new_folder,"query"))
             return new_id
 
 
