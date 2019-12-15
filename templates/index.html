@@ -46,10 +46,10 @@
     },
 
     done: function (e, data) {
-        $("#modal-progress").modal("hide");
+        {# $("#modal-progress").modal("hide");#}
       if (data.result.is_valid) {
           {#alert("hello");#}
-          $("#modal-progress").modal("hide");
+        {# $("#modal-progress").modal("hide");#}
           $("#uploaded_card").show();
           {#alert(data.result.name);#}
           {#alert(data.result.url);#}
