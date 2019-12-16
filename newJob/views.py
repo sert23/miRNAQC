@@ -192,11 +192,13 @@ class startNew(FormView):
     def post(self, request):
         path = request.path
         folder = path.split("/")[-1]
-
+        print("POST received " + folder)
 
         if "file" in self.request.FILES:
             form = FileForm(request.POST, request.FILES)
+            print("file in POST " + folder)
             if form.is_valid():
+                print("valid form " + folder)
                 ufile = form.save()
                 upload_folder = os.path.join(MEDIA_ROOT, folder, "uploaded")
                 if not os.path.exists(upload_folder):
@@ -214,4 +216,8 @@ class startNew(FormView):
                 print(MEDIA_URL)
                 data = {'is_valid': is_new, 'name': name, 'url': url}
                 print(folder)
+                return JsonResponse(data)
+            else:
+                data = {}
+                data["alert"] = True
                 return JsonResponse(data)
