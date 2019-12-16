@@ -100,7 +100,9 @@ class launchJob(FormView):
     def get(self, request):
         jobID = make_config(request)
         config = os.path.join(MEDIA_ROOT, jobID, "config.txt")
-        os.mkdir(os.path.join(MEDIA_ROOT, jobID,"query"))
+
+        if not os.path.exists(os.path.join(MEDIA_ROOT, jobID,"query")):
+            os.mkdir(os.path.join(MEDIA_ROOT, jobID,"query"))
         # os.system("touch " + os.path.join(MEDIA_ROOT, jobID,"query", "summaryqc.log"))
         launch_line = "java -classpath /opt/mirnaqcDB/java:/opt/mirnaqcDB/java/mariadb-java-client-1.1.7.jar miRNAdb.SummaryQC " + config
         print(launch_line)
