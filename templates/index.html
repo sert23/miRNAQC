@@ -47,7 +47,10 @@
 
     done: function (e, data) {
         {# $("#modal-progress").modal("hide");#}
-      if (data.result.is_valid) {
+      if (data.alert){
+       alert("something went wrong");
+      }
+        if (data.result.is_valid) {
           {#alert("hello");#}
         {# $("#modal-progress").modal("hide");#}
           $("#uploaded_card").show();
