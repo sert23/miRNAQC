@@ -24,7 +24,7 @@ from django.conf.urls.static import static
 urlpatterns = [
 
     path('admin/', admin.site.urls),
-    url(r'/^$', startNew.as_view(), name='home'),
+    url(r'^/$', startNew.as_view(), name='home'),
     url(r'^check', checkStatus.as_view(), name="check_status"),
     url(r'^testqc', testMulti.as_view()),
     url(r'^launch', launchJob.as_view(), name="launch"),
