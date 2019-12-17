@@ -165,11 +165,12 @@ class checkStatus(FormView):
 class startNew(FormView):
 
     def get(self, request):
+        # print(request.path[-1])
     # def get(self, request,**kwargs):
         context = {}
         jobID = new_rand_folder()
         context["jobID"] = jobID
-        context["request_path"] = os.path.join("upload",jobID)
+        context["request_path"] = os.path.join(SUB_SITE, "upload",jobID)
         context["submit_path"] = os.path.join("",jobID)
         context["form"] = SpeciesForm
         # species = list(Species.objects.all().filter(sp_class__in=['plant','animal', 'fungi' ]).values_list("scientific",flat=True))
