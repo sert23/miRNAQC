@@ -290,7 +290,7 @@ def tables_yield(val_df, perc_df, columns):
         }
 
         headers["reads"] = {
-            'title': 'Reads',
+            'title': 'Num. of reads',
             'description': 'Number of reads used for the analysis after filtering',
             'scale': "quart",
             'col_dict': gen_col_dict(columns_dict.get("reads"), "desc"),
