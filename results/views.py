@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import FormView, DetailView
-from .tables import basic_table,seqYield_table, tables_yield, cols_dict, seq_qual_tab
+from .tables import basic_table,seqYield_table, tables_yield, cols_dict, seq_qual_tab, library_tab
 from miRQC.settings import MEDIA_ROOT, MEDIA_URL, SUB_SITE, MEDIA_URL, MAIN_SITE
 import os
 import pandas
@@ -152,6 +152,11 @@ class loadResults(FormView):
         seqQual_tab, seqQual_perc = seq_qual_tab(val_df, perc_df, columns)
         context["seqQual_table"] = seqQual_tab
         context["seqQual_perc"] = seqQual_perc
+
+        # library quality
+        library_table, library_perc = library_tab(val_df, perc_df, columns)
+        context["library_table"] = library_table
+        context["library_perc"] = library_perc
 
 
         # t1,t2 = test_table()
