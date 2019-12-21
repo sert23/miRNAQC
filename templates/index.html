@@ -71,7 +71,7 @@
     $(document).ready(function(){
 
             $('#example_but').on('click', function(){
-                $('#id_sra_input').val("SRR1563062,SRR1563057,SRR1563017,SRR1563059");
+                $('#id_sra_input').val("SRR1563062,SRR1563057,SRR1563059,SRR1563060");
                 {#$('#id_sra_input').val("SRR1563060,SRR1563062");#}
                 $("#species option[value='hsa,GRCh38_p10_mp']").attr("selected", true).trigger("change");
                 $("#proto_Illu[value='Illumina']").attr("checked", true);
@@ -104,7 +104,7 @@
             var launch_url = "{% url 'launch' %}?";
             {#var plot_url = "?";#}
             var pars = $("#id_sra_input,#species,#jobID ").serialize();
-            alert(pars);
+            {#alert(pars);#}
             $("#run_link").attr("href", launch_url.concat(pars));
 
             })
