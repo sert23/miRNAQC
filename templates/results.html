@@ -70,10 +70,11 @@
             </li>
             <li ><a href="#Yield" data-toggle="tab">Sequencing yield</a>
             </li>
+            <li ><a href="#Library" data-toggle="tab">Library quality</a>
+            </li>
             <li ><a href="#Down" data-toggle="tab">Download</a>
             </li>
-            <li ><a href="#Basic2" data-toggle="tab">Other</a>
-            </li>
+
         </ul>
 
     <div class="tab-content">
@@ -98,7 +99,8 @@
 
                 </div>
 
-                <div class="tab-pane fade" id="Basic2">
+                <div class="tab-pane fade" id="Library">
+                    {% include "results/library.html" %}
                 </div>
 
                 <div class="tab-pane fade" id="Down">
