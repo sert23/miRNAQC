@@ -1,15 +1,24 @@
 {% extends "Messages/modal_template.html" %}
 {% block id %}Advanced{% endblock %}
 {% block title %}
-    Illumina TrueSeq™ (280916) protocol
+    Advanced parameters
 {% endblock %}
 {% block text %}
-<p> Preprocessing of samples prepared with <a href="https://www.illumina.com/products/by-type/sequencing-kits/library-prep-kits/truseq-small-rna.html" target="_blank">Illumina TruSeq</a>):</p>
+<p> mirnaQC will try to automatically detect protocol and species from your data but if you provide these, your job will run faster.</p>
+<p> miRNA-seq protocols that can be detected:</p>
     <ul>
-  <li>Detect the adapter sequence: TGGAATTCTCGGGTGCCAAGGG </li>
-  <li>Minimum length of adapter sequence that needs to be aligned: 10 </li>
-  <li>Allowed mismatches between adapter and reference sequences: 1 </li>
+    <li>Illumina TrueSeq™ (280916) </li>
+    <li>NEBnext™  </li>
+    <li>Clonetech SMARTer™  </li>
+    <li>Qiagen™ (with UMIs)  </li>
+
     </ul>
+
+
+
+
+
+
 
 
 {% endblock %}
