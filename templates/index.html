@@ -71,7 +71,8 @@
     $(document).ready(function(){
 
             $('#example_but').on('click', function(){
-                $('#id_sra_input').val("SRR1563060,SRR1563062");
+                $('#id_sra_input').val("SRR1563062,SRR1563057,SRR1563017,SRR1563059");
+                {#$('#id_sra_input').val("SRR1563060,SRR1563062");#}
                 $("#species option[value='hsa,GRCh38_p10_mp']").attr("selected", true).trigger("change");
                 $("#proto_Illu[value='Illumina']").attr("checked", true);
 
@@ -164,7 +165,7 @@
                 <div class="col-lg-4">
                     <div class="panel panel-info">
                         <div class="panel-heading">
-                            <h5 class="m-0 font-weight-bold text-primary"><span style="font-size: 24px;color: #000; ">1. </span> Choose input SRA ID(s) and/or file(s) <span style="font-size: 24px; "> <i class="far fa-clickable fa-question-circle" onclick="$('#input_files').modal('show');"> </i> </span> </h5>
+                            <h5 class="m-0 font-weight-bold text-primary"><span style="font-size: 24px;color: #000; ">1. </span> Choose input file(s) and/or SRA ID(s)<span style="font-size: 24px; "> <i class="far fa-clickable fa-question-circle" onclick="$('#input_files').modal('show');"> </i> </span> </h5>
 {#                            <h6 class="m-0 font-weight-bold text-primary">Upload input file(s) <span style="font-size: 18px; color: Dodgerblue;"> <i class="far fa-clickable fa-question-circle"> </i> </span> </h6>#}
 
                         </div>

@@ -1,15 +1,20 @@
 {% extends "Messages/modal_template.html" %}
 {% block id %}About{% endblock %}
 {% block title %}
-    Illumina TrueSeq™ (280916) protocol
+    About mirnaQC
 {% endblock %}
 {% block text %}
-<p> Preprocessing of samples prepared with <a href="https://www.illumina.com/products/by-type/sequencing-kits/library-prep-kits/truseq-small-rna.html" target="_blank">Illumina TruSeq</a>):</p>
-    <ul>
-  <li>Detect the adapter sequence: TGGAATTCTCGGGTGCCAAGGG </li>
-  <li>Minimum length of adapter sequence that needs to be aligned: 10 </li>
-  <li>Allowed mismatches between adapter and reference sequences: 1 </li>
-    </ul>
+<p> miRNA-seq quality control is frequently restricted to calculating
+    PhredScores and filtering of low complexity reads since miRNA specific quality measures cannot be easily assessed.</p>
+    <p> mirnaQC provides several quality features that can help researchers identify issues in their samples. These features are
+    provided as absolute values and ranked with a percentile calculated from a corpus of more than 36,000 samples.
+
+    </p>
+{#    <ul>#}
+{#  <li>Detect the adapter sequence: TGGAATTCTCGGGTGCCAAGGG </li>#}
+{#  <li>Minimum length of adapter sequence that needs to be aligned: 10 </li>#}
+{#  <li>Allowed mismatches between adapter and reference sequences: 1 </li>#}
+{#    </ul>#}
 
 
 {% endblock %}
