@@ -528,8 +528,8 @@ def library_tab(val_df,perc_df, columns):
                     'suffix': '%',
                 }
 
-    # to_keep = ["adapterDimerPerc","ultraShortReadsPerc","shortReadsPerc","rRNAPerc"]
-    to_keep = ["adapterDimerPerc","rRNAPerc"]
+    to_keep = ["adapterDimerPerc","ultraShortReadsPerc","shortReadsPerc","rRNAPerc"]
+    # to_keep = ["adapterDimerPerc","rRNAPerc"]
     keep = set(to_keep).intersection(list(val_df.columns))
     clean_headers = {k: headers[k] for k in headers.keys() if k in keep}
     val_tab = table.plot(vals_dict, clean_headers)
