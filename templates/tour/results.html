@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+{% block header %}
+
+
+
+    {% include "multiqc_header.html" %}
+
+{% endblock %}
+
+</head>
+
+
+<body>
+
+{% block content %}
+
+
+<script>
+     $(document).ready(function() {
+
+         var tour = new Tour({
+             steps: [
+                 {
+                     element: "#tour_test",
+                     title: "Title of my step",
+                     content: "Content of my step",
+                     orphan: true
+                 },
+                 {
+                     element: "#my-other-element",
+                     title: "Title of my step",
+                     content: "Content of my step"
+                 }
+             ]
+         });
+         // Clear bootstrap tour session data
+            localStorage.removeItem('tour_current_step');
+            localStorage.removeItem('tour_end');
+
+         // Initialize the tour
+         tour.init();
+
+         // Start the tour
+         tour.start();
+          {#alert("eeeo4");#}
+     });
+</script>
+
+
+
+    <script>
+        {#            Sequencing Yield button   #}
+        $(document).ready(function(){
+
+            $('#show_yield_perc').on('click', function(){
+            $('#show_yield_vals').removeClass('active');
+            $(this).addClass('active');
+            $('#yield_val_div').css("display", "none");
+            $('#yield_perc_div').css("display", "block");
+
+                        });
+            $('#show_yield_vals').on('click', function(){
+            $('#show_yield_perc').removeClass('active');
+            $(this).addClass('active');
+            $('#yield_perc_div').css("display", "none");
+            $('#yield_val_div').css("display", "block");
+
+                        })
+
+         });
+
+    </script>
+
+{#<div class="btn-group hc_switch_group">#}
+{#<button class="btn btn-default btn-sm active" id="show_yield_vals">Display values</button>#}
+{#<button class="btn btn-default btn-sm " id="show_yield_perc">Display percentiles</button>&nbsp; <span style="font-size: 26px; color:#3889ac; "> <i class="far fa-clickable fa-question-circle"> </i> </span>#}
+{#</div>#}
+
+
+<div class="row">
+            <div class="col-lg-12">
+                <h3 class="page-header">Showing results for job ID: <a href="{{ absolute_url }}{{ result_url }}" class="alert-link">{{ jobID }}</a> </h3>
+
+            </div>
+</div>
+{#    <br>#}
+{#    <br>#}
+<div id="general_stats" class="mqc-module-section">
+
+        <br>
+        <ul class="nav nav-pills" id="myTab">
+
+            <li class="active"><a href="#Basic" data-toggle="tab">Basic Statistics</a>
+            </li>
+            <li ><a href="#Sequencing" data-toggle="tab">Sequencing quality</a>
+            </li>
+            <li ><a href="#Yield" data-toggle="tab">Sequencing yield</a>
+            </li>
+            <li ><a href="#Library" data-toggle="tab">Library quality</a>
+            </li>
+            <li ><a href="#Down" data-toggle="tab">Download</a>
+            </li>
+
+        </ul>
+
+    <div class="tab-content">
+
+
+                <div class="tab-pane in fade active" id="Basic">
+
+                    <div class="col-lg-12">
+                        {% include "results/basic.html" %}
+
+                        </div>
+                </div>
+                <div class="tab-pane fade" id="Sequencing">
+                    <div class="col-lg-12">
+                     {% include "results/seq_qual.html" %}
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="Yield">
+
+                    {% include "results/seq_yield.html" %}
+
+                </div>
+
+                <div class="tab-pane fade" id="Library">
+                    {% include "results/library.html" %}
+                </div>
+
+                <div class="tab-pane fade" id="Down">
+                    <br>
+                    <div class="col-lg-4">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h4 class="m-0 font-weight-bold text-primary">Download full tables </h4>
+{#                            <h6 class="m-0 font-weight-bold text-primary">Upload input file(s) <span style="font-size: 18px; color: Dodgerblue;"> <i class="far fa-clickable fa-question-circle"> </i> </span> </h6>#}
+
+                        </div>
+                    <div class="panel-body">
+                        <p></p>
+                       <h4><a class="fa-clickable" href="{{ vals_link }}">Download raw values file <i class="fas fa-file-download"></i></a></h4>  <br>
+                       <h4><a class="fa-clickable" href="{{ perc_link }}">Download percentiles file <i class="fas fa-file-download"></i></a></h4>  <p></p>
+                    </div>
+                    </div>
+                    </div>
+                </div>
+    </div>
+
+
+
+
+
+
+
+
+{% endblock %}
+
+</div>

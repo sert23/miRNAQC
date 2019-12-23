@@ -1,0 +1,598 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+    <script src="{% static 'js/jquery-file-upload/vendor/jquery.ui.widget.js' %}"></script>
+  <script src="{% static 'js/jquery-file-upload/jquery.iframe-transport.js' %}"></script>
+  <script src="{% static 'js/jquery-file-upload/jquery.fileupload.js' %}"></script>
+{#   <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">#}
+
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="{% static 'css/bootstrap-select.min.css' %}">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="{% static 'js/bs-select/bootstrap-select.min.js' %}"></script>
+
+<!-- (Optional) Latest compiled and minified JavaScript translation files -->
+<script src="{% static 'js/bs-select/defaults-en_US.min.js' %}"></script>
+
+
+
+
+<script>
+
+
+         var tour = new Tour({
+             debug: true,
+             onEnd: function (tour) {
+                        window.location.href="{% url 'home' %}"
+                        },
+
+             steps: [
+                 {
+                     element: "#tour_test",
+                     title: "Launching mirnaQC",
+                     placement: "bottom",
+                     content: "Welcome to mirnaQC launching page. Let us guide you on how to launch your jobs.",
+                     orphan: true,
+                     backdrop: true,
+                 },
+                 {
+                     element: "#first_input",
+                     title: "Input files",
+                     content: "You can analyse as many input reads files as you want.",
+                     placement: "bottom",
+                     backdrop: true,
+                 },
+                 {
+                     element: "#upload_button",
+                     title: "Upload fastq files",
+                     placement: "bottom",
+                     content: "Use this button to upload your input files. You can select several files using Ctrl+click",
+                     backdrop: true,
+                     onNext: function (tour) {
+                        $("#fileupload").click();
+                        setTimeout(function() {
+                            //your code to be executed after 1 second
+                            console.log();
+                            }, 2000);
+                     }
+                 },
+                 {
+                     element: "#uploaded_card",
+                     title: "Upload fastq files",
+                     placement: "bottom",
+                     content: "Once uploaded, your file will show here.",
+                     orphan: true,
+                     backdrop: true,
+                     onShow: function (tour) {
+                            $("#uploaded_card").show();
+                            $("#gallery tbody").prepend(
+                        "<tr><td><a href='" + "your_file.fastq" + "'>" + "your_file.fastq" + "</a></td></tr>"
+                        );
+                     },
+                     {#onNext: $("#fileupload").click(),#}
+                 },
+
+                 {
+                     element: "#div_id_sra_input",
+                     title: "SRA sample accessions",
+                     placement: "bottom",
+                     content: "Input files can also be provided as SRA run accessions. They start with 'SRR','DRR' or 'ERR' like SRR1563062.",
+                     orphan: true,
+                     backdrop: true,
+                     onNext: function (tour) {
+                         $('#id_sra_input').val("SRR1563062,SRR1563057,SRR1563059,SRR1563060");
+                     }
+
+                 },
+                 {
+                     element: "#div_id_sra_input",
+                     title: "SRA sample accessions",
+                     placement: "bottom",
+                     content: "Provide as many accessions as needed and separate them by commas",
+                     orphan: true,
+                     backdrop: true,
+                 },
+                 {
+                     element: "#advance_plus",
+                     title: "Advanced parameters",
+                     placement: "bottom",
+                     content: "By clicking this icon advanced parameters will be displayed. These are not necessary as mirnaQC will try to guess them but, if provided, jobs will run faster.",
+                     orphan: true,
+                     backdrop: true,
+                     onNext: function (tour) {
+                         $("#advanced_panel").show();
+                     }
+                 },
+                 {
+                     {# "run_panel" #}
+                     element: "#advanced_panel",
+                     title: "Advanced parameters",
+                     placement: "bottom",
+                     content: "You can choose samples species and library preparation protocol (kit).",
+                     orphan: true,
+                     backdrop: true,
+                     onNext: function (tour) {
+                         {#$("#advanced_panel").show();#}
+                     }
+                 },
+                 {
+
+                     element: "#run_panel",
+                     title: "Launch the job",
+                     placement: "bottom",
+                     content: 'Once everything is set, just click on <button type="button" class="btn btn-success btn-sm">RUN JOB </button> and your samples will start analysing or placed in the queue.',
+                     {#content: "Once everything is set, just click on RUN JOB and your samples will start analysing or placed in the queue.",#}
+                     orphan: true,
+                     backdrop: true,
+
+                 },
+                 {
+                     element: "#tour_test",
+                     title: "End of the tutorial",
+                     placement: "bottom",
+                     content: "Now you are ready to launch mirnaQC jobs. Click on 'End Tour' to go back to the start page.",
+                     orphan: true,
+                     backdrop: true,
+                 }
+
+             ]
+         });
+         // Clear bootstrap tour session data
+            localStorage.removeItem('tour_current_step');
+            localStorage.removeItem('tour_end');
+
+         // Initialize the tour
+         tour.init();
+
+         // Start the tour
+         tour.start();
+
+
+
+     $("#fileupload").click(function(){
+
+         $(this).val('');
+        $("#uploaded_card").show();
+        $("#gallery tbody").prepend(
+          "<tr><td><a href='" + "dummy_file" + "'>" + "dummy_file" + "</a></td></tr>"
+        );
+
+
+        {#$("#modal-progress").modal("show");#}
+
+        {#alert("button");#}
+    });
+
+
+
+
+</script>
+
+    <script>
+    $(document).ready(function() {
+        $("#fileupload").change(function(){
+        {#$("#next_button").click();#}
+        {#$("#next_button").click();#}
+         //submit the form here
+    });
+
+});
+    </script>
+
+
+<script>$(function () {
+
+  $(".js-upload-photos").click(function () {
+
+    $("#fileupload").click();
+  });
+
+
+
+
+  {#$("#fileupload").fileupload({#}
+  {#  dataType: 'json',#}
+  {#  sequentialUploads: true,#}
+  {##}
+  {#  start: function (e) {#}
+  {#    $("#modal-progress").modal("show");#}
+  {#  },#}
+  {##}
+  {#  stop: function (e) {#}
+  {#    $("#modal-progress").modal("hide");#}
+  {#  },#}
+  {##}
+  {#  progressall: function (e, data) {#}
+  {#    var progress = parseInt(data.loaded / data.total * 100, 10);#}
+  {#    var strProgress = progress + "%";#}
+  {#    $(".progress-bar").css({"width": strProgress});#}
+  {#    $(".progress-bar").text(strProgress);#}
+  {#  },#}
+  {##}
+  {#  done: function (e, data) {#}
+  {#     #}
+  {#      $("#gallery tbody").prepend(#}
+  {#        "<tr><td><a href='" + data.result.url + "'>" + data.result.name + "</a></td></tr>"#}
+  {#      )#}
+  {#    }#}
+  {#  }#}
+  {##}
+  {# } );#}
+
+});</script>
+
+    <script>
+    $(document).ready(function(){
+
+            $('#example_but').on('click', function(){
+                $('#id_sra_input').val("SRR1563062,SRR1563057,SRR1563059,SRR1563060");
+                {#$('#id_sra_input').val("SRR1563060,SRR1563062");#}
+                $("#species option[value='hsa,GRCh38_p10_mp']").attr("selected", true).trigger("change");
+                $("#proto_Illu[value='Illumina']").attr("checked", true);
+
+                $('#run_id').css("data-toggle", "tooltip");
+                $('#run_id').tooltip('show');
+                $("#advanced_panel").show();
+
+
+
+            })});
+
+
+
+    </script>
+
+    <script>
+        $(function () {
+                    $('[data-toggle="tooltip"]').tooltip()
+                    });
+    </script>
+
+    <script>
+            $(document).ready(function(){
+
+            $("#advanced_panel").hide();
+
+            $('#run_id').on('click', function(){
+
+            var launch_url = "{% url 'launch' %}?";
+            {#var plot_url = "?";#}
+            var pars = $("#id_sra_input,#species,#jobID ").serialize();
+            {#alert(pars);#}
+            $("#run_link").attr("href", launch_url.concat(pars));
+
+            })
+            });
+
+    </script>
+
+    <script>
+
+
+        function showAdvanced() {
+          $("#advanced_panel").show();
+
+        }
+</script>
+
+
+
+    <div class="modal fade" id="modal-progress" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Uploading...</h4>
+        </div>
+        <div class="modal-body">
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" style="width: 0%;">0%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <div id="page-wrapper">
+
+    {% include "Messages/protocols/Illumina.html" %}
+    {% include "Messages/protocols/NEB.html" %}
+    {% include "Messages/protocols/Bioo.html" %}
+    {% include "Messages/protocols/Smarter.html" %}
+    {% include "Messages/protocols/Qiagen.html" %}
+
+
+        <div class="row">
+            <div class="col-lg-12">
+{#                <h1 class="page-header">whatever</h1>#}
+{#                <div class="jumbotron">#}
+{#                <a target="_blank" href=""><h1 style="display:inline;">conDE: <small> a webserver for calculation and visualisation of consensus differential expression</small></h1></a>#}
+{#                <br>#}
+{#                <br>#}
+{##}
+{##}
+{#                <!--<p>Dear user, we received the information you provided. We will have a look at the data and make our best to include it in liqDB.</p>-->#}
+{#              </div>#}
+            </div>
+        </div>
+            <div class="row">
+
+                <div class="col-lg-4">
+                    <div class="panel panel-info" id="first_input">
+                        <div class="panel-heading">
+                            <h5 class="m-0 font-weight-bold text-primary"><span  style="font-size: 24px;color: #000; ">1. </span> Choose input file(s) and/or SRA ID(s)<span style="font-size: 24px; "> <i class="far fa-clickable fa-question-circle" onclick="$('#input_files').modal('show');"> </i> </span> </h5>
+{#                            <h6 class="m-0 font-weight-bold text-primary">Upload input file(s) <span style="font-size: 18px; color: Dodgerblue;"> <i class="far fa-clickable fa-question-circle"> </i> </span> </h6>#}
+
+                        </div>
+                    <div class="panel-body">
+                        <div class="row" id="sra_tour">
+                            <div class="col-lg-12">
+                                <button id="next_button" onclick="tour.next();" style="display: none;" > click me</button>
+
+
+
+
+{#                                  <span> &nbsp; </span> or <span> &nbsp; </span>#}
+
+
+
+                                <div id="div_id_sra_input" class="control-group"> <label for="id_sra_input" class="control-label ">
+                               <b> Provide comma-separated SRA IDs</b>
+                            </label>  <input type="text" name="sra_input" class="form-control textinput textInput" id="id_sra_input" />
+                                    <input type="hidden" id="jobId" name="jobId" value="{{ jobID }}">
+                                </div>
+                                <br>
+{#                                <p></p>#}
+{#                                <p></p>#}
+{#                                <p></p>#}
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <button id="upload_button" type="button" class="btn btn-primary js-upload-photos">
+                                        <i class="fa fa-upload"></i> Upload files
+                                            </button>
+                                    </div>
+{#                                    <div class="col-lg-1">#}
+{#                                    </div>#}
+
+                                     <div class="col-lg-6">
+                                                <div class="text-right">
+                                        <button type="button" class="btn btn-info" id="example_but">
+                                        Load example
+                                        </button>
+                                         </div>
+                                     </div>
+
+
+
+                                </div>
+
+
+
+
+{#                                <a href="#">Download test input </a>#}
+
+                                <form enctype="multipart/form-data"
+{#                                    id="fileupload" method="POST"#}
+{#                                      data-url="/mirqc"#}
+{#                                    id="id_ajax_upload_form" method="POST"#}
+                                                            novalidate="">
+                                    <input id="fileupload" type="file" name="file" multiple
+           style="display: none;"
+           data-url="{{ request_path }}"
+{#           data-url="{% url 'photos:progress_bar_upload' %}"#}
+           data-form-data='{"csrfmiddlewaretoken": "{{ csrf_token }}"}'>
+                                <input type="submit" id="sub_button" style="display:none">
+
+
+                                </form>
+
+
+
+
+                            </div>
+                        </div>
+                        <br>
+
+
+
+{#                        <a href="#Summary" class="stretched-link"></a>#}
+                    </div>
+                    </div>
+                    <p></p>
+                    <div class="panel panel-info" id="uploaded_card">
+                        <div class="panel-heading">
+                            <h5 class="m-0 font-weight-bold text-primary"><span style="font-size: 24px;color: #000; "> </span> Uploaded file(s) <span style="font-size: 24px; ">  </span> </h5>
+{#                            <h6 class="m-0 font-weight-bold text-primary">Upload input file(s) <span style="font-size: 18px; color: Dodgerblue;"> <i class="far fa-clickable fa-question-circle"> </i> </span> </h6>#}
+
+                        </div>
+                    <div class="panel-body">
+
+                                <table id="gallery" class="table table-bordered">
+{#                                        <thead>#}
+{#                                          <tr>#}
+{#                                            <th>Uploaded File(s)</th>#}
+{#                                          </tr>#}
+{#                                        </thead>#}
+                                        <tbody>
+
+                                        </tbody>
+                                      </table>
+
+                    </div>
+                    </div>
+                </div>
+
+
+                <div class="col-lg-4">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                  <h5 class="m-0 font-weight-bold text-primary"><span style="font-size: 24px;color: #000; ">2. </span>Provide samples details (Advanced) <span style="font-size: 24px; "> <i class="far fa-clickable fa-question-circle" onclick="$('#Advanced').modal('show');"> </i> </span>
+                      <span style="font-size: 24px; "> <i class="fas fa-plus-circle fa-clickable" onclick="showAdvanced()" id="advance_plus"> </i> </span></h5>
+{#                      <span style="font-size: 24px; "> <i class="fas fa-chevron-circle-down fa-clickable" onclick="showAdvanced()"> </i> </span></h5>#}
+{#                      <span style="font-size: 24px; "> <i class="fas fa-plus fa-clickable" onclick="showAdvanced()"> </i> </span></h5>#}
+{#                      <span style="font-size: 24px; "> <i class="fas fa-chevron-down fa-clickable" onclick="showAdvanced()"> </i> </span></h5>#}
+                </div>
+                    <div class="panel-body" id="advanced_panel">
+
+                        <label>Species</label>
+                        <div class="form-group">
+
+                <select  name="species" id="species" class="selectpicker show-tick" data-live-search="true" >
+                        <option value="">Guess species</option>
+
+                    {% for sp,assemb,short,common in commons_list %}
+                        <option data-subtext="{{ common }}" data-tokens="{{ common }},{{short}}" value="{{short}},{{ assemb }}">{{ sp }}</option>
+
+
+
+                    {% endfor %}
+                    </select>
+                        <div id="tooltip_container"></div>
+                        <p></p>
+
+{#                        <style>#}
+{#                          label { display: block; }#}
+{#                        </style>#}
+                <label style="display: block;">Library preparation protocol</label>
+{#                    <input type="hidden"></select>#}
+                <input type="radio" name="protocol" value="guess" checked="checked"> Guess protocol <span style="font-size: 20px; color:#3889ac; "> <i class="far fa-clickable fa-question-circle"> </i> </span><br>
+                <input type="radio" name="protocol" id="proto_Illu" value="Illumina"> Illumina TrueSeq&#153; (280916) <span style="font-size: 20px; color:#3889ac; "> <i class="far fa-clickable fa-question-circle" onclick="$('#Illumina').modal('show');" > </i> </span><br>
+                <input type="radio" name="protocol" value="NEBnext" > NEBnext&#153; <span style="font-size: 20px; color:#3889ac; "> <i class="far fa-clickable fa-question-circle" onclick="$('#NEB').modal('show');" > </i> </span><br>
+                <input type="radio" name="protocol" value="Bioo" > Bioo Scientific Nextflex&#153; (v2,v3) <span style="font-size: 20px; color:#3889ac; "> <i class="far fa-clickable fa-question-circle" onclick="$('#Bioo').modal('show');" > </i> </span><br>
+                <input type="radio" name="protocol" value="SMARTer" > Clonetech SMARTer&#153; <span style="font-size: 20px; color:#3889ac; "> <i class="far fa-clickable fa-question-circle" onclick="$('#Smarter').modal('show');" > </i> </span><br>
+                <input type="radio" name="protocol" value="Qiagen" > Qiagen&#153; (with UMIs) <span style="font-size: 20px; color:#3889ac; "> <i class="far fa-clickable fa-question-circle" onclick="$('#Qiagen').modal('show');" > </i> </span><br>
+
+
+
+              </div>
+
+
+                        {% load crispy_forms_tags %}
+                        {% crispy form %}
+
+
+                    </div>
+
+{#                        Test #}
+
+
+
+
+
+
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="panel panel-info" id="run_panel">
+                        <div class="panel-heading">
+                  <h5 class="m-0 font-weight-bold text-primary"><span style="font-size: 24px;color: #000; ">3. </span>Launch your job</h5>
+                </div>
+                    <div class="panel-body">
+                        <a href="https://arn.ugr.es/mirnaqc/result/5GI0GML2OXKWFSE" target="_blank">See sample results </a>  <span> &nbsp; &nbsp; &nbsp;</span> or <span> &nbsp; &nbsp; &nbsp;</span>
+{#                        <div class="text-right">#}
+
+                        <a href="#" id="run_link" > <button type="button" id="run_id" class="btn btn-success btn-lg" data-placement="bottom" title="Click to launch">
+{#                        <button type="button" id="run_id" class="btn btn-success btn-lg" data-toggle="tooltip" data-placement="bottom" title="Click to launch">#}
+                               RUN JOB
+                        </button></a>
+
+                        <p></p>
+{#                        </div>#}
+{#                        <img src="{% static 'img/table_example.png'%} " class="img-fluid">#}
+
+{#                        <a href="{% url 'uploadf' %}" class="stretched-link"></a>#}
+                    </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        <br>
+{#        <div class="row">#}
+{#                <div id="uploaded_card" class="col-lg-4">#}
+{#                    <div class="card shadow">#}
+{#                        <div class="card-header py-3">#}
+{#                            <h6 class="m-0 font-weight-bold text-primary"><span style="font-size: 24px;color: #000; "> </span> Uploaded file(s) <span style="font-size: 24px; ">  </span> </h6>#}
+{#                            <h6 class="m-0 font-weight-bold text-primary">Upload input file(s) <span style="font-size: 18px; color: Dodgerblue;"> <i class="far fa-clickable fa-question-circle"> </i> </span> </h6>#}
+{##}
+{#                        </div>#}
+{#                    <div class="card-body">#}
+{##}
+{#                                <table id="gallery" class="table table-bordered">#}
+{#                                        <thead>#}
+{#                                          <tr>#}
+{#                                            <th>Uploaded File(s)</th>#}
+{#                                          </tr>#}
+{#                                        </thead>#}
+{#                                        <tbody>#}
+{##}
+{#                                        </tbody>#}
+{#                                      </table>#}
+{##}
+{#                    </div>#}
+{#                    </div>#}
+{#                </div>#}
+{##}
+{#            </div>#}
+
+        <br>
+
+    {% include "Messages/launch/advanced.html" %}
+    {% include "Messages/launch/input_files.html" %}
+
+            <!-- /.col-lg-12 -->
+        </div>
+
+    <script>
+    $(document).ready(function() {
+        $("#uploaded_card").hide();
+        $('species_select').selectpicker();
+        {#$('select').selectpicker();#}
+    });
+</script>
+
+{#    <script type="text/javascript">#}
+{#    $('.selectpicker').selectpicker({#}
+{#      });#}
+{#</script>#}
+
+{#    <script>#}
+{##}
+{#        jQuery(document).ready(function() {#}
+{#            jQuery('#id_species').multiselect({#}
+{#                enableCollapsibleOptGroups: true,#}
+{#                enableCaseInsensitiveFiltering: true,#}
+{#                filterBehavior: 'both',#}
+{#                maxHeight: 300,#}
+{#                onDropdownHidden: function (e) {#}
+{#                    if (document.getElementById('id_species').value) {#}
+{#                        jQuery('#id_species_hidden').val(jQuery('#id_species').val().map(function (item) {#}
+{#                            return item.split(':')[0]#}
+{#                        }).join(','));#}
+{#                    } else {#}
+{#                        document.getElementById('id_species_hidden').value = "";#}
+{#                    }#}
+                    {#                    alert(document.getElementById('id_species_hidden').value);#}
+{##}
+                    {#                alert(jQuery('#id_species').val().join(','));#}
+{##}
+{#                }#}
+{##}
+{#            });#}
+{#        });#}
+{##}
+{##}
+{#    </script>#}
+
+
+
+
+
+
+
+{% endblock %}
+
