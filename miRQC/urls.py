@@ -31,6 +31,7 @@ urlpatterns = [
     url(r'^testqc', testMulti.as_view()),
     url(r'^launch', launchJob.as_view(), name="launch"),
     url(r'^result', include('results.urls')),
+    url(r'^tour', include('bstour.urls')),
     url(r'^upload/[A-za-z0-9]+', startNew.as_view()),
 ]
 
