@@ -16,6 +16,9 @@ from django.urls import reverse_lazy
 def m():
     return Species.objects.all().order_by('sp_class', 'specie')
 
+def make_folder(path):
+    if not os.path.exists(path):
+        os.mkdir(path)
 
 def make_config(req_obj):
 
@@ -24,6 +27,7 @@ def make_config(req_obj):
     #input parameters
     sra_string = param_dict.get("sra_input")
     jobID = param_dict.get("jobId")
+    make_folder(os.path.join(MEDIA_ROOT,jobID))
     print(jobID)
     print("test_config")
     dest_file = os.path.join(MEDIA_ROOT, jobID, "config.txt")
@@ -81,9 +85,9 @@ def new_rand_folder():
         new_id = generate_uniq_id()
         new_folder = os.path.join(MEDIA_ROOT,new_id)
         if not os.path.exists(new_folder):
-            os.mkdir(new_folder)
-            os.mkdir(os.path.join(new_folder,"uploaded"))
-            os.mkdir(os.path.join(new_folder,"query"))
+            # os.mkdir(new_folder)
+            # os.mkdir(os.path.join(new_folder,"uploaded"))
+            # os.mkdir(os.path.join(new_folder,"query"))
             return new_id
 
 
@@ -101,8 +105,12 @@ class launchJob(FormView):
         jobID = make_config(request)
         config = os.path.join(MEDIA_ROOT, jobID, "config.txt")
 
-        if not os.path.exists(os.path.join(MEDIA_ROOT, jobID,"query")):
-            os.mkdir(os.path.join(MEDIA_ROOT, jobID,"query"))
+        make_folder(os.path.join(MEDIA_ROOT, jobID))
+        make_folder(os.path.join(MEDIA_ROOT, jobID, "upload"))
+        make_folder(os.path.join(MEDIA_ROOT, jobID, "query"))
+
+        # if not os.path.exists(os.path.join(MEDIA_ROOT, jobID,"query")):
+        #     os.mkdir(os.path.join(MEDIA_ROOT, jobID,"query"))
         # os.system("touch " + os.path.join(MEDIA_ROOT, jobID,"query", "summaryqc.log"))
         launch_line = "java -classpath /opt/mirnaqcDB/java:/opt/mirnaqcDB/java/mariadb-java-client-1.1.7.jar miRNAdb.SummaryQC " + config
         print(launch_line)
@@ -193,6 +201,9 @@ class startNew(FormView):
     def post(self, request):
         path = request.path
         folder = path.split("/")[-1]
+        make_folder(os.path.join(MEDIA_ROOT,folder))
+        make_folder(os.path.join(MEDIA_ROOT,folder,"uploaded"))
+        make_folder(os.path.join(MEDIA_ROOT,folder,"query"))
         print("POST received " + folder)
 
         if "file" in self.request.FILES:
