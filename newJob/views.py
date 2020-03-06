@@ -140,13 +140,14 @@ def parse_web_log(log_path):
     if os.path.exists(log_path):
         with open(log_path,"r") as log_file:
             for line in log_file.readlines():
-                if "SUCCESS:" in line:
-                    rem,keep = line.rstrip().split("SUCCESS:")
-                    tagged = tagged + keep +"<br>"
-                elif "ERROR:" in line:
-                    tagged = tagged + line + "<br>"
-                if "SUCCESS: Analysis finished" in line:
-                    finished = True
+                if not "SUCCESS: java -classpath" in line:
+                    if "SUCCESS:" in line:
+                        rem,keep = line.rstrip().split("SUCCESS:")
+                        tagged = tagged + keep +"<br>"
+                    elif "ERROR:" in line:
+                        tagged = tagged + line + "<br>"
+                    if "SUCCESS: Analysis finished" in line:
+                        finished = True
 
         return tagged,finished
     else:
