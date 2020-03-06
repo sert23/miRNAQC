@@ -55,8 +55,19 @@
             <div class="col-lg-12">
                 <h3 class="page-header">Showing results for job ID: <a href="{{ absolute_url }}{{ result_url }}" class="alert-link">{{ jobID }}</a> </h3>
 
-            </div>
 </div>
+            </div>
+    <div class="row">
+    <div class="col-lg-6">
+                <select class="form-control" id="comp_set" name="comp_set">
+                    {% for val,name in comp_list %}
+                        <option value="{{ val }}">{{ name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+    </div>
+
+
 {#    <br>#}
 {#    <br>#}
 <div id="general_stats" class="mqc-module-section">

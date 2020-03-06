@@ -21,6 +21,27 @@
 
     </script>
 
+    <script>
+        $(document).ready(function(){
+
+            $("#comp_set").val('{{ comparison }}');
+            $("#comp_set").change();
+            $('#comp_set').on('change', function (e) {
+            {#alert("{% url 'result_page' %}/" + $("#comp_set").val() +"/{{ jobID }}") ;#}
+            window.location.replace("{% url 'result_page' %}/" + $("#comp_set").val() +"/{{ jobID }}");
+
+        });
+
+        });
+    </script>
+
+
+
+    <style>
+        text[style*="font-size: 9px"] {
+              font-size: 0px!important;
+                                  }
+    </style>
 
                         <h2>Basic Statistics</h2>
                         <div class="btn-group hc_switch_group">
@@ -29,6 +50,7 @@
                             <span style="font-size: 26px; color:#3889ac; "> <i class="far fa-clickable fa-question-circle" onclick="$('#percentiles').modal('show');"> </i> </span>
                         </div> <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
                         <button class="btn btn-success" type="button" onclick="$('#basic_heatmap').modal('show');"> Show Heatmap</button>
+                        <button class="btn btn-info" type="button" onclick="$('#basic_percentiles').modal('show');"> See Percentiles </button>
 
                         <br>
                         <br>
@@ -42,6 +64,7 @@
                             {{ basic_perc|safe }}
                         </div>
             {% include "Messages/basic/heatmap.html" %}
+            {% include "Messages/basic/percentiles.html" %}
 
 
  <script>
@@ -51,7 +74,8 @@ $('#basic_heatmap').on('shown.bs.modal', function (e) {
         $.ajax({
         url: '{% url "ajax_hm" %}',
         data: {
-            "id" : "{{ jobID }}"
+            "id" : "{{ jobID }}",
+             "comp_set": $("#comp_set").val(),
         },
         dataType: 'json',
         success: function (data) {
@@ -61,6 +85,50 @@ $('#basic_heatmap').on('shown.bs.modal', function (e) {
 
         }
       });
+
+});
+
+</script>
+
+
+<script>
+
+    var loadPerc = function(e) {
+
+        $.ajax({
+        url: '{% url "ajax_perc" %}',
+        data: {
+            "id" : "{{ jobID }}",
+            "variable" : $("#perc_sel").val(),
+            "scale" : $("#perc_sca").val(),
+            "comp_set": $("#comp_set").val(),
+        },
+        dataType: 'json',
+        success: function (data) {
+
+            $("#add_basic_perc").html(data.plot);
+
+
+        }
+      });
+
+};
+
+$('#basic_percentiles').on('shown.bs.modal', function (e) {
+        {#alert($("#perc_sel").val());#}
+        loadPerc();
+
+});
+
+$('#perc_sca').on('change', function (e) {
+        {#alert($("#perc_sel").val());#}
+        loadPerc();
+
+});
+
+$('#perc_sel').on('change', function (e) {
+        {#alert($("#perc_sel").val());#}
+        loadPerc();
 
 });
 
