@@ -26,12 +26,14 @@ def make_config(req_obj):
     config_lines = []
     #input parameters
     sra_string = param_dict.get("sra_input")
-    jobID = param_dict.get("jobId")
+    # jobID = param_dict.get("jobId")
+    jobID = new_rand_folder()
+    uploadID = param_dict.get("uploadID")
     make_folder(os.path.join(MEDIA_ROOT,jobID))
     print(jobID)
     print("test_config")
     dest_file = os.path.join(MEDIA_ROOT, jobID, "config.txt")
-    upload_folder = os.path.join(MEDIA_ROOT, jobID, "uploaded")
+    upload_folder = os.path.join(MEDIA_ROOT, "uploaded_files", uploadID)
     if os.path.exists(upload_folder):
         files = [os.path.join(upload_folder, f) for f in os.listdir(upload_folder) if os.path.isfile(os.path.join(upload_folder, f))]
         for f in files:
@@ -90,6 +92,16 @@ def new_rand_folder():
             # os.mkdir(os.path.join(new_folder,"query"))
             return new_id
 
+def new_upload_folder():
+    is_new = True
+    while is_new:
+        new_id = generate_uniq_id()
+        new_folder = os.path.join(MEDIA_ROOT, "uploaded_files", new_id)
+        if not os.path.exists(new_folder):
+            # os.mkdir(new_folder)
+            # os.mkdir(os.path.join(new_folder,"uploaded"))
+            # os.mkdir(os.path.join(new_folder,"query"))
+            return new_id
 
 class testMulti(FormView):
 
@@ -139,6 +151,9 @@ def parse_web_log(log_path):
         return tagged,finished
     else:
         return None,finished
+
+
+
 
 class checkStatus(FormView):
 
@@ -194,6 +209,7 @@ class startNew(FormView):
         context["species_dict"] = species_dict
         context["commons_list"] = commons_list
 
+
         # print(species_dict)
         # return render(self.request, 'multiupload.html', {'file_list': onlyfiles, "request_path":path, "form": MultiURLForm })
         return render(self.request, 'index.html', context)
@@ -213,6 +229,74 @@ class startNew(FormView):
                 print("valid form " + folder)
                 ufile = form.save()
                 upload_folder = os.path.join(MEDIA_ROOT, folder, "uploaded")
+                if not os.path.exists(upload_folder):
+                    os.mkdir(upload_folder)
+
+                is_new = True
+                name = ufile.file.name.split("/")[-1]
+                temp_path = ufile.file.name
+                dest_path = os.path.join(upload_folder, name)
+                if os.path.exists(dest_path):
+                    is_new = False
+                url = dest_path.replace(MEDIA_ROOT,MEDIA_URL)
+                print(name)
+                shutil.move(os.path.join(MEDIA_ROOT, ufile.file.name), dest_path)
+                print(MEDIA_URL)
+                data = {'is_valid': is_new, 'name': name, 'url': url}
+                print(folder)
+                return JsonResponse(data)
+            else:
+                data = {}
+                data["alert"] = True
+                return JsonResponse(data)
+
+
+class startNew2(FormView):
+
+    def get(self, request):
+        # print(request.path[-1])
+    # def get(self, request,**kwargs):
+        context = {}
+        uploadID = new_upload_folder()
+
+        context["uploadID"] = uploadID
+        context["request_path"] = os.path.join(SUB_SITE, "upload",uploadID)
+        # context["submit_path"] = os.path.join("",jobID)
+        context["form"] = SpeciesForm
+        # species = list(Species.objects.all().filter(sp_class__in=['plant','animal', 'fungi' ]).values_list("scientific",flat=True))
+        species = list(Species.objects.all().filter(sp_class__in=['plant','animal' ]).values_list("scientific",flat=True))
+        assemblies = list(Species.objects.all().filter(sp_class__in=['plant','animal' ]).values_list("db_ver",flat=True))
+        commons = list(Species.objects.all().filter(sp_class__in=['plant','animal']).values_list("specie",flat=True))
+        shorts = list(Species.objects.all().filter(sp_class__in=['plant','animal']).values_list("shortName",flat=True))
+        species_dict = dict(zip(species, assemblies))
+        commons_list = list(zip(species,assemblies,shorts, commons))
+
+        commons_list.sort()
+        context["species_list"] = species
+        context["species_dict"] = species_dict
+        context["commons_list"] = commons_list
+
+
+        # print(species_dict)
+        # return render(self.request, 'multiupload.html', {'file_list': onlyfiles, "request_path":path, "form": MultiURLForm })
+        return render(self.request, 'index.html', context)
+
+    def post(self, request):
+        path = request.path
+        folder = path.split("/")[-1]
+        # make_folder(os.path.join(MEDIA_ROOT,folder))
+        # make_folder(os.path.join(MEDIA_ROOT,folder,"uploaded"))
+        # make_folder(os.path.join(MEDIA_ROOT,folder,"query"))
+        # print("POST received " + folder)
+        # make_folder()
+        upload_folder=os.path.join(MEDIA_ROOT,"uploaded_files",folder)
+        if "file" in self.request.FILES:
+            form = FileForm(request.POST, request.FILES)
+            print("file in POST " + folder)
+            if form.is_valid():
+                print("valid form " + folder)
+                ufile = form.save()
+                # upload_folder = os.path.join(MEDIA_ROOT, folder, "uploaded")
                 if not os.path.exists(upload_folder):
                     os.mkdir(upload_folder)
 
