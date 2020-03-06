@@ -83,7 +83,7 @@ def gen_col_dict(input_dict, sense):
 def df2dict(df):
     table = df
     new_dict = {}
-    print(table.columns)
+    # print(table.columns)
     samples = table['sample'].values
 
     for sample in samples:
@@ -123,7 +123,7 @@ def cols_dict(df):
     table.set_index("sample", inplace=True)
     new_dict = {}
     columns = table.columns
-    print(columns)
+    # print(columns)
     for column in columns:
         subset = table[column]
         new_dict[column] = subset.to_dict()
@@ -183,7 +183,7 @@ def basic_table(val_df,perc_df, columns):
         }
         headers["adapterDimerPerc"] = {
             'title': '% Dimers',
-            'description': 'The percentage of reads that correspond to adapter-dimer, i.e. those that are shorter or equel to 2nt after adapter trimming ',
+            'description': 'The percentage of reads that correspond to adapter-dimer, i.e. those that are shorter or equal to 2nt after adapter trimming ',
             'scale': "quart",
             'col_dict': gen_col_dict(columns_dict["adapterDimerPerc"], "asc"),
             'bar_dict': columns_dict["adapterDimerPerc"],
@@ -495,7 +495,7 @@ def library_tab(val_df,perc_df, columns):
     if True:
         headers["adapterDimerPerc"] = {
             'title': '% Dimers',
-            'description': 'The percentage of reads that correspond to adapter-dimer, i.e. those that are shorter or equel to 2nt after adapter trimming ',
+            'description': 'The percentage of reads that correspond to adapter-dimer, i.e. those that are shorter or equal to 2nt after adapter trimming ',
             'scale': "quart",
             'col_dict': gen_col_dict(columns_dict["adapterDimerPerc"], "asc"),
             'bar_dict': columns_dict["adapterDimerPerc"],
