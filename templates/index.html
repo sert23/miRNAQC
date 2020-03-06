@@ -72,6 +72,9 @@
 
             $('#example_but').on('click', function(){
                 $('#id_sra_input').val("SRR1563062,SRR1563057,SRR1563059,SRR1563060");
+                {#alert($('#id_sra_input').rows);#}
+                $('#id_sra_input').attr('rows', '2');
+                {#alert($('#id_sra_input').val());#}
                 {#$('#id_sra_input').val("SRR1563060,SRR1563062");#}
                 $("#species option[value='hsa,GRCh38_p10_mp']").attr("selected", true).trigger("change");
                 $("#proto_Illu[value='Illumina']").attr("checked", true);
@@ -103,7 +106,7 @@
 
             var launch_url = "{% url 'launch' %}?";
             {#var plot_url = "?";#}
-            var pars = $("#id_sra_input,#species,#jobID ").serialize();
+            var pars = $("#id_sra_input,#species,#uploadID ").serialize();
             {#alert(pars);#}
             $("#run_link").attr("href", launch_url.concat(pars));
 
@@ -165,32 +168,12 @@
                 <div class="col-lg-4">
                     <div class="panel panel-info">
                         <div class="panel-heading">
-                            <h5 class="m-0 font-weight-bold text-primary"><span style="font-size: 24px;color: #000; ">1. </span> Choose input file(s) and/or SRA ID(s)<span style="font-size: 24px; "> <i class="far fa-clickable fa-question-circle" onclick="$('#input_files').modal('show');"> </i> </span> </h5>
+                            <h5 class="m-0 font-weight-bold text-primary"><span style="font-size: 24px;color: #000; ">1. </span> Choose input data<span style="font-size: 24px; "> <i class="far fa-clickable fa-question-circle" onclick="$('#input_files').modal('show');"> </i> </span> </h5>
 {#                            <h6 class="m-0 font-weight-bold text-primary">Upload input file(s) <span style="font-size: 18px; color: Dodgerblue;"> <i class="far fa-clickable fa-question-circle"> </i> </span> </h6>#}
 
                         </div>
                     <div class="panel-body">
                         <div class="row">
-                            <div class="col-lg-12">
-
-
-
-
-
-{#                                  <span> &nbsp; </span> or <span> &nbsp; </span>#}
-
-
-
-                                <div id="div_id_sra_input" class="control-group"> <label for="id_sra_input" class="control-label ">
-                               <b> Provide comma-separated SRA IDs</b>
-                            </label>  <input type="text" name="sra_input" class="form-control textinput textInput" id="id_sra_input" />
-                                    <input type="hidden" id="jobId" name="jobId" value="{{ jobID }}">
-                                </div>
-                                <br>
-{#                                <p></p>#}
-{#                                <p></p>#}
-{#                                <p></p>#}
-                                <div class="row">
                                     <div class="col-lg-6">
                                         <button type="button" class="btn btn-primary js-upload-photos">
                                         <i class="fa fa-upload"></i> Upload files
@@ -203,17 +186,49 @@
                                                 <div class="text-right">
                                         <button type="button" class="btn btn-info" id="example_but">
                                         Load example
+{#                                            https://codepen.io/vsync/pen/frudD #}
                                         </button>
                                          </div>
                                      </div>
 
+                                </div>
+                        <p></p>
+                        <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="control-group"> <label for="id_sra_input" class="control-label ">
+                               <b> Provide comma-separated links to files</b>
+                            </label>
 
 
+                                        <textarea class='autoExpand form-control' rows='1' data-min-rows='1'
+                                                  placeholder='http://file1.server.com,http://file2.server.com'></textarea>
+                                    </div>
+                                </div>
+                                </div>
+                        <p></p>
+                        <div class="row">
+                            <div class="col-lg-12">
+
+
+
+{#                                  <span> &nbsp; </span> or <span> &nbsp; </span>#}
+
+
+
+                                <div id="div_id_sra_input" class="control-group"> <label for="id_sra_input" class="control-label ">
+                               <b> Provide comma-separated SRA IDs</b>
+                            </label>
+                                    <textarea id='id_sra_input' class='autoExpand form-control' name="sra_input" rows='1' data-min-rows='1'
+                                                  placeholder='SRR1563062,SRR1563057'></textarea>
+{#                                    <input type="text" name="sra_input" placeholder='hello?' class="form-control textinput textInput" id="id_sra_input" />#}
+                                    <input type="hidden" id="jobId" name="jobId" value="{{ jobID }}">
+                                    <input type="hidden" id="uploadID" name="uploadID" value="{{ uploadID }}">
+                        {#  SRR1563062,SRR1563057                               #}
                                 </div>
 
-
-
-
+{#                                <p></p>#}
+{#                                <p></p>#}
+{#                                <p></p>#}
 {#                                <a href="#">Download test input </a>#}
 
                                 <form enctype="multipart/form-data"
@@ -236,7 +251,7 @@
 
                             </div>
                         </div>
-                        <br>
+{#                        <br>#}
 
 
 
@@ -337,7 +352,7 @@
                         <a href="https://arn.ugr.es/mirnaqc/result/5GI0GML2OXKWFSE" target="_blank">See sample results </a>  <span> &nbsp; &nbsp; &nbsp;</span> or <span> &nbsp; &nbsp; &nbsp;</span>
 {#                        <div class="text-right">#}
 
-                        <a href="#" id="run_link" > <button type="button" id="run_id" class="btn btn-success btn-lg" data-placement="bottom" title="Click to launch">
+                        <a href="#" id="run_link" target="_blank"> <button type="button" id="run_id"  class="btn btn-success btn-lg" data-placement="bottom" title="Click to launch">
 {#                        <button type="button" id="run_id" class="btn btn-success btn-lg" data-toggle="tooltip" data-placement="bottom" title="Click to launch">#}
                                RUN JOB
                         </button></a>
@@ -397,6 +412,25 @@
         {#$('select').selectpicker();#}
     });
 </script>
+
+    <script>
+
+    // Applied globally on all textareas with the "autoExpand" class
+$(document)
+    .one('focus.autoExpand', 'textarea.autoExpand', function(){
+        var savedValue = this.value;
+        this.value = '';
+        this.baseScrollHeight = this.scrollHeight;
+        this.value = savedValue;
+    })
+    .on('input.autoExpand', 'textarea.autoExpand', function(){
+        var minRows = this.getAttribute('data-min-rows')|0, rows;
+        this.rows = minRows;
+        rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 16);
+        this.rows = minRows + rows;
+    });
+
+    </script>
 
 {#    <script type="text/javascript">#}
 {#    $('.selectpicker').selectpicker({#}
