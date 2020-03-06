@@ -1,0 +1,171 @@
+{
+  "readsRaw" : {
+    "short_name" : "Raw reads",
+    "full_name" : "Raw number of reads",
+    "description": "Total number of raw input reads, i.e. before adapter trimming and filtering",
+    "color_scale": "desc",
+    "is_percentage": false
+  },
+
+  "readsPerc" : {
+    "short_name" : "Reads %",
+    "full_name" : "Percentage of reads in analysis",
+    "description": "Percentage of reads that are used for the analysis, i.e. that are not filtered out due to quality or length criterion",
+    "color_scale": "desc",
+    "is_percentage": true
+  },
+
+  "adapterDimerPerc" : {
+    "short_name" : "Dimers %",
+    "full_name" : "Percentage of adapter dimers",
+    "description": "The percentage of reads that correspond to adapter-dimer, i.e. those that are shorter or equal to 2nt after adapter trimming ",
+    "color_scale": "asc",
+    "is_percentage": true
+  },
+
+  "detectedMatureSA" : {
+    "short_name" : "miRNAs",
+    "full_name" : "Number of miRNAs detected",
+    "description": "The number of detected microRNAs (applying single assignment)",
+    "color_scale": "desc",
+    "is_percentage": false
+  },
+
+  "maturePercofReads" : {
+    "short_name" : "miRNA reads %",
+    "full_name" : "Percentage of miRNA reads",
+    "description": "The percentage of effective reads assigned to mature microRNAs",
+    "color_scale": "desc",
+    "is_percentage": true
+  },
+
+  "meanofp50" : {
+    "short_name" : "Avg Phred",
+    "full_name" : "Average Phred Score",
+    "description": "This is the average Phred Score of the median scores at a given position",
+    "color_scale": "desc",
+    "is_percentage": false
+  },
+
+  "mainPeakMiRNAlength" : {
+    "short_name" : "miRNA \"peak\"",
+    "full_name" : "Percentage of reads in miRNA \"peak\"",
+    "description": "The percentage of miRNA-assigned reads of lengths 21, 22 and 23",
+    "color_scale": "desc",
+    "is_percentage": true
+  },
+
+  "stdDevMiRNAlength" : {
+    "short_name" : "miRNA SD",
+    "full_name" : "miRNA length distribution Std. Dev.",
+    "description": "The standard deviation of the read lengths of he reads mapped to microRNAs",
+    "color_scale": "asc",
+    "is_percentage": false
+  },
+
+  "reads" : {
+    "short_name" : "Reads",
+    "full_name" : "Number of reads in analysis",
+    "description": "Number of reads that are used for the analysis, i.e. that are not filtered out due to quality or length criterion",
+    "color_scale": "desc",
+    "is_percentage": false
+  },
+
+  "readsAdapterFound" : {
+    "short_name" : "Trimmed reads",
+    "full_name" : "Number of adapter-trimmed reads",
+    "description": "Number of reads for which the adapter was found (and trimmed).  Fail to detect he adapter can have several reasons: i) bad sequencing quality towards the 3' end of the read (sequencing errors impede the detection of the adapter), ii) longer fragments for which the adapter is not sequenced, iii) the wrong adapter sequence was specified",
+    "color_scale": "desc",
+    "is_percentage": false
+  },
+
+  "readsAdapterFoundPerc" : {
+    "short_name" : "Trimmed reads %",
+    "full_name" : "Percentage of adapter-trimmed reads",
+    "description": "Percentage of reads for which the adapter was found (and trimmed).  Fail to detect he adapter can have several reasons: i) bad sequencing quality towards the 3' end of the read (sequencing errors impede the detection of the adapter), ii) longer fragments for which the adapter is not sequenced, iii) the wrong adapter sequence was specified",
+    "color_scale": "desc",
+    "is_percentage": true
+  },
+
+  "readsUnique" : {
+    "short_name" : "Unique reads",
+    "full_name" : "Number of unique reads",
+    "description": "The number of unique sequence reads after read collapsing",
+    "color_scale": "neutral",
+    "is_percentage": false
+  },
+
+  "avgRCperUnique" : {
+    "short_name" : "Reads per unique",
+    "full_name" : "Number of reads per unique read",
+    "description": "The number of reads in analysis divided by the number of unique reads",
+    "color_scale": "asc",
+    "is_percentage": false
+  },
+
+  "meanofmeans" : {
+    "short_name" : "Average mean Phred Score",
+    "full_name" : "Average mean Phred Score",
+    "description": "The mean Phred Scores are obtained from FastQC per position, then the average of these values are calculated using positions 1 to 40",
+    "color_scale": "desc",
+    "is_percentage": false
+  },
+
+  "meanofp10" : {
+    "short_name" : "Average percentile 10 Phred Score ",
+    "full_name" : "Average percentile 10 Phred Score ",
+    "description": "The Phred Scores of percentile 10 are obtained from FastQC per position, then the average of these values are calculated using positions 1 to 40",
+    "color_scale": "desc",
+    "is_percentage": false
+  },
+
+  "meanofp25" : {
+    "short_name" : "Average percentile 25 Phred Score ",
+    "full_name" : "Average percentile 25 Phred Score ",
+    "description": "The Phred Scores of percentile 25 are obtained from FastQC per position, then the average of these values are calculated using positions 1 to 40",
+    "color_scale": "desc",
+    "is_percentage": false
+  },
+
+   "meanofp75" : {
+    "short_name" : "Average percentile 75 Phred Score ",
+    "full_name" : "Average percentile 75 Phred Score ",
+    "description": "The Phred Scores of percentile 175 are obtained from FastQC per position, then the average of these values are calculated using positions 1 to 40",
+    "color_scale": "desc",
+    "is_percentage": false
+  },
+
+   "meanofp90" : {
+    "short_name" : "Average percentile 90 Phred Score ",
+    "full_name" : "Average percentile 90 Phred Score ",
+    "description": "The Phred Scores of percentile 90 are obtained from FastQC per position, then the average of these values are calculated using positions 1 to 40",
+    "color_scale": "desc",
+    "is_percentage": false
+  },
+
+   "ultraShortReadsPerc" : {
+    "short_name" : "ultra short fragments %",
+    "full_name" : "Percentage of ultra short fragments",
+    "description": "Percentage of reads between 3 and 14 nt. A high number is usually indicative of issues in library preparation or low RNA quality",
+    "color_scale": "asc",
+    "is_percentage": true
+  },
+
+   "shortReadsPerc" : {
+    "short_name" : "short fragments %",
+    "full_name" : "Percentage of short fragments",
+    "description": "Percentage of reads between 15 and 17 nt. This range was choosen because tRNA fragments are frequently of 18 nt length.",
+    "color_scale": "asc",
+    "is_percentage": true
+  },
+
+  "rRNAPerc" : {
+    "short_name" : "ribosomal RNA %",
+    "full_name" : "Percentage of ribosomal RNA",
+    "description": "Percentage of ribosome derived reads",
+    "color_scale": "asc",
+    "is_percentage": true
+  }
+
+
+}
