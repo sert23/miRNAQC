@@ -29,6 +29,7 @@ def make_config(req_obj):
     # jobID = param_dict.get("jobId")
     jobID = new_rand_folder()
     uploadID = param_dict.get("uploadID")
+    URLs = param_dict.get("url_input")
     make_folder(os.path.join(MEDIA_ROOT,jobID))
     print(jobID)
     print("test_config")
@@ -43,6 +44,11 @@ def make_config(req_obj):
         sra_list = sra_string.split(",")
         for sra in sra_list:
             line = "input="+sra
+            config_lines.append(line)
+    if URLs:
+        url_list = URLs.split(",")
+        for url in url_list:
+            line = "input="+url.rstrip()
             config_lines.append(line)
     #advanced parameters
     protocol = param_dict.get("protocol")
