@@ -27,7 +27,9 @@
             $("#comp_set").val('{{ comparison }}');
             $("#comp_set").change();
             $('#comp_set').on('change', function (e) {
+                $("#refresh_page").html("");
             {#alert("{% url 'result_page' %}/" + $("#comp_set").val() +"/{{ jobID }}") ;#}
+
             window.location.replace("{% url 'result_page' %}/" + $("#comp_set").val() +"/{{ jobID }}");
 
         });
