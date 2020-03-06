@@ -166,7 +166,7 @@ class checkStatus(FormView):
         context["jobID"] = folder
         context["result_url"] = reverse_lazy("check_status") + "/" + folder
         context["absolute_url"] = MAIN_SITE
-        logfile = os.path.join(MEDIA_ROOT,folder,"query","summaryqc.log")
+        logfile = os.path.join(MEDIA_ROOT, folder, "query", "comparisons", "summaryqc.log")
         if os.path.exists(logfile):
             launched = True
         else:
