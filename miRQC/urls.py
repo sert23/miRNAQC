@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from newJob.views import startNew, testMulti, launchJob, checkStatus
+from newJob.views import startNew, testMulti, launchJob, checkStatus, startNew2
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.conf import settings
@@ -26,12 +26,13 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     # url(r'^/+$', startNew.as_view(), name='home'),
-    url(r'^$', startNew.as_view(), name='home'),
+    url(r'^$', startNew2.as_view(), name='home'),
+    # url(r'^$', startNew.as_view(), name='home'),
     url(r'^check', checkStatus.as_view(), name="check_status"),
     url(r'^testqc', testMulti.as_view()),
     url(r'^launch', launchJob.as_view(), name="launch"),
     url(r'^result', include('results.urls')),
     url(r'^tour', include('bstour.urls')),
-    url(r'^upload/[A-za-z0-9]+', startNew.as_view()),
+    url(r'^upload/[A-za-z0-9]+', startNew2.as_view()),
 ]
 
