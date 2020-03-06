@@ -106,7 +106,7 @@
 
             var launch_url = "{% url 'launch' %}?";
             {#var plot_url = "?";#}
-            var pars = $("#id_sra_input,#species,#uploadID ").serialize();
+            var pars = $("#id_sra_input,#species,#uploadID,#id_url_input").serialize();
             {#alert(pars);#}
             $("#run_link").attr("href", launch_url.concat(pars));
 
@@ -200,7 +200,7 @@
                             </label>
 
 
-                                        <textarea class='autoExpand form-control' rows='1' data-min-rows='1'
+                                        <textarea id='id_url_input' name="url_input" class='autoExpand form-control' rows='1' data-min-rows='1'
                                                   placeholder='http://file1.server.com,http://file2.server.com'></textarea>
                                     </div>
                                 </div>
@@ -208,12 +208,7 @@
                         <p></p>
                         <div class="row">
                             <div class="col-lg-12">
-
-
-
 {#                                  <span> &nbsp; </span> or <span> &nbsp; </span>#}
-
-
 
                                 <div id="div_id_sra_input" class="control-group"> <label for="id_sra_input" class="control-label ">
                                <b> Provide comma-separated SRA IDs</b>
