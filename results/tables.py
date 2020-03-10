@@ -679,8 +679,159 @@ def library_tab(val_df,perc_df, columns):
     return val_tab, perc_tab
 
 
+def contamination_tab(val_df,perc_df, columns):
+    vals_dict = df2dict(val_df)
+    columns_dict = columns
+    perc_dict = df2dict(perc_df)
+    headers = OrderedDict()
+
+    to_keep = ["refSpecies","unmapped","bacteria","virus"]
+    keep = set(to_keep).intersection(list(val_df.columns))
 
 
+
+    if True:
+        if "refSpecies" in keep:
+            headers["refSpecies"] = {
+                'title': '% ref.genome',
+                'description': 'Percentage of reads mapped to the reference genome',
+                'scale': "quart",
+                'col_dict': gen_col_dict(columns_dict["refSpecies"], "desc"),
+                'bar_dict': columns_dict["refSpecies"],
+                'suffix': '%',
+            }
+
+        if "unmapped" in keep:
+            headers["unmapped"] = {
+                'title': '% unmapped',
+                'description': 'Percentage of reads not mapped to the genome',
+                'scale': "quart",
+                'col_dict': gen_col_dict(columns_dict["unmapped"], "asc"),
+                'bar_dict': columns_dict["unmapped"],
+                'suffix': '%',
+            }
+
+        if "bacteria" in keep:
+            headers["bacteria"] = {
+                'title': '% bacteria',
+                'description': 'Percentage of reads mapped to a collection of different bacteria',
+                'scale': "quart",
+                'col_dict': gen_col_dict(columns_dict["bacteria"], "asc"),
+                'bar_dict': columns_dict["bacteria"],
+                'suffix': '%',
+            }
+
+        if "virus" in keep:
+            headers["virus"] = {
+                'title': '% virus',
+                'description': 'Percentage of reads mapped to a collection of different virus',
+                'scale': "quart",
+                'col_dict': gen_col_dict(columns_dict["virus"], "asc"),
+                'bar_dict': columns_dict["virus"],
+                'suffix': '%',
+            }
+
+    val_tab = table.plot(vals_dict, headers)
+    for k in list(headers.keys()):
+        c_dict = headers.get(k)
+        description = c_dict["description"]
+        c_dict["description"] = description + " (percentile)"
+        c_dict['is_int'] = False
+        if k in keep:
+            c_dict['suffix'] = "show_perc"
+            c_dict["suffix_dict"] = get_ordinals(columns_dict[k])
+
+    perc_tab = table.plot(perc_dict, headers)
+
+    return val_tab, perc_tab
+
+
+def length_tab(val_df,perc_df, columns):
+    vals_dict = df2dict(val_df)
+    columns_dict = columns
+    perc_dict = df2dict(perc_df)
+    headers = OrderedDict()
+
+    to_keep = ["mainPeakMiRNAlength","stdDevMiRNAlength","modeMiRNAlength","meanMiRNAlength","skewnessMiRNAlength","absskewnessMiRNAlength"]
+    keep = set(to_keep).intersection(list(val_df.columns))
+
+    if True:
+        if "mainPeakMiRNAlength" in keep:
+            headers["mainPeakMiRNAlength"] = {
+                'title': 'miRNA "peak"',
+                # 'title': 'miRNA lengths',
+                'description': 'Percentage of miRNA reads of lengths 21, 22 and 23',
+                'scale': "quart",
+                'col_dict': gen_col_dict(columns_dict["mainPeakMiRNAlength"], "desc"),
+                'bar_dict': columns_dict["mainPeakMiRNAlength"],
+                'suffix': '%',
+                # 'max': 100,
+                # 'min': 0,
+            }
+        if "stdDevMiRNAlength" in keep:
+            headers["stdDevMiRNAlength"] = {
+                'title': 'miRNA SD',
+                # 'title': 'microRNA mapping reads length SD',
+                'description': 'Read length standard deviation of miRNA mapping reads',
+                'scale': "quart",
+                'col_dict': gen_col_dict(columns_dict["stdDevMiRNAlength"], "asc"),
+                'bar_dict': columns_dict["stdDevMiRNAlength"],
+                # 'suffix': '%',
+                # 'max': 100,
+                # 'min': 0,
+            }
+
+        if "modeMiRNAlength" in keep:
+            headers["modeMiRNAlength"] = {
+                'title': '% ref.genome',
+                'description': 'Percentage of reads mapped to the reference genome',
+                'scale': "quart",
+                'col_dict': gen_col_dict(columns_dict["modeMiRNAlength"], "desc"),
+                'bar_dict': columns_dict["modeMiRNAlength"],
+                'suffix': '%',
+            }
+
+        if "meanMiRNAlength" in keep:
+            headers["meanMiRNAlength"] = {
+                'title': '% ref.genome',
+                'description': 'Percentage of reads mapped to the reference genome',
+                'scale': "quart",
+                'col_dict': gen_col_dict(columns_dict["meanMiRNAlength"], "desc"),
+                'bar_dict': columns_dict["meanMiRNAlength"],
+                'suffix': '%',
+            }
+
+        if "skewnessMiRNAlength" in keep:
+            headers["skewnessMiRNAlength"] = {
+                'title': '% ref.genome',
+                'description': 'Percentage of reads mapped to the reference genome',
+                'scale': "quart",
+                'col_dict': gen_col_dict(columns_dict["skewnessMiRNAlength"], "desc"),
+                'bar_dict': columns_dict["skewnessMiRNAlength"],
+                'suffix': '%',
+            }
+        if "absskewnessMiRNAlength" in keep:
+            headers["absskewnessMiRNAlength"] = {
+                'title': '% ref.genome',
+                'description': 'Percentage of reads mapped to the reference genome',
+                'scale': "quart",
+                'col_dict': gen_col_dict(columns_dict["absskewnessMiRNAlength"], "desc"),
+                'bar_dict': columns_dict["absskewnessMiRNAlength"],
+                'suffix': '%',
+            }
+    val_tab = table.plot(vals_dict, headers)
+    for k in list(headers.keys()):
+        c_dict = headers.get(k)
+        description = c_dict["description"]
+        c_dict["description"] = description + " (percentile)"
+        c_dict['is_int'] = False
+        if k in keep:
+            c_dict['suffix'] = "show_perc"
+            c_dict["suffix_dict"] = get_ordinals(columns_dict[k])
+
+    perc_tab = table.plot(perc_dict, headers)
+
+    return val_tab, perc_tab
 
 
 #old

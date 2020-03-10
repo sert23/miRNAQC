@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import FormView, DetailView
-from .tables import basic_table, tables_yield, cols_dict, seq_qual_tab, library_tab, tables_complex
+from .tables import basic_table, tables_yield, cols_dict, seq_qual_tab, library_tab, tables_complex, contamination_tab, length_tab
 from miRQC.settings import MEDIA_ROOT, MEDIA_URL, SUB_SITE, MEDIA_URL, MAIN_SITE, VAR_DICT_PATH
 import os
 import pandas
@@ -446,8 +446,22 @@ class loadResults(FormView):
         library_table, library_perc = library_tab(val_df, perc_df, columns)
         context["library_table"] = library_table
         context["library_perc"] = library_perc
+
+        # contamination
+
+        cont_table, cont_perc = contamination_tab(val_df, perc_df, columns)
+        context["contam_table"] = cont_table
+        context["contam_perc"] = cont_perc
+
+        # length distribution
+
+        len_table, len_perc = length_tab(val_df, perc_df, columns)
+        context["length_table"] = len_table
+        context["length_table"] = len_perc
+
         context["sub_site"] = SUB_SITE
         context["comparison"] = comparison
+
         # percentiles
         # print(os.path.join(query_folder,"percentiles"))
         if os.path.exists(os.path.join(query_folder,"percentiles")):
