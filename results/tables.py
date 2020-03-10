@@ -755,6 +755,10 @@ def length_tab(val_df,perc_df, columns):
     to_keep = ["mainPeakMiRNAlength","stdDevMiRNAlength","modeMiRNAlength","meanMiRNAlength","skewnessMiRNAlength","absskewnessMiRNAlength"]
     keep = set(to_keep).intersection(list(val_df.columns))
 
+
+
+
+
     if True:
         if "mainPeakMiRNAlength" in keep:
             headers["mainPeakMiRNAlength"] = {
@@ -783,8 +787,8 @@ def length_tab(val_df,perc_df, columns):
 
         if "modeMiRNAlength" in keep:
             headers["modeMiRNAlength"] = {
-                'title': '% ref.genome',
-                'description': 'Percentage of reads mapped to the reference genome',
+                'title': 'miRNA length mode',
+                'description': 'miRNA length mode',
                 'scale': "quart",
                 'col_dict': gen_col_dict(columns_dict["modeMiRNAlength"], "desc"),
                 'bar_dict': columns_dict["modeMiRNAlength"],
@@ -793,8 +797,8 @@ def length_tab(val_df,perc_df, columns):
 
         if "meanMiRNAlength" in keep:
             headers["meanMiRNAlength"] = {
-                'title': '% ref.genome',
-                'description': 'Percentage of reads mapped to the reference genome',
+                'title': 'miRNA mean length',
+                'description': 'miRNA mean length',
                 'scale': "quart",
                 'col_dict': gen_col_dict(columns_dict["meanMiRNAlength"], "desc"),
                 'bar_dict': columns_dict["meanMiRNAlength"],
@@ -803,8 +807,8 @@ def length_tab(val_df,perc_df, columns):
 
         if "skewnessMiRNAlength" in keep:
             headers["skewnessMiRNAlength"] = {
-                'title': '% ref.genome',
-                'description': 'Percentage of reads mapped to the reference genome',
+                'title': 'skewness length distribution',
+                'description': 'skewness length distribution',
                 'scale': "quart",
                 'col_dict': gen_col_dict(columns_dict["skewnessMiRNAlength"], "desc"),
                 'bar_dict': columns_dict["skewnessMiRNAlength"],
@@ -812,8 +816,8 @@ def length_tab(val_df,perc_df, columns):
             }
         if "absskewnessMiRNAlength" in keep:
             headers["absskewnessMiRNAlength"] = {
-                'title': '% ref.genome',
-                'description': 'Percentage of reads mapped to the reference genome',
+                'title': 'abs skewness length distribution',
+                'description': 'abs skewness length distribution',
                 'scale': "quart",
                 'col_dict': gen_col_dict(columns_dict["absskewnessMiRNAlength"], "desc"),
                 'bar_dict': columns_dict["absskewnessMiRNAlength"],
