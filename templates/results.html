@@ -77,12 +77,15 @@
 
             <li class="active"><a href="#Basic" data-toggle="tab">Basic Statistics</a>
             </li>
-            <li ><a href="#Sequencing" data-toggle="tab">Sequencing quality</a>
-            </li>
             <li ><a href="#Yield" data-toggle="tab">Sequencing yield</a>
+            </li>
+            <li ><a href="#Complex" data-toggle="tab">Library complexity</a>
             </li>
             <li ><a href="#Library" data-toggle="tab">Library quality</a>
             </li>
+            <li ><a href="#Sequencing" data-toggle="tab">Sequencing quality</a>
+            </li>
+
             <li ><a href="#Down" data-toggle="tab">Download</a>
             </li>
 
@@ -107,6 +110,12 @@
                 <div class="tab-pane fade" id="Yield">
 
                     {% include "results/seq_yield.html" %}
+
+                </div>
+
+                <div class="tab-pane fade" id="Complex">
+
+                    {% include "results/complexity.html" %}
 
                 </div>
 

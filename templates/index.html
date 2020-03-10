@@ -51,6 +51,7 @@
        alert("something went wrong");
       }
         if (data.result.is_valid) {
+            $("#something_up").val("true");
           {#alert("hello");#}
         {# $("#modal-progress").modal("hide");#}
           $("#uploaded_card").show();
@@ -91,6 +92,8 @@
 
     </script>
 
+
+
     <script>
         $(function () {
                     $('[data-toggle="tooltip"]').tooltip()
@@ -104,13 +107,20 @@
 
             $('#run_id').on('click', function(){
 
-            var launch_url = "{% url 'launch' %}?";
+                if ( $("#id_sra_input").val()== "" && $("#id_url_input").val()== "" && $("#something_up").val()== ""){
 
-            {#var plot_url = "?";#}
-            var pars = $("#id_sra_input,#species,#uploadID,#id_url_input").serialize();
-            {#alert(pars);#}
-            $("#run_link").attr("href", launch_url.concat(pars));
+                    alert("it works")
 
+                }else{
+
+                  var launch_url = "{% url 'launch' %}?";
+
+                {#var plot_url = "?";#}
+                var pars = $("#id_sra_input,#species,#uploadID,#id_url_input").serialize();
+                {#alert(pars);#}
+                $("#run_link").attr("href", launch_url.concat(pars));
+
+                }
             })
             });
 
@@ -219,6 +229,7 @@
 {#                                    <input type="text" name="sra_input" placeholder='hello?' class="form-control textinput textInput" id="id_sra_input" />#}
                                     <input type="hidden" id="jobId" name="jobId" value="{{ jobID }}">
                                     <input type="hidden" id="uploadID" name="uploadID" value="{{ uploadID }}">
+                                    <input type="hidden" id="something_up" value="">
                         {#  SRR1563062,SRR1563057                               #}
                                 </div>
 

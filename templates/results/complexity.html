@@ -1,0 +1,43 @@
+<script>
+        {#            Basic Stats button   #}
+        $(document).ready(function(){
+
+            $('#show_complex_perc').on('click', function(){
+            $('#show_complex_vals').removeClass('active');
+            $(this).addClass('active');
+            $('#complex_val_div').css("display", "none");
+            $('#complex_perc_div').css("display", "block");
+
+                        });
+            $('#show_complex_vals').on('click', function(){
+            $('#show_complex_perc').removeClass('active');
+            $(this).addClass('active');
+            $('#complex_perc_div').css("display", "none");
+            $('#complex_val_div').css("display", "block");
+
+                        })
+
+         });
+
+    </script>
+
+
+                        <h2>Library Complexity</h2>
+                        <div class="btn-group hc_switch_group">
+                        <button class="btn btn-default btn-sm active" id="show_complex_vals">Display values</button>
+                        <button class="btn btn-default btn-sm " id="show_complex_perc">Display percentiles</button>&nbsp;
+                            <span style="font-size: 26px; color:#3889ac; "> <i class="far fa-clickable fa-question-circle" onclick="$('#percentiles').modal('show');"> </i> </span>
+                        </div> <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
+{#                        <button class="btn btn-success" type="button" onclick="$('#basic_heatmap').modal('show');"> Show Heatmap</button>#}
+
+                        <br>
+                        <br>
+
+                        <div id="complex_val_div">
+                            {{ complex_table|safe }}
+
+                        </div>
+                        <div id="complex_perc_div" style="display: none;">
+                            {{ complex_perc|safe }}
+
+                        </div>
