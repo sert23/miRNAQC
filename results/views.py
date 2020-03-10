@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import FormView, DetailView
-from .tables import basic_table,seqYield_table, tables_yield, cols_dict, seq_qual_tab, library_tab
+from .tables import basic_table, tables_yield, cols_dict, seq_qual_tab, library_tab, tables_complex
 from miRQC.settings import MEDIA_ROOT, MEDIA_URL, SUB_SITE, MEDIA_URL, MAIN_SITE, VAR_DICT_PATH
 import os
 import pandas
@@ -56,12 +56,13 @@ def plot_percentiles(input_df=None,input_file=None, scale=None, tag=None):
 
     perc_df = pandas.read_csv(input_file, sep="\t")
     perc_df["bar_color"] = scale_list
-    data = go.Bar(name="percentile",
+    data = [go.Bar(name="percentile",
         x=perc_df.percentile.values,
                          y=perc_df.value.values,
                   marker=dict(color=perc_df.bar_color.values),
                   hovertemplate="%{x}p: %{y}",
-                  )
+                   showlegend=False
+                  )]
                          # colorscale=dcolorsc,
 
     # print(perc_df.shape)
@@ -73,50 +74,119 @@ def plot_percentiles(input_df=None,input_file=None, scale=None, tag=None):
         scale = "linear"
     annotation = []
     # print(input_df.columns)
-    for row in input_df.iterrows():
-        x = round(row[1].values[1])
-        r = randrange(50)
+    if input_df.shape[0] < 6:
 
-        sample = row[1].values[0]
-        old_y = row[1].values[2]
-        y = old_y
-        if scale == "log":
-            try:
-                y = math.log10(y)
-                # print("hehe")
-            except:
-                y = 0
-        # print("new")
-        # # print(row[0].values)
-        # print()
+        for row in input_df.iterrows():
+            x = math.ceil(row[1].values[1])
+            r = randrange(50)
 
-        annotation.append(
-            dict(
-                x=x,
-                y=y,
-                # xref="x",
-                # yref="y",
-                text=sample,
-                hovertext="Sample: {} <br>Value: {}{}<br>Percentile: {}".format(sample,round(old_y,2),tick,x),
-                showarrow=True,
-                arrowhead=3,
-                ax=20+r,
-                ay=-30-r,
-                # bordercolor="#FFFFFF",
-                font = dict(
-                    color="#FFFFFF",
-                ),
+            sample = row[1].values[0]
+            old_y = row[1].values[2]
+            y = old_y
+            if scale == "log":
+                try:
+                    y = math.log10(y)
+                    # print("hehe")
+                except:
+                    y = 0
+            # print("new")
+            # # print(row[0].values)
+            # print()
 
-                bordercolor="#000000",
-                borderwidth=1,
-                borderpad=4,
-                bgcolor="#1f77b4",
-                # bgcolor="#ff7f0e",
-                # editable=True
+            annotation.append(
+                dict(
+                    x=x,
+                    y=y,
+                    # xref="x",
+                    # yref="y",
+                    text=sample,
+                    hovertext="Sample: {} <br>Value: {}{}<br>Percentile: {}".format(sample,round(old_y,2),tick,x),
+                    showarrow=True,
+                    arrowhead=3,
+                    ax=20+r,
+                    ay=-30-r,
+                    # bordercolor="#FFFFFF",
+                    font = dict(
+                        color="#FFFFFF",
+                    ),
+
+                    bordercolor="#000000",
+                    borderwidth=1,
+                    borderpad=4,
+                    bgcolor="#1f77b4",
+                    # bgcolor="#ff7f0e",
+                    # editable=True
+                )
+
             )
+            # print(row[1].values[0])
+    else:
 
-        )
-        # print(row[1].values[0])
+        # print(input_df.iloc[:,1].values)
+        input_df.iloc[:, 1] = input_df.iloc[:,1].round()
+        input_df.iloc[:, 2] = input_df.iloc[:,2].round(2)
+        input_df["hover"] = input_df.iloc[:, 0].astype(str) +":  "+ input_df.iloc[:, 2].astype(str)
+        unique_percentiles = set(input_df.iloc[:, 1].values)
+
+        step = perc_df.iloc[:, 0].max()/float(50)
+
+
+        for p in unique_percentiles:
+            sub_df = input_df.loc[(input_df.iloc[:, 1] ==p)]
+            x = p
+            # print(perc_df.columns)
+            old_y = perc_df.loc[(perc_df.iloc[:, 0] ==p)].value.values[0]
+            y = old_y
+            if scale == "log":
+                try:
+                    y = math.log10(y)
+                    # print("hehe")
+                except:
+                    y = 0
+            # print(input_df.columns)
+            # text = "<br>".join(sub_df.iloc[:, 0].values )
+            text = "Percentile " + str(int(p)) + ":<br> "  + str(sub_df.shape[0]) + " samples"
+            new_line = tick +"<br>"
+            # new_line = "%" +"<br>"
+            hover ="Percentile " + str(int(p)) + ":<br> " + new_line.join(sub_df["hover"].values)+tick
+            trace = go.Scatter(
+                name="Percentile " + str(int(p)),
+                x=[x],
+                y=[y+step],
+                marker=dict(
+                color="#1f77b4"),
+                # text= [hover]),
+                hovertemplate=hover,
+                showlegend=False
+            )
+            data.append(trace)
+            # r = randrange(100)
+            # annotation.append(
+            #     dict(
+            #         x=x,
+            #         y=y,
+            #         # xref="x",
+            #         # yref="y",
+            #         text=text,
+            #         hovertext=hover,
+            #         showarrow=True,
+            #         arrowhead=3,
+            #         ax=20 + r,
+            #         ay=-30 - r,
+            #         # bordercolor="#FFFFFF",
+            #         font=dict(
+            #             color="#FFFFFF",
+            #         ),
+            #
+            #         bordercolor="#000000",
+            #         borderwidth=1,
+            #         borderpad=4,
+            #         bgcolor="#1f77b4",
+            #         # bgcolor="#ff7f0e",
+            #         # editable=True
+            #     )
+            #
+            # )
 
 
 
@@ -149,7 +219,7 @@ def plot_percentiles(input_df=None,input_file=None, scale=None, tag=None):
             ),
 
     )
-    fig = go.Figure(data=[data], layout=layout)
+    fig = go.Figure(data=data, layout=layout)
 
 
     # fig.update_layout(autosize=False)
@@ -204,6 +274,7 @@ def plot_heatmap(input_df=None):
     quartiles.reverse()
     x = [var_dict.get(n).get("full_name") for n in basic_df.columns.values]
     basic_df = fix_scale(basic_df)
+    print(perc_df["sample"].values)
     heatmap = go.Heatmap(x=x,
                          y=perc_df["sample"].values,
                          z=basic_df.values,
@@ -360,6 +431,11 @@ class loadResults(FormView):
         seqYield_tab, seqYield_perc = tables_yield(val_df, perc_df, columns)
         context["seqYield_table"] = seqYield_tab
         context["seqYield_perc"] = seqYield_perc
+
+        # library complexity
+        complex_tab, complex_perc = tables_complex(val_df, perc_df, columns)
+        context["complex_table"] = complex_tab
+        context["complex_perc"] = complex_perc
 
         #sequencing quality
         seqQual_tab, seqQual_perc = seq_qual_tab(val_df, perc_df, columns)

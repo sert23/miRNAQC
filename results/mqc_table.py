@@ -142,6 +142,10 @@ def make_table(dt):
                 kname = '{}_{}'.format(header['namespace'], rid)
                 dt.raw_vals[s_name][kname] = val
 
+                # if "is_int" in header.keys():
+                #     val = int(val)
+                #     print(val)
+
                 if 'modify' in header and callable(header['modify']):
                     val = header['modify'](val)
 
@@ -155,14 +159,21 @@ def make_table(dt):
                     percentage = 0
 
                 try:
-                    valstring = str(header['format'].format(val))
+                    if not header.get("is_int"):
+                        valstring = str(header['format'].format(val))
+                    else:
+                        valstring = str(int(val))
+
                 except ValueError:
                     try:
                         valstring = str(header['format'].format(float(val)))
+
                     except ValueError:
                         valstring = str(val)
+
                 except:
                     valstring = str(val)
+
 
                 # This is horrible, but Python locale settings are worse
                 if config.thousandsSep_format is None:
