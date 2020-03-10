@@ -457,7 +457,7 @@ class loadResults(FormView):
 
         len_table, len_perc = length_tab(val_df, perc_df, columns)
         context["length_table"] = len_table
-        context["length_table"] = len_perc
+        context["length_perc"] = len_perc
 
         context["sub_site"] = SUB_SITE
         context["comparison"] = comparison
