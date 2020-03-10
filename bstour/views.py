@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import FormView, DetailView
-from results.tables import basic_table,seqYield_table, tables_yield, cols_dict, seq_qual_tab, library_tab
+from results.tables import basic_table, tables_yield, cols_dict, seq_qual_tab, library_tab
 from miRQC.settings import MEDIA_ROOT, MEDIA_URL, SUB_SITE, MEDIA_URL, MAIN_SITE
 from newJob.views import new_rand_folder
 from newJob.forms import SpeciesForm
@@ -54,8 +54,8 @@ class tourResuls(FormView):
         context["result_url"] = reverse_lazy("check_status") + "/" + folder
         context["absolute_url"] = MAIN_SITE
         query_folder = os.path.join(MEDIA_ROOT,folder,"query")
-        val_file = os.path.join(query_folder,"value_full.tsv")
-        perc_file = os.path.join(query_folder,"percentil_full.tsv")
+        val_file = os.path.join(query_folder,"value.tsv")
+        perc_file = os.path.join(query_folder,"percentil.tsv")
         context["vals_link"] = val_file.replace(MEDIA_ROOT,MEDIA_URL)
         context["perc_link"] = perc_file.replace(MEDIA_ROOT,MEDIA_URL)
 
