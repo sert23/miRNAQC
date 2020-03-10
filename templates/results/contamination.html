@@ -1,0 +1,43 @@
+<script>
+        {#            Basic Stats button   #}
+        $(document).ready(function(){
+
+            $('#show_contam_perc').on('click', function(){
+            $('#show_contam_vals').removeClass('active');
+            $(this).addClass('active');
+            $('#contam_val_div').css("display", "none");
+            $('#contam_perc_div').css("display", "block");
+
+                        });
+            $('#show_contam_vals').on('click', function(){
+            $('#show_contam_perc').removeClass('active');
+            $(this).addClass('active');
+            $('#contam_perc_div').css("display", "none");
+            $('#contam_val_div').css("display", "block");
+
+                        })
+
+         });
+
+    </script>
+
+
+                        <h2>Putative Contamination</h2>
+                        <div class="btn-group hc_switch_group">
+                        <button class="btn btn-default btn-sm active" id="show_contam_vals">Display values</button>
+                        <button class="btn btn-default btn-sm " id="show_contam_perc">Display percentiles</button>&nbsp;
+                            <span style="font-size: 26px; color:#3889ac; "> <i class="far fa-clickable fa-question-circle" onclick="$('#percentiles').modal('show');"> </i> </span>
+                        </div> <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
+{#                        <button class="btn btn-success" type="button" onclick="$('#basic_heatmap').modal('show');"> Show Heatmap</button>#}
+
+                        <br>
+                        <br>
+
+                        <div id="contam_val_div">
+                            {{ contam_table|safe }}
+
+                        </div>
+                        <div id="contam_perc_div" style="display: none;">
+                            {{ contam_perc|safe }}
+
+                        </div>

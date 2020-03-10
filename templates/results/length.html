@@ -1,0 +1,43 @@
+<script>
+        {#            Basic Stats button   #}
+        $(document).ready(function(){
+
+            $('#show_length_perc').on('click', function(){
+            $('#show_length_vals').removeClass('active');
+            $(this).addClass('active');
+            $('#length_val_div').css("display", "none");
+            $('#length_perc_div').css("display", "block");
+
+                        });
+            $('#show_length_vals').on('click', function(){
+            $('#show_length_perc').removeClass('active');
+            $(this).addClass('active');
+            $('#length_perc_div').css("display", "none");
+            $('#length_val_div').css("display", "block");
+
+                        })
+
+         });
+
+    </script>
+
+
+                        <h2>Length distribution</h2>
+                        <div class="btn-group hc_switch_group">
+                        <button class="btn btn-default btn-sm active" id="show_length_vals">Display values</button>
+                        <button class="btn btn-default btn-sm " id="show_length_perc">Display percentiles</button>&nbsp;
+                            <span style="font-size: 26px; color:#3889ac; "> <i class="far fa-clickable fa-question-circle" onclick="$('#percentiles').modal('show');"> </i> </span>
+                        </div> <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
+{#                        <button class="btn btn-success" type="button" onclick="$('#basic_heatmap').modal('show');"> Show Heatmap</button>#}
+
+                        <br>
+                        <br>
+
+                        <div id="length_val_div">
+                            {{ length_table|safe }}
+
+                        </div>
+                        <div id="length_perc_div" style="display: none;">
+                            {{ length_perc|safe }}
+
+                        </div>
