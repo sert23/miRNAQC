@@ -792,7 +792,8 @@ def length_tab(val_df,perc_df, columns):
                 'scale': "quart",
                 'col_dict': gen_col_dict(columns_dict["modeMiRNAlength"], "desc"),
                 'bar_dict': columns_dict["modeMiRNAlength"],
-                'suffix': '%',
+                'is_int': True
+                # 'suffix': '%',
             }
 
         if "meanMiRNAlength" in keep:
@@ -802,7 +803,7 @@ def length_tab(val_df,perc_df, columns):
                 'scale': "quart",
                 'col_dict': gen_col_dict(columns_dict["meanMiRNAlength"], "desc"),
                 'bar_dict': columns_dict["meanMiRNAlength"],
-                'suffix': '%',
+                # 'suffix': '%',
             }
 
         if "skewnessMiRNAlength" in keep:
@@ -812,7 +813,7 @@ def length_tab(val_df,perc_df, columns):
                 'scale': "quart",
                 'col_dict': gen_col_dict(columns_dict["skewnessMiRNAlength"], "desc"),
                 'bar_dict': columns_dict["skewnessMiRNAlength"],
-                'suffix': '%',
+                # 'suffix': '%',
             }
         if "absskewnessMiRNAlength" in keep:
             headers["absskewnessMiRNAlength"] = {
@@ -821,7 +822,7 @@ def length_tab(val_df,perc_df, columns):
                 'scale': "quart",
                 'col_dict': gen_col_dict(columns_dict["absskewnessMiRNAlength"], "desc"),
                 'bar_dict': columns_dict["absskewnessMiRNAlength"],
-                'suffix': '%',
+                # 'suffix': '%',
             }
     val_tab = table.plot(vals_dict, headers)
     for k in list(headers.keys()):
