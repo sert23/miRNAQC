@@ -182,12 +182,12 @@ def par_table(input_file):
                 # 'description': 'Total number of reads sequenced',
                 # 'is_int': True
             }
-        if "taxon ID" in keep:
-            headers["taxon ID"] = {
-                'title': "taxon ID",
-                # 'description': 'Total number of reads sequenced',
-                'is_int': True
-            }
+        # if "taxon ID" in keep:
+        #     headers["taxon ID"] = {
+        #         'title': "taxon ID",
+        #         # 'description': 'Total number of reads sequenced',
+        #         'is_int': True
+        #     }
         if "Species" in keep:
             headers["Species"] = {
                 'title': "Species",
