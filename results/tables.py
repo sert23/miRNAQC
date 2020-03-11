@@ -772,6 +772,16 @@ def length_tab(val_df,perc_df, columns):
                 # 'max': 100,
                 # 'min': 0,
             }
+        if "meanMiRNAlength" in keep:
+            headers["meanMiRNAlength"] = {
+                'title': 'miRNA mean length',
+                'description': 'Mean of miRNA mapping reads read length',
+                'scale': "quart",
+                'col_dict': gen_col_dict(columns_dict["meanMiRNAlength"], "desc"),
+                'bar_dict': columns_dict["meanMiRNAlength"],
+                # 'suffix': '%',
+            }
+
         if "stdDevMiRNAlength" in keep:
             headers["stdDevMiRNAlength"] = {
                 'title': 'miRNA SD',
@@ -796,20 +806,12 @@ def length_tab(val_df,perc_df, columns):
                 # 'suffix': '%',
             }
 
-        if "meanMiRNAlength" in keep:
-            headers["meanMiRNAlength"] = {
-                'title': 'miRNA mean length',
-                'description': 'miRNA mean length',
-                'scale': "quart",
-                'col_dict': gen_col_dict(columns_dict["meanMiRNAlength"], "desc"),
-                'bar_dict': columns_dict["meanMiRNAlength"],
-                # 'suffix': '%',
-            }
+
 
         if "skewnessMiRNAlength" in keep:
             headers["skewnessMiRNAlength"] = {
-                'title': 'skewness length distribution',
-                'description': 'skewness length distribution',
+                'title': 'skewness',
+                'description': 'skewness read length distribution',
                 'scale': "quart",
                 'col_dict': gen_col_dict(columns_dict["skewnessMiRNAlength"], "desc"),
                 'bar_dict': columns_dict["skewnessMiRNAlength"],
@@ -817,8 +819,8 @@ def length_tab(val_df,perc_df, columns):
             }
         if "absskewnessMiRNAlength" in keep:
             headers["absskewnessMiRNAlength"] = {
-                'title': 'abs skewness length distribution',
-                'description': 'abs skewness length distribution',
+                'title': '|skewness|',
+                'description': 'absolute read length distribution skewness',
                 'scale': "quart",
                 'col_dict': gen_col_dict(columns_dict["absskewnessMiRNAlength"], "desc"),
                 'bar_dict': columns_dict["absskewnessMiRNAlength"],
