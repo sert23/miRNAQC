@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import FormView, DetailView
-from .tables import basic_table, tables_yield, cols_dict, seq_qual_tab, library_tab, tables_complex, contamination_tab, length_tab
+from .tables import basic_table, tables_yield, cols_dict, seq_qual_tab, library_tab, tables_complex, contamination_tab, length_tab, par_table
 from miRQC.settings import MEDIA_ROOT, MEDIA_URL, SUB_SITE, MEDIA_URL, MAIN_SITE, VAR_DICT_PATH
 import os
 import pandas
@@ -415,6 +415,9 @@ class loadResults(FormView):
         perc_file = os.path.join(query_folder,"percentil.tsv")
         context["vals_link"] = val_file.replace(MEDIA_ROOT,MEDIA_URL)
         context["perc_link"] = perc_file.replace(MEDIA_ROOT,MEDIA_URL)
+
+        #parameters
+        context["par_tab"] = par_table(os.path.join(MEDIA_ROOT,folder,"query", "comparisons","summary_results.tsv"))
 
         #read files into dfs
         val_df = pandas.read_csv(val_file, sep="\t")

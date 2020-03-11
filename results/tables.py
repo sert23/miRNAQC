@@ -130,6 +130,30 @@ def cols_dict(df):
         # print(column)
     return new_dict
 
+# def pars_dict(df):
+#     table = df.copy()
+#     table.set_index("Input File", inplace=True)
+#     new_dict = {}
+#     columns = table.columns
+#     print(columns)
+#     for column in columns:
+#         subset = table[column]
+#         new_dict[column] = subset.to_dict()
+#         # print(column)
+#     return new_dict
+
+def pars2dict(df):
+    table = df
+    new_dict = {}
+    # print(table.columns)
+    samples = table["Input File"].values
+
+    for sample in samples:
+        subset = table.loc[table["Input File"] == sample]
+        subset = subset.drop(["Input File"],1)
+        new_dict[sample] = subset.to_dict("records")[0]
+
+    return new_dict
 
 
 config_p = {
@@ -142,6 +166,68 @@ config_p = {
     #     {'name': 'DS 2', 'ylab': 'Dataset 2', 'xlab': 'x Axis 2'}
     # ]
 }
+
+def par_table(input_file):
+
+    input_df = pandas.read_csv(input_file, sep="\t")
+    vals_dict = pars2dict(input_df)
+    headers = OrderedDict()
+    to_keep = ["Input File", "taxon ID","Species","short species name","protocol","adapter","5' Random Adapter Bases",
+               " 3' Random Adapter Bases"]
+    keep = set(to_keep).intersection(list(input_df.columns))
+    if True:
+        if "Input File" in keep:
+            headers["Input File"] = {
+                'title': "Input File",
+                # 'description': 'Total number of reads sequenced',
+                # 'is_int': True
+            }
+        if "taxon ID" in keep:
+            headers["taxon ID"] = {
+                'title': "taxon ID",
+                # 'description': 'Total number of reads sequenced',
+                'is_int': True
+            }
+        if "Species" in keep:
+            headers["Species"] = {
+                'title': "Species",
+                # 'description': 'Total number of reads sequenced',
+                # 'is_int': True
+            }
+        if "short species name" in keep:
+            headers["short species name"] = {
+                'title': "short <br>species name",
+                # 'description': 'Total number of reads sequenced',
+                # 'is_int': True
+            }
+
+        if "protocol" in keep:
+            headers["protocol"] = {
+                'title': "protocol",
+                # 'description': 'Total number of reads sequenced',
+                # 'is_int': True
+            }
+        if "adapter" in keep:
+            headers["adapter"] = {
+                'title': "adapter",
+                # 'description': 'Total number of reads sequenced',
+                # 'is_int': True
+            }
+        if "5' Random Adapter Bases" in keep:
+            headers["5' Random Adapter Bases"] = {
+                'title': "5' Random <br> Adapter Bases",
+                # 'description': 'Total number of reads sequenced',
+                'is_int': True
+            }
+        if " 3' Random Adapter Bases" in keep:
+            headers[" 3' Random Adapter Bases"] = {
+                'title': "3' Random <br> Adapter Bases",
+                # 'description': 'Total number of reads sequenced',
+                'is_int': True
+            }
+    # val_tab = table.plot(vals_dict)
+    val_tab = table.plot(vals_dict, headers)
+    return val_tab
 
 def basic_table(val_df,perc_df, columns):
 
