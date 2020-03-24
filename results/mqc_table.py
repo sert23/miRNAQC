@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 letters = 'abcdefghijklmnopqrstuvwxyz'
 
 
-def plot(data, headers=None, pconfig=None):
+def plot(data, headers=None, pconfig=None, hide_bar=None):
     """ Return HTML for a MultiQC table.
     :param data: 2D dict, first keys as sample names, then x:y data pairs
     :param headers: list of optional dicts with column config in key:value pairs.
@@ -49,10 +49,10 @@ def plot(data, headers=None, pconfig=None):
                   ' data-toggle="tooltip"></span> Showing {} samples.</p>'.format(len(s_names))
         return warning + beeswarm.make_plot(dt)
     else:
-        return make_table(dt)
+        return make_table(dt, hide_bar)
 
 
-def make_table(dt):
+def make_table(dt, hide_bar=None):
     """
     Build the HTML needed for a MultiQC table.
     :param data: MultiQC datatable object
@@ -301,30 +301,31 @@ def make_table(dt):
         #                 <span class="sr-only">10% Complete (danger)</span>
         #               </div>
 
-        html += """ <div class="col-sm-2">
-            <div class="progress">
-              <div class="progress-bar progress-bar-q1" style="width: 25%">
-                <span class="sr-only">35% Complete (success)</span> Q1
-              </div>
-
-              <div class="progress-bar progress-bar-q2" style="width: 25%">
-                <span class="sr-only">35% Complete (success)</span> Q2
-              </div>
-
-              <div class="progress-bar progress-bar-q3" style="width: 25%">
-                <span class="sr-only">35% Complete (success)</span> Q3
-              </div>
-
-              <div class="progress-bar progress-bar-q4" style="width: 25%">
-                <span class="sr-only">35% Complete (success)</span> Q4
-              </div>
-            </div>
-                     </div>
-                     </div>
-                     
-                     
-
-        """
+        if not hide_bar:
+            html += """ <div class="col-sm-2">
+                <div class="progress">
+                  <div class="progress-bar progress-bar-q1" style="width: 25%">
+                    <span class="sr-only">35% Complete (success)</span> Q1
+                  </div>
+    
+                  <div class="progress-bar progress-bar-q2" style="width: 25%">
+                    <span class="sr-only">35% Complete (success)</span> Q2
+                  </div>
+    
+                  <div class="progress-bar progress-bar-q3" style="width: 25%">
+                    <span class="sr-only">35% Complete (success)</span> Q3
+                  </div>
+    
+                  <div class="progress-bar progress-bar-q4" style="width: 25%">
+                    <span class="sr-only">35% Complete (success)</span> Q4
+                  </div>
+                </div>
+                         </div>
+                         </div>
+                """
+        else:
+            html += """ </div>
+                """
         # Configure Columns Button
         # if len(t_headers) > 1:
         #     html += """

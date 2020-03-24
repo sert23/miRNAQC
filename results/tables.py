@@ -170,11 +170,21 @@ config_p = {
 def par_table(input_file):
 
     input_df = pandas.read_csv(input_file, sep="\t")
-    vals_dict = pars2dict(input_df)
+
     headers = OrderedDict()
-    to_keep = ["Input File", "taxon ID","Species","short species name","protocol","adapter","5' Random Adapter Bases",
-               " 3' Random Adapter Bases"]
+    # print(input_df.columns)
+    if "5' Random Adapter Bases" in input_df.columns and " 3' Random Adapter Bases" in input_df.columns:
+        # print("eo")
+        input_df["5' Random Adapter Bases"] = input_df["5' Random Adapter Bases"].astype(str)
+        input_df[" 3' Random Adapter Bases"] = input_df[" 3' Random Adapter Bases"].astype(str)
+        input_df["Random Adapter Bases"] = input_df["5' Random Adapter Bases"].str.cat(input_df[" 3' Random Adapter Bases"], sep=" - ")
+        # print(input_df["5'-3' Random Adapter Bases"])
+    to_keep = ["Input File", "taxon ID","Species","short species name","protocol","adapter","Random Adapter Bases"]
+    # to_keep = ["Input File", "taxon ID","Species","short species name","protocol","adapter","5' Random Adapter Bases",]
+               # " 3' Random Adapter Bases"]
     keep = set(to_keep).intersection(list(input_df.columns))
+    # print(keep)
+    vals_dict = pars2dict(input_df)
     if True:
         if "Input File" in keep:
             headers["Input File"] = {
@@ -190,7 +200,7 @@ def par_table(input_file):
         #     }
         if "Species" in keep:
             headers["Species"] = {
-                'title': "Species",
+                'title': "Scientific species name",
                 # 'description': 'Total number of reads sequenced',
                 # 'is_int': True
             }
@@ -209,24 +219,26 @@ def par_table(input_file):
             }
         if "adapter" in keep:
             headers["adapter"] = {
-                'title': "adapter",
+                'title': "detected adapter",
                 # 'description': 'Total number of reads sequenced',
                 # 'is_int': True
             }
-        if "5' Random Adapter Bases" in keep:
-            headers["5' Random Adapter Bases"] = {
-                'title': "5' Random <br> Adapter Bases",
+        if "Random Adapter Bases" in keep:
+            # print("eee")
+            headers["Random Adapter Bases"] = {
+                'title': "Random Adapter <br> Bases (5' - 3')",
                 # 'description': 'Total number of reads sequenced',
-                'is_int': True
+                # 'is_int': True
             }
-        if " 3' Random Adapter Bases" in keep:
-            headers[" 3' Random Adapter Bases"] = {
-                'title': "3' Random <br> Adapter Bases",
-                # 'description': 'Total number of reads sequenced',
-                'is_int': True
-            }
+        # print(headers.keys())
+        # if " 3' Random Adapter Bases" in keep:
+        #     headers[" 3' Random Adapter Bases"] = {
+        #         'title': "3' Random <br> Adapter Bases",
+        #         # 'description': 'Total number of reads sequenced',
+        #         'is_int': True
+        #     }
     # val_tab = table.plot(vals_dict)
-    val_tab = table.plot(vals_dict, headers)
+    val_tab = table.plot(vals_dict, headers, hide_bar=True)
     return val_tab
 
 def basic_table(val_df,perc_df, columns):
@@ -525,7 +537,7 @@ def tables_complex(val_df, perc_df, columns):
                 'title': '% top miRNA',
                 'description': 'Percentage of reads assigned to the most expressed miRNA',
                 'scale': "quart",
-                'col_dict': gen_col_dict(columns_dict.get("miRNAexprTop1"), "desc"),
+                'col_dict': gen_col_dict(columns_dict.get("miRNAexprTop1"), "asc"),
                 'bar_dict': columns_dict.get("miRNAexprTop1"),
                 'suffix': '%',
             }
@@ -534,7 +546,7 @@ def tables_complex(val_df, perc_df, columns):
                 'title': '% top5 miRNA',
                 'description': 'Percentage of reads assigned to the 5 most expressed miRNA',
                 'scale': "quart",
-                'col_dict': gen_col_dict(columns_dict.get("miRNAexprTop5"), "desc"),
+                'col_dict': gen_col_dict(columns_dict.get("miRNAexprTop5"), "asc"),
                 'bar_dict': columns_dict.get("miRNAexprTop5"),
                 'suffix': '%',
             }
@@ -543,7 +555,7 @@ def tables_complex(val_df, perc_df, columns):
                 'title': '% top20 miRNA',
                 'description': 'Percentage of reads assigned to the 20 most expressed miRNA',
                 'scale': "quart",
-                'col_dict': gen_col_dict(columns_dict.get("miRNAexprTop20"), "desc"),
+                'col_dict': gen_col_dict(columns_dict.get("miRNAexprTop20"), "asc"),
                 'bar_dict': columns_dict.get("miRNAexprTop20"),
                 'suffix': '%',
             }
@@ -863,7 +875,7 @@ def length_tab(val_df,perc_df, columns):
                 'title': 'miRNA mean length',
                 'description': 'Mean of miRNA mapping reads read length',
                 'scale': "quart",
-                'col_dict': gen_col_dict(columns_dict["meanMiRNAlength"], "desc"),
+                'col_dict': gen_col_dict(columns_dict["meanMiRNAlength"], "neut"),
                 'bar_dict': columns_dict["meanMiRNAlength"],
                 # 'suffix': '%',
             }
@@ -886,7 +898,7 @@ def length_tab(val_df,perc_df, columns):
                 'title': 'miRNA length mode',
                 'description': 'miRNA length mode',
                 'scale': "quart",
-                'col_dict': gen_col_dict(columns_dict["modeMiRNAlength"], "desc"),
+                'col_dict': gen_col_dict(columns_dict["modeMiRNAlength"], "neut"),
                 'bar_dict': columns_dict["modeMiRNAlength"],
                 'is_int': True
                 # 'suffix': '%',
@@ -899,7 +911,7 @@ def length_tab(val_df,perc_df, columns):
                 'title': 'skewness',
                 'description': 'skewness read length distribution',
                 'scale': "quart",
-                'col_dict': gen_col_dict(columns_dict["skewnessMiRNAlength"], "desc"),
+                'col_dict': gen_col_dict(columns_dict["skewnessMiRNAlength"], "neut"),
                 'bar_dict': columns_dict["skewnessMiRNAlength"],
                 # 'suffix': '%',
             }
@@ -908,7 +920,7 @@ def length_tab(val_df,perc_df, columns):
                 'title': '|skewness|',
                 'description': 'absolute read length distribution skewness',
                 'scale': "quart",
-                'col_dict': gen_col_dict(columns_dict["absskewnessMiRNAlength"], "desc"),
+                'col_dict': gen_col_dict(columns_dict["absskewnessMiRNAlength"], "asc"),
                 'bar_dict': columns_dict["absskewnessMiRNAlength"],
                 # 'suffix': '%',
             }

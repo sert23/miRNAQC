@@ -41,7 +41,18 @@
                  {
                      element: "#first_input",
                      title: "Input files",
-                     content: "You can analyse as many input reads files as you want.",
+                     content: "This is the input box. There are 3 ways to submit your input read files: <ul>" +
+                         "<li>Upload a reads file</li><li>Provide a link to a reads file</li><li>Provide an accession for a SRA run</li>",
+
+                     {#content: "You can analyse as many input reads files as you want.",#}
+                     placement: "bottom",
+                     backdrop: true,
+                 },
+                 {
+                     element: "#first_input",
+                     title: "Input files",
+                     content: "You can submit as many reads files as you want combining the 3 input methods",
+                     {#content: "You can analyse as many input reads files as you want.",#}
                      placement: "bottom",
                      backdrop: true,
                  },
@@ -74,7 +85,26 @@
                      },
                      {#onNext: $("#fileupload").click(),#}
                  },
+                    {
+                     element: "#links_tour",
+                     title: "Links to fastq files",
+                     placement: "bottom",
+                     content: "You can also submit samples as links (URLs) to fastq files.",
+                     orphan: true,
+                     backdrop: true,
+                    onNext: function (tour) {
+                         $('#id_url_input').val("https://example.com/your_file.fastq");
+                     }
+                 },
+                 {
+                     element: "#links_tour",
+                     title: "Links to fastq files",
+                     placement: "bottom",
+                     content: "Provide as many file links as needed and separate them by commas",
+                     orphan: true,
+                     backdrop: true,
 
+                 },
                  {
                      element: "#div_id_sra_input",
                      title: "SRA sample accessions",
@@ -95,6 +125,7 @@
                      orphan: true,
                      backdrop: true,
                  },
+
                  {
                      element: "#advance_plus",
                      title: "Advanced parameters",
@@ -327,27 +358,8 @@
 
                         </div>
                     <div class="panel-body">
-                        <div class="row" id="sra_tour">
-                            <div class="col-lg-12">
-                                <button id="next_button" onclick="tour.next();" style="display: none;" > click me</button>
 
-
-
-
-{#                                  <span> &nbsp; </span> or <span> &nbsp; </span>#}
-
-
-
-                                <div id="div_id_sra_input" class="control-group"> <label for="id_sra_input" class="control-label ">
-                               <b> Provide comma-separated SRA IDs</b>
-                            </label>  <input type="text" name="sra_input" class="form-control textinput textInput" id="id_sra_input" />
-                                    <input type="hidden" id="jobId" name="jobId" value="{{ jobID }}">
-                                </div>
-                                <br>
-{#                                <p></p>#}
-{#                                <p></p>#}
-{#                                <p></p>#}
-                                <div class="row">
+                        <div class="row">
                                     <div class="col-lg-6">
                                         <button id="upload_button" type="button" class="btn btn-primary js-upload-photos">
                                         <i class="fa fa-upload"></i> Upload files
@@ -367,6 +379,41 @@
 
 
                                 </div>
+                        <p></p>
+                        <div class="row" id="links_tour">
+                                    <div class="col-lg-12">
+                                        <div class="control-group"> <label for="id_sra_links" class="control-label ">
+                               <b> Provide comma-separated links to files</b>
+                            </label>
+
+
+                                        <textarea id='id_url_input' name="url_input" class='autoExpand form-control' rows='1' data-min-rows='1'
+                                                  placeholder=''></textarea>
+                                    </div>
+                                </div>
+                                </div>
+                        <p></p>
+                        <div class="row" id="sra_tour">
+                            <div class="col-lg-12">
+                                <button id="next_button" onclick="tour.next();" style="display: none;" > click me</button>
+
+
+
+
+{#                                  <span> &nbsp; </span> or <span> &nbsp; </span>#}
+
+
+
+                                <div id="div_id_sra_input" class="control-group"> <label for="id_sra_input" class="control-label ">
+                               <b> Provide comma-separated SRA IDs</b>
+                            </label>  <input type="text" name="sra_input" class="form-control textinput textInput" id="id_sra_input" />
+                                    <input type="hidden" id="jobId" name="jobId" value="{{ jobID }}">
+                                </div>
+
+{#                                <p></p>#}
+{#                                <p></p>#}
+{#                                <p></p>#}
+
 
 
 
@@ -393,7 +440,7 @@
 
                             </div>
                         </div>
-                        <br>
+{#                        <br>#}
 
 
 

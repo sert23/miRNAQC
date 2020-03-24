@@ -129,30 +129,29 @@ def plot_percentiles(input_df=None,input_file=None, scale=None, tag=None):
         unique_percentiles = set(input_df.iloc[:, 1].values)
 
         step = perc_df.iloc[:, 0].max()/float(50)
-
-
         for p in unique_percentiles:
             sub_df = input_df.loc[(input_df.iloc[:, 1] ==p)]
             x = p
             # print(perc_df.columns)
             old_y = perc_df.loc[(perc_df.iloc[:, 0] ==p)].value.values[0]
             y = old_y
-            if scale == "log":
-                try:
-                    y = math.log10(y)
-                    # print("hehe")
-                except:
-                    y = 0
+            # if scale == "log":
+            #     try:
+            #         #y = math.log10(y)
+            #         print("hehe")
+            #     except:
+            #         y = 0
             # print(input_df.columns)
+            print(y)
             # text = "<br>".join(sub_df.iloc[:, 0].values )
-            text = "Percentile " + str(int(p)) + ":<br> "  + str(sub_df.shape[0]) + " samples"
+            # text = "Percentile " + str(int(p)) + ":<br> "  + str(sub_df.shape[0]) + " samples"
             new_line = tick +"<br>"
             # new_line = "%" +"<br>"
-            hover ="Percentile " + str(int(p)) + ":<br> " + new_line.join(sub_df["hover"].values)+tick
+            hover = new_line.join(sub_df["hover"].values)+tick
             trace = go.Scatter(
                 name="Percentile " + str(int(p)),
                 x=[x],
-                y=[y+step],
+                y=[y],
                 marker=dict(
                 color="#1f77b4"),
                 # text= [hover]),
