@@ -27,12 +27,308 @@
              steps: [
                  {
                      element: "#tour_test",
-                     title: "Launching mirnaQC",
+                     title: "mirnaQC results page",
                      placement: "bottom",
-                     content: "Welcome to mirnaQC launching page. Let us guide you on how to launch your jobs.",
+                     content: "Welcome to mirnaQC results page. Let us guide you on how to explore quality features.",
                      orphan: true,
                      backdrop: true,
-                 },    ]
+                 },
+                 {
+                     element: "#top_header",
+                     title: "mirnaQC results page",
+                     {#container: "page-header",#}
+                     placement: "bottom",
+                     content: "First of all, have a look at the structure of the page. " +
+                         "It's divided in sections and each section groups several related quality parameters.",
+                     orphan: true,
+                     {#backdrop: true,#}
+                 },
+                 {
+                     element: "#job_id_header",
+                     title: "Unique job ID",
+                     {#container: "page-header",#}
+                     placement: "bottom",
+                     content: "Each multiQC job has an unique ID. You can bookmark this page to come back to it or share " +
+                         "the link with a colleague. Results will be removed after 2 weeks.",
+                     orphan: true,
+                     backdrop: true,
+                 },
+                 {
+                     element: "#parameters_header",
+                     title: "Job parameters",
+                     {#container: "page-header",#}
+                     placement: "bottom",
+                     content: "Clicking this button will display species and protocol used to process samples. " +
+                         "It is important to check that inferred or provided parameters are correct for every job.",
+                     orphan: true,
+                     backdrop: true,
+                     onNext: function (tour) {
+                         $("#parameters_click").click();
+                     }
+                 },
+                 {
+                     element: "#parameters_panel",
+                     title: "Job parameters",
+                     {#container: "page-header",#}
+                     placement: "bottom",
+                     content: "Once the table has been displayed you can check parameters for each sample in the job.",
+                     orphan: true,
+                     backdrop: true,
+                     {#onNext: function (tour) {#}
+                     {#    $("#advanced_panel").show();#}
+                     {# }#}
+                 },
+                {
+                     element: "#myTab",
+                     title: "Sections",
+                     {#container: "page-header",#}
+                     placement: "top",
+                     content: "Using these tabs you can navigate all sections. Let's have a look at the <b>Basic Statistics</b> section.",
+                     orphan: true,
+                     backdrop: true,
+                     {#onNext: function (tour) {#}
+                     {#    $("#advanced_panel").show();#}
+                     {# }#}
+                 },
+                 {
+                     element: "#basic_section",
+                     title: "Basic Statistics",
+                     {#container: "page-header",#}
+                     placement: "bottom",
+                     content: "This section will point out the most common and important quality issues in miRNAseq libraries.",
+                     orphan: true,
+                     backdrop: true,
+                     {#onNext: function (tour) {#}
+                     {#    $("#advanced_panel").show();#}
+                     {# }#}
+                 },
+                 {
+                     element: "#basic_section",
+                     title: "Basic Statistics",
+                     {#container: "page-header",#}
+                     placement: "bottom",
+                     content: "All sections have a table like this one. You can mouse over column headers" +
+                         " to see a description of that parameter. Clicking on headers will sort the rows.",
+                     orphan: true,
+                     backdrop: true,
+
+                 },
+                 {
+                     element: "#basic_section",
+                     title: "Absolute values/percentiles",
+                     {#container: "page-header",#}
+                     placement: "bottom",
+                     content: "By default, absolute values are displayed in the table. mirnaQC also calculates" +
+                         " the position of each value in a distribution of samples to provide context to the interpretation. ",
+                     orphan: true,
+                     backdrop: true,
+
+                 },
+
+
+                 {
+                     element: "#basic_toggle",
+                     title: "toggling absolute/percentiles",
+                     {#container: "page-header",#}
+                     placement: "bottom",
+                     content: "You can use this button to change if values should be displayed" +
+                         " as percentiles or absolute numbers.",
+                     orphan: true,
+                     backdrop: true,
+
+                 },
+                 {
+                     element: "#quartiles_bar",
+                     title: "Quartile-based color code",
+                     container: "#basic_section",
+                     {#container: "page-header",#}
+                     placement: "bottom",
+                     content: "Each cell on the table is also filled using a quartile-based color code. The most desired quartile is"+
+                     " colored green and the least desired is shown in red.",
+                     orphan: true,
+                     backdrop: true,
+
+                 },
+                 {
+                     element: "#basic_section",
+                     title: "Quartile-based color code",
+                     {#container: "page-header",#}
+                     placement: "bottom",
+                     content: "The color code can help to quickly identify potential issues. The size of the bar represents the" +
+                         " percentiles of the values in the distribution.",
+                     orphan: true,
+                     backdrop: true,
+
+                 },
+                 {
+                     element: "#hm_button",
+                     title: "Heatmap",
+                     {#container: "page-header",#}
+                     placement: "bottom",
+                     content: "This information can also be displayed in a heatmap to have a quick overview of the quality.",
+                     orphan: true,
+
+                     backdrop: true,
+                    onNext: function (tour) {
+                         $("#hm_button").click();
+                         $("#basic_heatmap").show();
+                     }
+                 },
+                 {
+                     element: "#add_basic_hm",
+                     title: "Loading Heatmap",
+                     container: "page-header",
+                     placement: "bottom",
+                     duration:1000,
+                     content: "Loading Heatmap...",
+                     orphan: true,
+                     {#backdrop: true,#}
+                     {#onShow:"$('#basic_heatmap').modal('show');",#}
+
+                  },
+                 {
+                     element: "#add_basic_hm",
+                     title: "Heatmap",
+                     {#container: "page-header",#}
+                     placement: "top",
+                     {#duration:2000,#}
+                     content: "Samples are presented on the Y axis and different parameters on the X axis. " +
+                         "Cells are colored using the percentile.",
+                     orphan: true,
+                     {#backdrop: true,#}
+                     {#onShow:"$('#basic_heatmap').modal('show');",#}
+                     onPrev: function (tour) {
+                         $("#hm_button").click();
+                         $("#basic_heatmap").show();
+                     },
+                     onNext: function (tour) {
+                         $("#close_button").click();
+                     },
+                     prev:12
+                 },
+
+                 {
+                     element: "#seep_button",
+                     title: "Percentiles plot",
+                     {#container: "page-header",#}
+                     placement: "bottom",
+                     content: "Quality parameters can also be visualised in the context of their distribution.",
+                     orphan: true,
+
+                     backdrop: true,
+                     onPrev: function (tour) {
+                         $("#close_button").click();
+                     },
+                     onNext: function (tour) {
+                         $("#seep_button").click();
+                     },
+                 },
+                 {
+                     element: "#add_basic_perc",
+                     title: "Loading Percentiles",
+                     container: "page-header",
+                     placement: "bottom",
+                     duration:1000,
+                     content: "Loading Percentiles...",
+                     orphan: true,
+                     prev:-1,
+                     {#backdrop: true,#}
+                     {#onShow:"$('#basic_heatmap').modal('show');",#}
+
+                  },
+
+                 {
+                     element: "#add_basic_perc",
+                     title: "Percentiles plot",
+                     {#container: "page-header",#}
+                     placement: "top",
+                     content:  "Since variables are not normally distributed (i.e. 25th percentile is not as far " +
+                         "from the median in every variable) it can be very useful to explore their distribution.",
+                     orphan: true,
+
+                     {#backdrop: true,#}
+                     prev:15,
+                     onPrev: function (tour) {
+                         $("#close_button").click();
+                     },
+
+                 },
+                 {
+                     element: "#perc_sel",
+                     title: "Variable selector",
+                     {#container: "page-header",#}
+                     placement: "bottom",
+                     content: "All variables available in the different sections can be selected. The scale can also be " +
+                         "set to logarithmic (when the distribution range is very high this will avoid compression of the smaller " +
+                         "values to the bottom of the chart).",
+                     orphan: true,
+                     {#backdrop: true,#}
+                     onNext: function (tour) {
+                         {#$("#close_button2").click();#}
+                         {#$("#yield_button").click();#}
+                         $("#basic_percentiles").hide();
+                         {#$('#your-modal-id').modal('hide');#}
+                         $('body').removeClass('modal-open');
+                         $('.modal-backdrop').remove();
+                         $("#yield_button").click();
+
+                     },
+                 },
+                 {
+                     element: "#myTab",
+                     template: "",
+                     duration: 500,
+                     backdropContainer: '#page-content-wrapper',
+                     onNext: function (tour) {
+                         {#$("#close_button2").click();#}
+                         $("#yield_button").click();
+                         {#$("#basic_percentiles").hide();#}
+                     },
+                      },
+                 {
+                     element: "#myTab",
+                     title: "Sections",
+                     container: '#page-content-wrapper',
+                     placement: "bottom",
+                     content: "Remember you can use these tabs to navigate all the different sections.",
+                     orphan: true,
+                     backdrop: true,
+                     prev:-1,
+                     onPrev: function (tour) {
+                         {#$("#close_button2").click();#}
+                         $("#basic_button").click();
+                         {#$("#basic_percentiles").hide();#}
+                     },
+                     {#onNext: function (tour) {#}
+                     {#    $("#advanced_panel").show();#}
+                     {# }#}
+                 },
+                 {
+                     element: "#yield_section",
+                     title: "Sequencing Yield",
+                     {#container: "page-header",#}
+                     placement: "bottom",
+                     container: '#general_stats',
+                     {#animation:false,#}
+                     content: "Finally, we show how the <b>Sequencing Yield</b> section looks. All sections group different" +
+                         " parameters but the appearance is very similar.",
+                     {#orphan: true,#}
+                     backdrop: true,
+                 },
+                 {
+                     element: "#tour_test",
+                     title: "End of the tutorial",
+                     placement: "bottom",
+                     template: "<div class='popover tour'>   <div class='arrow'></div>   <h3 class='popover-title'></h3>"+
+                             "   <div class='popover-content'></div>  <div class='popover-navigation'> "+
+                            "<button class='btn btn-default'>Sample results</button>" +
+                            "<span> &nbsp;&nbsp;&nbsp;&nbsp;</span>    "+
+                            "<button class='btn btn-default' >New Job</button>   </div> </div>",
+                     content: "This is the end of the tour. If you still have any doubts please contact us.",
+                     orphan: true,
+                     backdrop: true,
+                 },
+             ]
          });
          // Clear bootstrap tour session data
             localStorage.removeItem('tour_current_step');
@@ -40,6 +336,9 @@
 
          // Initialize the tour
          tour.init();
+
+            $("#hm_button").click();
+            $("#advanced_panel").hide();
 
          // Start the tour
          tour.start();
@@ -81,7 +380,7 @@
 
 <div class="row">
             <div class="col-lg-12">
-                <h3 class="page-header">Showing results for job ID: <a href="{{ absolute_url }}{{ result_url }}" class="alert-link">{{ jobID }}</a> </h3>
+                <h3 id="job_id_header" class="page-header">Showing results for job ID: <a href="{{ absolute_url }}{{ result_url }}" class="alert-link">{{ jobID }}</a> </h3>
 
 </div>
             </div>
@@ -102,19 +401,19 @@
     <div class="row">
         <div class="col-lg-6">
             <div class="panel panel-primary">
-            <div class="panel-heading">
+            <div class="panel-heading" id="parameters_header">
                 <h4 class="panel-title">
-                    <a data-toggle="collapse" href="#Parameters" >Parameters</a>
+                    <a id="parameters_click" data-toggle="collapse" href="#Parameters" >Parameters</a>
                 </h4>
             </div>
             </div>
         </div>
             <!-- .panel-heading -->
             <div id="Parameters" class="panel-collapse collapse">
-                <div class="panel-body">
+                <div class="panel-body" >
 
-                <div class="row">
-                    <div class="col-lg-12">
+                <div class="row" >
+                    <div class="col-lg-12" id="parameters_panel">
                         <div>
                         {{ par_tab|safe }}
                             </div>
@@ -134,9 +433,9 @@
         <br>
         <ul class="nav nav-pills" id="myTab">
 
-            <li class="active"><a href="#Basic" data-toggle="tab">Basic Statistics</a>
+            <li class="active"><a id="basic_button" href="#Basic" data-toggle="tab">Basic Statistics</a>
             </li>
-            <li ><a href="#Yield" data-toggle="tab">Sequencing yield</a>
+            <li ><a id="yield_button" href="#Yield" data-toggle="tab">Sequencing yield</a>
             </li>
             <li ><a href="#Complex" data-toggle="tab">Library complexity</a>
             </li>
@@ -159,7 +458,7 @@
 
                 <div class="tab-pane in fade active" id="Basic">
 
-                    <div class="col-lg-12">
+                    <div class="col-lg-12" id="basic_section">
                         {% include "results/basic.html" %}
 
                         </div>
@@ -170,10 +469,10 @@
                     </div>
                 </div>
 
-                <div class="tab-pane fade" id="Yield">
-
+                <div class="tab-pane fade" id="Yield" >
+                    <div class="col-lg-12" id="yield_section">
                     {% include "results/seq_yield.html" %}
-
+                    </div>
                 </div>
 
                 <div class="tab-pane fade" id="Complex">

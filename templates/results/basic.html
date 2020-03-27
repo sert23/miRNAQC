@@ -46,13 +46,13 @@
     </style>
 
                         <h2>Basic Statistics</h2>
-                        <div class="btn-group hc_switch_group">
+                        <div class="btn-group hc_switch_group" id="basic_toggle">
                         <button class="btn btn-default btn-sm active" id="show_basic_vals">Display values</button>
                         <button class="btn btn-default btn-sm " id="show_basic_perc">Display percentiles</button>&nbsp;
                             <span style="font-size: 26px; color:#3889ac; "> <i class="far fa-clickable fa-question-circle" onclick="$('#percentiles').modal('show');"> </i> </span>
                         </div> <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
-                        <button class="btn btn-success" type="button" onclick="$('#basic_heatmap').modal('show');"> Show Heatmap</button>
-                        <button class="btn btn-info" type="button" onclick="$('#basic_percentiles').modal('show');"> See Percentiles </button>
+                        <button class="btn btn-success" id="hm_button" type="button" onclick="$('#basic_heatmap').modal('show');"> Show Heatmap</button>
+                        <button class="btn btn-info" id="seep_button" type="button" onclick="$('#basic_percentiles').modal('show');"> See Percentiles </button>
 
                         <br>
                         <br>

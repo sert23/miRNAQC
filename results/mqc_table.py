@@ -303,6 +303,7 @@ def make_table(dt, hide_bar=None):
 
         if not hide_bar:
             html += """ <div class="col-sm-2">
+                <div id="quartiles_bar">
                 <div class="progress">
                   <div class="progress-bar progress-bar-q1" style="width: 25%">
                     <span class="sr-only">35% Complete (success)</span> Q1
@@ -311,7 +312,7 @@ def make_table(dt, hide_bar=None):
                   <div class="progress-bar progress-bar-q2" style="width: 25%">
                     <span class="sr-only">35% Complete (success)</span> Q2
                   </div>
-    
+                
                   <div class="progress-bar progress-bar-q3" style="width: 25%">
                     <span class="sr-only">35% Complete (success)</span> Q3
                   </div>
@@ -319,6 +320,7 @@ def make_table(dt, hide_bar=None):
                   <div class="progress-bar progress-bar-q4" style="width: 25%">
                     <span class="sr-only">35% Complete (success)</span> Q4
                   </div>
+                </div>
                 </div>
                          </div>
                          </div>
