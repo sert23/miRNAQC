@@ -4,8 +4,20 @@
     Tutorial
 {% endblock %}
 {% block text %}
-<p> We have prepared a step by step tutorial on how to launch mirnaQC jobs. You can see it <a href="{% url 'tour_start' %}">here</a></p>
+<p> We have prepared two step-by-step tutorials to help users launch mirnaQC jobs and interpret the output page:</p>
+<br>
+<p></p>
+
+    <a href="{% url 'tour_start' %}"><button type="button" class="btn btn-success">Launching Tutorial</button></a>
+    <a href="{% url 'tour_result' %}/SXYMT0BZHA5J86M"><button type="button" class="btn btn-success" style="float: right;">Results Tutorial</button></a>
 
 
+    {#    <ul>#}
+{#        #}
+{#    #}
+{#    <li>You can find the <a href="{% url 'tour_start' %}"><b>"How to launch tutorial" </b>here</a></li>#}
+{#        <li>You can find the <a href="{% url 'tour_result' %}/SXYMT0BZHA5J86M"><b>results tutorial </b>here</a></li>#}
+{##}
+{#    </ul>#}
 
 {% endblock %}
