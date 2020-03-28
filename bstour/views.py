@@ -137,4 +137,6 @@ class tourResuls(FormView):
 
         # print("hey")
         # return render(self.request, 'test_table.html', context)
+        context["path_to_sample_results"] = SUB_SITE + "/result/T227DTB9FS2ZBU9"
+        context["path_to_start"] = SUB_SITE
         return render(self.request, 'tour/results.html', context)
