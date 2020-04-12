@@ -1,0 +1,28 @@
+{% extends "Messages/modal_xl.html" %}
+{% block id %}res_warns{% endblock %}
+{% block title %}
+    Errors and warnings
+{% endblock %}
+{% block text %}
+
+    <div class="panel panel-danger">
+            <div class="panel-heading">
+                <h4 class="panel-title" style="display: inline;">
+                     <strong>ERROR LOG</strong>
+                </h4>
+
+            </div>
+            <div class="panel-body">
+                <pre style=" white-space: nowrap; overflow-y: hidden">
+                    {{ warns|safe }}
+                </pre>
+
+
+
+
+
+            </div>
+                </div>
+
+{% endblock %}
+

@@ -36,21 +36,15 @@
         <div class="row">
             <div class="col-lg-12">
 
-                <div class="panel panel-default">
+                <div class="panel panel-danger">
             <div class="panel-heading">
                 <h4 class="panel-title" style="display: inline;">
-                    Your results will be available on this link <span style="color:#3889ac; "><a id="res_url" href="{{ result_url }}">{{ absolute_url }}{{ result_url }}</a></span>
+                     <strong>ERROR</strong>: There was some error with your job, please report it indicating the jobID or link to the job.
                 </h4> <span> &nbsp; &nbsp; &nbsp;</span><button type="button" class=" btn-default btn-sm"  onclick="copyToClipboard('#p1')" style="display: inline;">
             <span class="glyphicon glyphicon-copy"></span> Copy to clipboard
         </button>
             </div>
             <div class="panel-body">
-                {% if last_update %}
-                <div class="alert alert-danger alert-dismissible">
-                    <i class="fa fa-lg fa-exclamation-triangle"></i> <strong>Warning</strong>: No progress detected for your job in 3h. Job is likely stuck,
-                    please report it including jobID <strong>{{ jobID }}</strong>.
-                </div>
-                {% endif %}
                 <pre style=" white-space: nowrap; overflow-y: hidden">
                     {{ message|safe }}
                 </pre>

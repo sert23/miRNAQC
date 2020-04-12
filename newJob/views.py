@@ -10,6 +10,8 @@ import shutil
 from .models import Species
 import subprocess
 from django.urls import reverse_lazy
+from datetime import datetime, timedelta
+
 
 # Create your views here.
 
@@ -145,11 +147,14 @@ def parse_web_log(log_path):
     tagged = ""
     if os.path.exists(log_path):
         with open(log_path,"r") as log_file:
+
             for line in log_file.readlines():
                 if not "SUCCESS: java -classpath" in line:
                     if "SUCCESS:" in line:
                         rem,keep = line.rstrip().split("SUCCESS:")
                         tagged = tagged + keep +"<br>"
+                    elif "WEB:" in line:
+                        tagged = tagged + line + "<br>"
                     elif "ERROR:" in line:
                         tagged = tagged + line + "<br>"
                     if "SUCCESS: Analysis finished" in line:
@@ -160,6 +165,38 @@ def parse_web_log(log_path):
         return None,finished
 
 
+def parse_error_log(log_path):
+
+    tagged = ""
+    if os.path.exists(log_path):
+        with open(log_path,"r") as log_file:
+
+            for line in log_file.readlines():
+                if not "SUCCESS: java -classpath" in line:
+                    if "WEB:" in line:
+                        tagged = tagged + line + "<br>"
+                    elif "ERROR:" in line:
+                        tagged = tagged + line + "<br>"
+        return tagged
+    else:
+        return None
+
+def get_last_time(log_path):
+    if os.path.exists(log_path):
+        with open(log_path,"r") as log_file:
+            for line in reversed(log_file.readlines()):
+                if line.startswith("20"):
+                    row = line.split(" ")
+                    date_str = row[0]
+                    time_str = row[1].split(".")[0]
+                    datetime_object = datetime.strptime(date_str + " "+time_str, "%Y-%m-%d %H:%M:%S")
+                    time_now = datetime.now()
+                    if time_now > datetime_object + timedelta(hours=3):
+                        difference = time_now - datetime_object
+                        t = str(difference)
+                        return t
+                    else:
+                        return None
 
 
 class checkStatus(FormView):
@@ -185,7 +222,17 @@ class checkStatus(FormView):
             if finished:
                 # print("pos")
                 return redirect(reverse_lazy("result_page") + "/" + folder)
+            elif "WEB" in message:
+                e_message = parse_error_log(logfile)
+                context["message"] = e_message.replace("WEB: ","")
+                return render(self.request, 'error_page.html', context)
+
             else:
+                context["last_update"] = get_last_time(logfile)
+                # if last_update:
+                #     context["last_upda"] = True
+                # else:
+                #     context["last_upda"] = False
                 return render(self.request, 'status.html', context)
         else:
             context["message"] = "Your Job is in queue"

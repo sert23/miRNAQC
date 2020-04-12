@@ -215,30 +215,51 @@
                 <br>
                 <li class="nav-item">
         <a class="nav-link" href="{% url 'home' %}">
-           <i class="far fa-lg fa-chart-bar"></i>
+           <i class="fa fa-lg fa-file-export"></i>
 {#          <i class="fas fa-fw fa-chart-area"></i>#}
           <span>Run new job</span></a>
+      </li>
+                <li class="nav-item">
+        <a class="nav-link" href="https://arn.ugr.es/mirnaqc/result/T227DTB9FS2ZBU9">
+           <i class="far fa-lg fa-chart-bar"></i>
+{#          <i class="fas fa-fw fa-chart-area"></i>#}
+          <span>Sample results</span></a>
       </li>
 
         <li class="nav-item">
         <a class="nav-link" href="#" onclick="$('#Tutorial').modal('show');">
-           <i class="far fa-lg fa-file-alt"></i>
+           <i class="fa fa-lg fa-chalkboard-teacher"></i>
 {#          <i class="fas fa-fw fa-chart-area"></i>#}
           <span>Tutorial</span></a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="https://arn.ugr.es/mirqc_doc/" >
+           <i class="fa fa-lg fa-book"></i>
+{#          <i class="fas fa-fw fa-chart-area"></i>#}
+          <span>Documentation</span></a>
+      </li>
 
-        <li class="nav-item">
+
+       <li class="nav-item">
+        <a class="nav-link" href="#" onclick="$('#FAQs').modal('show');">
+           <i class="fa fa-lg fa-question-circle" ></i>
+{#          <i class="fas fa-fw fa-chart-area"></i>#}
+          <span>FAQs</span></a>
+      </li>
+
+
+       <li class="nav-item">
+        <a class="nav-link" href="#" onclick="$('#About').modal('show');">
+           <i class="fa fa-lg fa-search" ></i>
+{#          <i class="fas fa-fw fa-chart-area"></i>#}
+          <span>About mirnaQC</span></a>
+      </li>
+
+      <li class="nav-item">
         <a class="nav-link" href="#" onclick="$('#Contact').modal('show');">
            <i class="far fa-lg fa-envelope"></i>
 {#          <i class="fas fa-fw fa-chart-area"></i>#}
           <span>Contact us</span></a>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link" href="#" onclick="$('#About').modal('show');">
-           <i class="far fa-lg fa-question-circle" ></i>
-{#          <i class="fas fa-fw fa-chart-area"></i>#}
-          <span>About mirnaQC</span></a>
       </li>
             </ul>
         </div>
@@ -264,6 +285,7 @@
     {% include "Messages/base/contact.html" %}
     {% include "Messages/base/tutorial.html" %}
     {% include "Messages/base/percentiles.html" %}
+    {% include "Messages/base/FAQs.html" %}
         <!-- /#page-content-wrapper -->
 
     </div>

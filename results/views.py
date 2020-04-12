@@ -19,6 +19,23 @@ from newJob.views import parse_web_log
 with open(VAR_DICT_PATH) as json_file:
     var_dict = json.load(json_file)
 
+def parse_errors(log_path):
+
+    tagged = ""
+    if os.path.exists(log_path):
+        with open(log_path,"r") as log_file:
+            for line in log_file.readlines():
+                if "ERROR" in line:
+                    tagged = tagged + line + "<br>"
+                if "WEB:" in line:
+                    rem, keep = line.rstrip().split("WEB:")
+                    tagged = tagged + keep + "<br>"
+
+        return tagged
+    else:
+        return None
+
+
 
 # Create your views here.
 
@@ -419,6 +436,12 @@ class loadResults(FormView):
 
             #parameters
             context["par_tab"] = par_table(os.path.join(MEDIA_ROOT,folder,"query", "comparisons","summary_results.tsv"))
+
+            #errrors/warnings
+            context["warns"] = parse_errors(os.path.join(MEDIA_ROOT,folder,"query", "comparisons","summaryqc.log"))
+            print("hee")
+            print(context["warns"])
+            # print(parse_web_log(os.path.join(MEDIA_ROOT,folder,"query", "comparisons","summaryqc.log")))
 
             #read files into dfs
             val_df = pandas.read_csv(val_file, sep="\t")

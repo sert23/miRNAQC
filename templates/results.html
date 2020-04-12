@@ -81,6 +81,16 @@
             </div>
             </div>
         </div>
+
+        {% if warns %}
+{#        {% if True %}#}
+        <div class="col-lg-6">
+            <div class="alert alert-danger alert-dismissible">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+              <a href="#" class="alert-link" onclick="$('#res_warns').modal('show');">  <i class="fa fa-lg fa-exclamation-triangle"></i> <strong>Alert!</strong>: Some errors or warnings have been found. </a>
+                </div>
+        </div>
+        {% endif %}
             <!-- .panel-heading -->
             <div id="Parameters" class="panel-collapse collapse">
                 <div class="panel-body">
