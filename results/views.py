@@ -160,7 +160,7 @@ def plot_percentiles(input_df=None,input_file=None, scale=None, tag=None):
             #     except:
             #         y = 0
             # print(input_df.columns)
-            print(y)
+            # print(y)
             # text = "<br>".join(sub_df.iloc[:, 0].values )
             # text = "Percentile " + str(int(p)) + ":<br> "  + str(sub_df.shape[0]) + " samples"
             new_line = tick +"<br>"
@@ -275,7 +275,7 @@ def plot_heatmap(input_df=None):
     ticktext = ["Q1","Q2","Q3","Q4"]
     ticktext.reverse()
     dcolorsc = discrete_colorscale(bvals, colors)
-    print(dcolorsc)
+    # print(dcolorsc)
     perc_df = input_df
     basic_df = perc_df[to_keep]
     # z = np.random.randint(bvals[0], bvals[-1] + 1, size=(20, 20))
@@ -291,7 +291,7 @@ def plot_heatmap(input_df=None):
     quartiles.reverse()
     x = [var_dict.get(n).get("full_name") for n in basic_df.columns.values]
     basic_df = fix_scale(basic_df)
-    print(perc_df["sample"].values)
+    # print(perc_df["sample"].values)
     heatmap = go.Heatmap(x=x,
                          y=perc_df["sample"].values,
                          z=basic_df.values,
@@ -439,8 +439,8 @@ class loadResults(FormView):
 
             #errrors/warnings
             context["warns"] = parse_errors(os.path.join(MEDIA_ROOT,folder,"query", "comparisons","summaryqc.log"))
-            print("hee")
-            print(context["warns"])
+            # print("hee")
+            # print(context["warns"])
             # print(parse_web_log(os.path.join(MEDIA_ROOT,folder,"query", "comparisons","summaryqc.log")))
 
             #read files into dfs
@@ -493,6 +493,10 @@ class loadResults(FormView):
             # print(os.path.join(query_folder,"percentiles"))
             if os.path.exists(os.path.join(query_folder,"percentiles")):
                 context["perc_list"] = parse_perc_files(query_folder)
+
+            if os.path.exists((os.path.join(MEDIA_ROOT,folder,"query", "comparisons", "sampleSheet.tsv"))):
+                context["groups_button"] = True
+
             # t1,t2 = test_table()
             # context["test_table"] = t1
             # context["test_table2"] = t2

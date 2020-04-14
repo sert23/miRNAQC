@@ -51,9 +51,12 @@
                         <button class="btn btn-default btn-sm " id="show_basic_perc">Display percentiles</button>&nbsp;
                             <span style="font-size: 26px; color:#3889ac; "> <i class="far fa-clickable fa-question-circle" onclick="$('#percentiles').modal('show');"> </i> </span>
                         </div> <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
-                        <button class="btn btn-success" id="hm_button" type="button" onclick="$('#basic_heatmap').modal('show');"> Show Heatmap</button>
+                        <button class="btn btn-info" id="hm_button" type="button" onclick="$('#basic_heatmap').modal('show');"> Show Heatmap</button>
                         <button class="btn btn-info" id="seep_button" type="button" onclick="$('#basic_percentiles').modal('show');"> See Percentiles </button>
 
+                        {% if groups_button %}
+                        <button class="btn btn-info" id="seep_button" type="button" onclick="$('#group_bp').modal('show');"> Compare Groups </button>
+                        {% endif %}
                         <br>
                         <br>
 
@@ -67,6 +70,7 @@
                         </div>
             {% include "Messages/basic/heatmap.html" %}
             {% include "Messages/basic/percentiles.html" %}
+            {% include "Messages/basic/groups.html" %}
             {% include "Messages/basic/warnings.html" %}
 
 
@@ -137,3 +141,51 @@ $('#perc_sel').on('change', function (e) {
 
 </script>
 
+<script>
+
+    var loadBox = function(e) {
+
+        $.ajax({
+        url: '{% url "ajax_bp" %}',
+        data: {
+            "id" : "{{ jobID }}",
+            "variable" : $("#box_sel").val(),
+            "scale" : $("#box_sca").val(),
+            "comp_set": $("#comp_set").val(),
+            "disp_vals": $("#box_vals").val(),
+        },
+        dataType: 'json',
+        success: function (data) {
+
+            $("#add_basic_bp").html(data.plot);
+
+
+        }
+      });
+
+};
+
+    $('#group_bp').on('shown.bs.modal', function (e) {
+        {#alert($("#perc_sel").val());#}
+        loadBox();
+
+});
+
+
+    $('#box_sca').on('change', function (e) {
+        {#alert($("#perc_sel").val());#}
+        loadBox();
+
+    });
+
+    $('#box_sel').on('change', function (e) {
+        {#alert($("#perc_sel").val());#}
+        loadBox();
+
+    });
+    $('#box_vals').on('change', function (e) {
+        {#alert($("#perc_sel").val());#}
+        loadBox();
+        });
+
+</script>
