@@ -1,0 +1,91 @@
+{% extends "Messages/modal_xl.html" %}
+{% block id %}basic_pca{% endblock %}
+{% block title %}
+    Compare Groups
+{% endblock %}
+{% block text %}
+    <div class="row">
+{#    <div class="col-lg-2">#}
+{#        <div class="form-group">#}
+{#  <label >Select scale:</label>#}
+{#  <select class="form-control" id="box_sca">#}
+{##}
+{#        <option>Normal</option>#}
+{#        <option>log10</option>#}
+{##}
+{#  </select>#}
+{#</div>#}
+{#    </div>#}
+{#    <div class="col-lg-6"></div>#}
+
+    <div class="col-lg-2" >
+        <label >X axis:</label>
+        <select class="form-control" id="pca_x">
+        {% for p,pm in PCs %}
+{#        <option>{{ f }}</option>#}
+        <option value="{{ pm }}">PC {{ pm }}</option>
+    {% endfor %}
+
+  </select>
+    </div>
+        <div class="col-lg-2" >
+        <label >Y axis:</label>
+        <select class="form-control" id="pca_y">
+        {% for p,pm in PCs %}
+{#        <option>{{ f }}</option>#}
+        <option value="{{ pm }}"
+        {% if pm == 2 %}
+            selected="selected"
+        {% endif %}
+        >PC {{ pm }}</option>
+    {% endfor %}
+
+        <script>
+
+        </script>
+
+  </select>
+    </div>
+        <div class="col-lg-2" ></div>
+    <div class="col-lg-4">
+
+        <div class="form-group">
+  <label >Color by:</label>
+  <select class="form-control" id="pca_sel">
+    {% for f,name in perc_list %}
+{#        <option>{{ f }}</option>#}
+        <option value="{{ f }}">{{ name }}</option>
+    {% endfor %}
+  </select>
+</div>
+    </div>
+    <div class="col-sm-2">
+        <br>
+        <p></p>
+            <div class="progress">
+              <div class="progress-bar progress-bar-q1" style="width: 25%">
+                <span class="sr-only">35% Complete (success)</span> Q1
+              </div>
+
+              <div class="progress-bar progress-bar-q2" style="width: 25%">
+                <span class="sr-only">35% Complete (success)</span> Q2
+              </div>
+
+              <div class="progress-bar progress-bar-q3" style="width: 25%">
+                <span class="sr-only">35% Complete (success)</span> Q3
+              </div>
+
+              <div class="progress-bar progress-bar-q4" style="width: 25%">
+                <span class="sr-only">35% Complete (success)</span> Q4
+              </div>
+            </div>
+    </div>
+    </div>
+
+
+<div id="add_basic_pca">
+    <p>Calculating PCA...</p>
+</div>
+
+
+{% endblock %}

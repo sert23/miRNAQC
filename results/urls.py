@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from .views import testMulti, loadResults, ajax_heatmap, ajax_percentiles
-from .plots import ajax_boxplots
+from .plots import ajax_boxplots, ajax_PCA
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.conf import settings
@@ -28,6 +28,7 @@ urlpatterns = [
     url(r'^ajax_hm$', ajax_heatmap, name='ajax_hm'),
     url(r'^ajax_perc$', ajax_percentiles, name='ajax_perc'),
     url(r'^ajax_bp$', ajax_boxplots, name='ajax_bp'),
+    url(r'^ajax_pca$', ajax_PCA, name='ajax_pca'),
 
     url(r'[A-za-z0-9]+', loadResults.as_view()),
     url(r'', loadResults.as_view(), name="result_page"),

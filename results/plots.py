@@ -11,10 +11,45 @@ from random import randrange
 import json
 from collections import OrderedDict
 import numpy
+import scipy
+from sklearn.decomposition import PCA
+import pickle
+from .tables import get_quart_cols
 
 
 with open(VAR_DICT_PATH) as json_file:
     var_dict = json.load(json_file)
+
+def make_color_list(input_list, sense="asc"):
+    return [get_quart_cols(k,sense) for k in input_list]
+
+
+
+def makePCA(input_file,output_folder):
+
+    init_df = pandas.read_csv(
+        filepath_or_buffer=input_file,
+        sep='\t')
+    df_t = init_df.T
+    sample_names = df_t.index.values[1:]
+    df_t.columns = df_t.iloc[0]
+    df_t = df_t.drop(df_t.index[0])
+    X = df_t.iloc[:, 1:].values  # features
+    y = df_t.iloc[:, 0]
+    pca = PCA()
+    xt = pca.fit_transform(X)
+    print(xt)
+    to_plot = [item[[0, 1]] for item in xt]
+    labels = list(df_t.index)
+    d = {'PC1': numpy.array(to_plot)[:, 0], 'PC2': numpy.array(to_plot)[:, 1], 'groups': y, "labels": labels}
+    idf = pandas.DataFrame(data=d)
+    explained = pca.explained_variance_ratio_
+
+    with open(os.path.join(output_folder,"pca.pickle"), "wb") as fp:
+        pickle.dump(xt, fp)
+    with open(os.path.join(output_folder,"pca_perc.pickle"), "wb") as fp:
+        pickle.dump(explained, fp)
+
 
 def tick_cleaner(ticks, dmin=0.05):
     maxi = ticks[-1]
@@ -42,6 +77,12 @@ def make_group_dict(input_file):
         group_dict[g] = group_df[(group_df.group == g)]["sample"].values
 
     return group_dict
+
+def make_group_list(input_file):
+    group_df = pandas.read_csv(input_file, sep="\t")
+    groups = group_df.group.values
+    return list(groups)
+
 
 
 def plot_boxplots(input_df=None,input_file=None, scale=None, tag=None, disp="perc",groups_dict=None):
@@ -439,69 +480,83 @@ def plot_percentiles(input_df=None,input_file=None, scale=None, tag=None):
     div = plot(fig, show_link=False, auto_open=False, include_plotlyjs=False, output_type="div", config={'editable': True})
     return div
 
+# def plot_PCA(input_df=None,input_file=None, scale=None, tag=None, groups_dict=None):
+def plot_PCA(input_df, variance_R, tag, x_axis, y_axis):
+    alpha = 0.3
 
-def plot_boxplots2(input_df=None,input_file=None, scale=None, tag=None):
-    tick = ""
     tag_dict = var_dict.get(tag)
     if tag_dict:
         colorscale = tag_dict.get("color_scale")
         if tag_dict.get("is_percentage"):
-            tick = "%"
+            tick_su = "%"
+        else:
+            tick_su=""
     else:
         colorscale = None
-    if colorscale == "asc":
-        scale_list = ['rgb(164, 207, 99)'] * 26 + ['rgb(232, 213, 89)'] * 25 + ['rgb(251, 163,83)'] * 25 + [
-            'rgb(221,90,78)'] * 25
-    elif colorscale == "desc":
-        scale_list = ['rgb(221,90,78)'] * 26 + ['rgb(251, 163,83)'] * 25 + ['rgb(232, 213, 89)'] * 25 + [
-            'rgb(164, 207, 99)'] * 25
-    else:
-        scale_list = 101 * ["#1f77b4"]
 
-    perc_df = pandas.read_csv(input_file, sep="\t")
-    perc_df["bar_color"] = scale_list
-    data = [go.Box(name="percentile",
-                   x=[var_dict.get(tag).get("full_name")],
-                   y=perc_df.value.values,
-                   # marker=dict(color="blue"),
-                   hovertemplate="%{x}p: %{y}",
-                   showlegend=False
-                   )]
+    data = []
+    uniq_groups = pandas.unique(input_df.groups.values)
+    shapes = ["circle", "square", 'star-triangle-up', "diamond", "x"] * 5
+    for i,g in enumerate(uniq_groups):
+        k1 = input_df.loc[(input_df.groups == g)]
+
+        text = ["<b>Percentile</b>: {} <br><b>Value</b>: {}".format(round(row["percs"],2),round(row["vals"],2)) for ind,row in k1.iterrows()]
+        trace = dict(
+            type='scatter',
+            x=k1.PC1.values,
+            y=k1.PC2.values,
+            mode='markers',
+            name="",
+            hovertemplate=
+            '<b>Group</b>: ' + g +
+            '<br>%{text}',
+            text=text,
+            marker=dict(
+                # color=col,
+                symbol=shapes[i],
+                opacity=1,
+                size=15,
+                color=k1.colors.values,
+                line=dict(
+                    # color='rgba(217, 217, 217, 0.14)',
+                    color=k1.colors.values,
+                    width=0.5),
+                )
+        )
+        data.append(trace)
+
     layout = go.Layout(
-        # autosize=False,
-        # width=500,
-        # scene = dict(
-        #     annotations = [annoation],
-        title=var_dict.get(tag).get("full_name"),
-        # annotations=annotation,
-
         margin=go.layout.Margin(
-            l=200,
+            l=50,
             r=50,
             b=100,
             t=100,
             pad=4
         ),
+        showlegend=False,
+        title= "PCA from expression values colored by <br>" + var_dict.get(tag).get("full_name"),
+        font=dict(size=18),
+        # autosize=False,
+        # height=650,
+        # width=1150,
         xaxis=dict(
-            title="Percentiles"
+            automargin=True,
+            title='PC'+str(x_axis+1)+' (' + str(round(variance_R[x_axis] * 100, 2)) + "%)",
+            # tick0=0,
+            # dtick=2,
         ),
         yaxis=dict(
-            title=var_dict.get(tag).get("full_name"),
-            # type=scale,
-            # dtick = 1,
-            showexponent='all',
-            exponentformat='power',
-            ticksuffix=tick,
-            # tickformat=".2f",
-        ),
-
+            # type='log',
+            automargin=True,
+            # ticksuffix='%',
+            # tickprefix="   ",
+            title='PC'+str(y_axis+1)+' (' + str(round(variance_R[y_axis] * 100, 2)) + "%)",
+        )
     )
-    fig = go.Figure(data=data, layout=layout)
 
-    # fig.update_layout(autosize=False)
-    # div = plot(fig, show_link=False, auto_open=False, include_plotlyjs=False, output_type="div")
-    div = plot(fig, show_link=False, auto_open=False, include_plotlyjs=False, output_type="div",
-               config={'editable': True})
+    fig = dict(data=data, layout=layout)
+    # div = plot(fig, output_type="div", show_link=False, auto_open=False, include_plotlyjs=True)
+    div = plot(fig, show_link=False, auto_open=False, include_plotlyjs=False, output_type="div")
     return div
 
 def ajax_boxplots(request):
@@ -532,4 +587,69 @@ def ajax_boxplots(request):
 
     data["plot"] = plot_boxplots(perc_df, filepath, scale, variable, disp, group_dict)
     # data["plot"] = plot_boxplots()
+    return JsonResponse(data)
+
+def ajax_PCA(request):
+
+    folder = request.GET.get('id', None)
+    comparison = request.GET.get('comp_set', None)
+    query_folder = os.path.join(MEDIA_ROOT, folder, "query", "comparisons", comparison)
+    variable = request.GET.get('variable', None)
+
+    x_axis = int(request.GET.get('x_axis', None))-1
+    y_axis = int(request.GET.get('y_axis', None))-1
+
+    c_folder = os.path.join(MEDIA_ROOT, folder, "query", "comparisons")
+    exp_file = os.path.join(c_folder, "RPMlib_adj.tsv")
+    if not os.path.exists(os.path.join(c_folder,"pca.pickle")):
+        makePCA(exp_file,c_folder)
+    with open(os.path.join(c_folder,"pca.pickle"), 'rb') as f:
+        xt = pickle.load(f)
+    with open(os.path.join(c_folder,"pca_perc.pickle"), 'rb') as f:
+        explained = pickle.load(f)
+    # print(len(explained))
+    # print(explained)
+    init_df = pandas.read_csv(
+        filepath_or_buffer=exp_file,
+        sep='\t')
+    df_t = init_df.T
+    sample_names = df_t.index.values[1:]
+    y = sample_names
+    to_plot = [item[[x_axis, y_axis]] for item in xt]
+    # to_plot = [item[[0, 1]] for item in xt]
+    group_file = os.path.join(MEDIA_ROOT, folder, "query", "comparisons", "sampleSheet.tsv")
+    if os.path.exists(group_file):
+        group_list = make_group_list(group_file)
+    else:
+        group_list = ["samples"] * len(y)
+
+    perc_file = os.path.join(query_folder, "percentil.tsv")
+    val_file = os.path.join(query_folder, "value.tsv")
+    perc_df = pandas.read_csv(perc_file, sep="\t")[["sample", variable]]
+    val_df = pandas.read_csv(val_file, sep="\t")[["sample", variable]]
+    labels = val_df["sample"]
+    val_df.columns = ["sample", "values"]
+    perc_df = perc_df.join(val_df.set_index('sample'), on='sample')
+    percs = perc_df[variable].values
+    vals = perc_df["values"].values
+
+    tag_dict = var_dict.get(variable)
+    sense = tag_dict.get("color_scale")
+    colors = make_color_list(percs,sense)
+    labels = perc_df["sample"].values
+
+    d = {'PC1': numpy.array(to_plot)[:, 0], 'PC2': numpy.array(to_plot)[:, 1], 'groups': group_list,
+         "labels": labels, "percs" : percs, "vals" : vals, "colors":colors}
+
+    idf = pandas.DataFrame(data=d)
+
+    div = plot_PCA(idf, explained, variable, x_axis, y_axis)
+
+
+
+    data = {}
+
+    data["plot"] = div
+    # data["plot"] = plot_PCA(perc_df, variable, x_axis, y_axis, group_dict)
+
     return JsonResponse(data)

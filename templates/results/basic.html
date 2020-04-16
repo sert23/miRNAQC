@@ -53,6 +53,7 @@
                         </div> <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
                         <button class="btn btn-info" id="hm_button" type="button" onclick="$('#basic_heatmap').modal('show');"> Show Heatmap</button>
                         <button class="btn btn-info" id="seep_button" type="button" onclick="$('#basic_percentiles').modal('show');"> See Percentiles </button>
+                        <button class="btn btn-info" id="seep_button" type="button" onclick="$('#basic_pca').modal('show');"> Show PCA </button>
 
                         {% if groups_button %}
                         <button class="btn btn-info" id="seep_button" type="button" onclick="$('#group_bp').modal('show');"> Compare Groups </button>
@@ -71,6 +72,7 @@
             {% include "Messages/basic/heatmap.html" %}
             {% include "Messages/basic/percentiles.html" %}
             {% include "Messages/basic/groups.html" %}
+            {% include "Messages/basic/PCA.html" %}
             {% include "Messages/basic/warnings.html" %}
 
 
@@ -186,6 +188,56 @@ $('#perc_sel').on('change', function (e) {
     $('#box_vals').on('change', function (e) {
         {#alert($("#perc_sel").val());#}
         loadBox();
+        });
+
+</script>
+
+
+<script>
+
+    var loadPCA = function(e) {
+
+        $.ajax({
+        url: '{% url "ajax_pca" %}',
+        data: {
+            "id" : "{{ jobID }}",
+            "variable" : $("#pca_sel").val(),
+            "x_axis" : $("#pca_x").val(),
+            "comp_set": $("#comp_set").val(),
+            "y_axis": $("#pca_y").val(),
+        },
+        dataType: 'json',
+        success: function (data) {
+
+            $("#add_basic_pca").html(data.plot);
+
+
+        }
+      });
+
+};
+
+    $('#basic_pca').on('shown.bs.modal', function (e) {
+        {#alert($("#perc_sel").val());#}
+        loadPCA();
+
+});
+
+
+    $('#pca_x').on('change', function (e) {
+        {#alert($("#perc_sel").val());#}
+        loadPCA();
+
+    });
+
+    $('#pca_y').on('change', function (e) {
+        {#alert($("#perc_sel").val());#}
+        loadPCA();
+
+    });
+    $('#pca_sel').on('change', function (e) {
+        {#alert($("#perc_sel").val());#}
+        loadPCA();
         });
 
 </script>

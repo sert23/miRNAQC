@@ -544,7 +544,7 @@ def tables_complex(val_df, perc_df, columns):
         if "miRNAexprTop5" in keep:
             headers["miRNAexprTop5"] = {
                 'title': '% top5 miRNA',
-                'description': 'Percentage of reads assigned to the 5 most expressed miRNA',
+                'description': 'Percentage of reads assigned to the 5 most expressed miRNAs',
                 'scale': "quart",
                 'col_dict': gen_col_dict(columns_dict.get("miRNAexprTop5"), "asc"),
                 'bar_dict': columns_dict.get("miRNAexprTop5"),
@@ -553,7 +553,7 @@ def tables_complex(val_df, perc_df, columns):
         if "miRNAexprTop20" in keep:
             headers["miRNAexprTop20"] = {
                 'title': '% top20 miRNA',
-                'description': 'Percentage of reads assigned to the 20 most expressed miRNA',
+                'description': 'Percentage of reads assigned to the 20 most expressed miRNAs',
                 'scale': "quart",
                 'col_dict': gen_col_dict(columns_dict.get("miRNAexprTop20"), "asc"),
                 'bar_dict': columns_dict.get("miRNAexprTop20"),
