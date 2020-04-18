@@ -59,6 +59,7 @@ def plot_percentiles(input_df=None,input_file=None, scale=None, tag=None):
 
     tick = ""
     tag_dict = var_dict.get(tag)
+    desc = tag_dict.get("description")
     if tag_dict:
         colorscale = tag_dict.get("color_scale")
         if tag_dict.get("is_percentage"):
@@ -242,7 +243,7 @@ def plot_percentiles(input_df=None,input_file=None, scale=None, tag=None):
     # fig.update_layout(autosize=False)
     # div = plot(fig, show_link=False, auto_open=False, include_plotlyjs=False, output_type="div")
     div = plot(fig, show_link=False, auto_open=False, include_plotlyjs=False, output_type="div", config={'editable': True})
-    return div
+    return div,desc
 
 def reverse_scale(input_values):
     rvals = [(-1) * (x-100) for x in input_values]
@@ -382,7 +383,7 @@ def ajax_percentiles(request):
 
     data = {}
 
-    data["plot"] = plot_percentiles(perc_df, filepath, scale, variable)
+    data["plot"], data["desc"] = plot_percentiles(perc_df, filepath, scale, variable)
     return JsonResponse(data)
 
 

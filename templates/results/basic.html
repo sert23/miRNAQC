@@ -116,7 +116,7 @@ $('#basic_heatmap').on('shown.bs.modal', function (e) {
         success: function (data) {
 
             $("#add_basic_perc").html(data.plot);
-
+            $("#var_exp_perc").html("<label> Description:</label> <pre>" + data.desc + "</pre>");
 
         }
       });
@@ -160,7 +160,7 @@ $('#perc_sel').on('change', function (e) {
         success: function (data) {
 
             $("#add_basic_bp").html(data.plot);
-
+            $("#var_exp_bp").html("<label> Description:</label> <pre>" + data.desc + "</pre>");
 
         }
       });
@@ -210,6 +210,7 @@ $('#perc_sel').on('change', function (e) {
         success: function (data) {
 
             $("#add_basic_pca").html(data.plot);
+            $("#var_exp_pca").html("<label> Description:</label> <pre>" + data.desc + "</pre>");
 
 
         }

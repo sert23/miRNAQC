@@ -98,6 +98,7 @@ def plot_boxplots(input_df=None,input_file=None, scale=None, tag=None, disp="per
         scale = "linear"
 
     tag_dict = var_dict.get(tag)
+    desc = tag_dict.get("description")
     if tag_dict:
         colorscale = tag_dict.get("color_scale")
         if tag_dict.get("is_percentage"):
@@ -206,7 +207,7 @@ def plot_boxplots(input_df=None,input_file=None, scale=None, tag=None, disp="per
             ))
 
         div = plot(fig, show_link=False, auto_open=False, include_plotlyjs=False, output_type="div")
-        return div
+        return div,desc
 
     elif disp == "raw":
 
@@ -317,13 +318,14 @@ def plot_boxplots(input_df=None,input_file=None, scale=None, tag=None, disp="per
             ))
 
         div = plot(fig, show_link=False, auto_open=False, include_plotlyjs=False, output_type="div")
-        return div
+        return div,desc
 
 
 def plot_percentiles(input_df=None,input_file=None, scale=None, tag=None):
 
     tick = ""
     tag_dict = var_dict.get(tag)
+    desc = tag_dict.get("description")
     if tag_dict:
         colorscale = tag_dict.get("color_scale")
         if tag_dict.get("is_percentage"):
@@ -478,7 +480,7 @@ def plot_percentiles(input_df=None,input_file=None, scale=None, tag=None):
     # fig.update_layout(autosize=False)
     # div = plot(fig, show_link=False, auto_open=False, include_plotlyjs=False, output_type="div")
     div = plot(fig, show_link=False, auto_open=False, include_plotlyjs=False, output_type="div", config={'editable': True})
-    return div
+    return div,desc
 
 # def plot_PCA(input_df=None,input_file=None, scale=None, tag=None, groups_dict=None):
 def plot_PCA(input_df, variance_R, tag, x_axis, y_axis):
@@ -500,7 +502,7 @@ def plot_PCA(input_df, variance_R, tag, x_axis, y_axis):
     for i,g in enumerate(uniq_groups):
         k1 = input_df.loc[(input_df.groups == g)]
 
-        text = ["<b>Percentile</b>: {} <br><b>Value</b>: {}".format(round(row["percs"],2),round(row["vals"],2)) for ind,row in k1.iterrows()]
+        text = ["<b>Sample</b>: {} <br><b>Percentile</b>: {} <br><b>Value</b>: {}".format(row["labels"],round(row["percs"],2),round(row["vals"],2)) for ind,row in k1.iterrows()]
         trace = dict(
             type='scatter',
             x=k1.PC1.values,
@@ -553,11 +555,11 @@ def plot_PCA(input_df, variance_R, tag, x_axis, y_axis):
             title='PC'+str(y_axis+1)+' (' + str(round(variance_R[y_axis] * 100, 2)) + "%)",
         )
     )
-
+    desc = tag_dict.get("description")
     fig = dict(data=data, layout=layout)
     # div = plot(fig, output_type="div", show_link=False, auto_open=False, include_plotlyjs=True)
     div = plot(fig, show_link=False, auto_open=False, include_plotlyjs=False, output_type="div")
-    return div
+    return div, desc
 
 def ajax_boxplots(request):
 
@@ -585,7 +587,7 @@ def ajax_boxplots(request):
 
     data = {}
 
-    data["plot"] = plot_boxplots(perc_df, filepath, scale, variable, disp, group_dict)
+    data["plot"],data["desc"] = plot_boxplots(perc_df, filepath, scale, variable, disp, group_dict)
     # data["plot"] = plot_boxplots()
     return JsonResponse(data)
 
@@ -643,13 +645,14 @@ def ajax_PCA(request):
 
     idf = pandas.DataFrame(data=d)
 
-    div = plot_PCA(idf, explained, variable, x_axis, y_axis)
+    div,desc = plot_PCA(idf, explained, variable, x_axis, y_axis)
 
 
 
     data = {}
 
     data["plot"] = div
+    data["desc"] = desc
     # data["plot"] = plot_PCA(perc_df, variable, x_axis, y_axis, group_dict)
 
     return JsonResponse(data)
