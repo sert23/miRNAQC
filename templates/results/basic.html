@@ -53,8 +53,10 @@
                         </div> <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
                         <button class="btn btn-info" id="hm_button" type="button" onclick="$('#basic_heatmap').modal('show');"> Show Heatmap</button>
                         <button class="btn btn-info" id="seep_button" type="button" onclick="$('#basic_percentiles').modal('show');"> See Percentiles </button>
-                        <button class="btn btn-info" id="seep_button" type="button" onclick="$('#basic_pca').modal('show');"> Show PCA </button>
 
+                        {% if pca_button %}
+                        <button class="btn btn-info" id="seep_button" type="button" onclick="$('#basic_pca').modal('show');"> Show PCA </button>
+                        {% endif %}
                         {% if groups_button %}
                         <button class="btn btn-info" id="seep_button" type="button" onclick="$('#group_bp').modal('show');"> Compare Groups </button>
                         {% endif %}
