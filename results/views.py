@@ -500,9 +500,14 @@ class loadResults(FormView):
             #PCA, PCs
             init_df = pandas.read_csv(filepath_or_buffer=os.path.join(MEDIA_ROOT,folder,"query","comparisons",
                                                                       "RPMlib_adj.tsv"), sep='\t',index_col=0)
-            maxpc = min(init_df.shape)-1
-            PCs = range(maxpc)
-            context["PCs"] = [[x,x+1] for x in PCs]
+            if min(init_df.shape) > 3:
+                context["pca_button"] = True
+                maxpc = min(init_df.shape)-1
+                PCs = range(maxpc)
+                context["PCs"] = [[x,x+1] for x in PCs]
+            else:
+                context["pca_button"] = False
+                context["PCs"] = [[1, 1]]
 
             # t1,t2 = test_table()
             # context["test_table"] = t1
