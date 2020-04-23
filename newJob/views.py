@@ -152,7 +152,7 @@ def parse_web_log(log_path):
                 if not "SUCCESS: java -classpath" in line:
                     if "SUCCESS:" in line:
                         rem,keep = line.rstrip().split("SUCCESS:")
-                        tagged = tagged + keep +"<br>"
+                        tagged = tagged + rem + keep +"<br>"
                     elif "WEB:" in line:
                         tagged = tagged + line + "<br>"
                     elif "ERROR:" in line:
