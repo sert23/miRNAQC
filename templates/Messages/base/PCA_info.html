@@ -1,0 +1,23 @@
+{% extends "Messages/modal_template.html" %}
+{% block id %}pca_info{% endblock %}
+{% block title %}
+    PCA tool info
+{% endblock %}
+{% block text %}
+<p> This tool will display scatter-plot of a PCA calculated from the expression values of your data. You can then explore the different
+    Principal Components using the selectors.</p>
+    <p> You can also change which quality parameter is used to color samples. This may help you spot variables that are driving
+        the expression in your samples.
+    </p>
+    <p> You can mouse over any point in the plot to see a sample percentile and value. Group information is also available if provided
+    and each group will be represented using different symbols (square, circle, cross, etc).
+    </p>
+
+{#    <ul>#}
+{#  <li>Detect the adapter sequence: TGGAATTCTCGGGTGCCAAGGG </li>#}
+{#  <li>Minimum length of adapter sequence that needs to be aligned: 10 </li>#}
+{#  <li>Allowed mismatches between adapter and reference sequences: 1 </li>#}
+{#    </ul>#}
+
+
+{% endblock %}

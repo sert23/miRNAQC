@@ -620,16 +620,13 @@ def ajax_PCA(request):
     to_plot = [item[[x_axis, y_axis]] for item in xt]
     # to_plot = [item[[0, 1]] for item in xt]
     group_file = os.path.join(MEDIA_ROOT, folder, "query", "comparisons", "sampleSheet.tsv")
-    if os.path.exists(group_file):
-        group_list = make_group_list(group_file)
-    else:
-        group_list = ["samples"] * len(y)
+
 
     perc_file = os.path.join(query_folder, "percentil.tsv")
     val_file = os.path.join(query_folder, "value.tsv")
     perc_df = pandas.read_csv(perc_file, sep="\t")[["sample", variable]]
     val_df = pandas.read_csv(val_file, sep="\t")[["sample", variable]]
-    labels = val_df["sample"]
+
     val_df.columns = ["sample", "values"]
     perc_df = perc_df.join(val_df.set_index('sample'), on='sample')
     percs = perc_df[variable].values
@@ -639,9 +636,16 @@ def ajax_PCA(request):
     sense = tag_dict.get("color_scale")
     colors = make_color_list(percs,sense)
     labels = perc_df["sample"].values
+    if os.path.exists(group_file):
+        group_list = make_group_list(group_file)
+    else:
+        group_list = ["samples"] * len(labels)
 
     d = {'PC1': numpy.array(to_plot)[:, 0], 'PC2': numpy.array(to_plot)[:, 1], 'groups': group_list,
          "labels": labels, "percs" : percs, "vals" : vals, "colors":colors}
+    for k in d.keys():
+        print(k)
+        print(len(d[k]))
 
     idf = pandas.DataFrame(data=d)
 
