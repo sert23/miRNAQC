@@ -72,9 +72,12 @@
     $(document).ready(function(){
 
             $('#example_but').on('click', function(){
-                $('#id_sra_input').val("SRR1563062,SRR1563057,SRR1563059,SRR1563060");
+
+
+                {#$('#id_sra_input').val("SRR1563062,SRR1563057,SRR1563059,SRR1563060");#}
+                $('#id_url_input').val("https://arn.ugr.es/miRNAqc_test/SRP172488/SRR8280437.fastq.gz,https://arn.ugr.es/miRNAqc_test/SRP172488/SRR8280450.fastq.gz,https://arn.ugr.es/miRNAqc_test/SRP172488/SRR8280472.fastq.gz,https://arn.ugr.es/miRNAqc_test/SRP172488/SRR8280408.fastq.gz");
                 {#alert($('#id_sra_input').rows);#}
-                $('#id_sra_input').attr('rows', '2');
+                $('#id_url_input').attr('rows', '5');
                 {#alert($('#id_sra_input').val());#}
                 {#$('#id_sra_input').val("SRR1563060,SRR1563062");#}
                 $("#species option[value='hsa,GRCh38_p10_mp']").attr("selected", true).trigger("change");
