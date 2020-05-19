@@ -259,11 +259,14 @@ def fix_scale(input_df):
     pandas.options.mode.chained_assignment = 'warn'
     return input_df
 
-def plot_heatmap(input_df=None):
+def plot_heatmap(input_df=None, variables=None):
     bvals = [0 , 25, 50, 75, 100]
     # bvals = [0 , 25, 50, 75, 100]
 
-    to_keep = ["readsRaw", "readsPerc","adapterDimerPerc","detectedMatureSA","maturePercofReads","meanofp50",
+    if variables:
+        to_keep = variables
+    else:
+        to_keep = ["readsRaw", "readsPerc","adapterDimerPerc","detectedMatureSA","maturePercofReads","meanofp50",
                "mainPeakMiRNAlength","stdDevMiRNAlength"]
 
     # colors = ['#09ffff', '#19d3f3', '#e763fa', '#ab63fa']
@@ -279,6 +282,10 @@ def plot_heatmap(input_df=None):
     # print(dcolorsc)
     perc_df = input_df
     basic_df = perc_df[to_keep]
+    if basic_df.shape[0] > 10:
+        yticks = False
+    else:
+        yticks = True
     # z = np.random.randint(bvals[0], bvals[-1] + 1, size=(20, 20))
     # z = [[10,30,50,60,70,80,90,100,100]]
     test_values = [0.10,0.30,0.31,0.34,0.35,0.40,0.60,0.70,0.80,1.00]
@@ -311,12 +318,14 @@ def plot_heatmap(input_df=None):
     layout = go.Layout(
         # autosize=False,
         # width=500,
-        title="Samples percentiles for main quality statistics",
+        yaxis=dict(
+            showticklabels=yticks),
+        title="Samples percentiles for quality statistics",
         # height=500,
         margin=go.layout.Margin(
                 l=200,
                 r=150,
-                b=150,
+                b=175,
                 t=100,
                 pad=4))
         # margin=go.layout.Margin(
@@ -351,13 +360,18 @@ def ajax_heatmap(request):
 
     folder = request.GET.get('id', None)
     comparison = request.GET.get('comp_set', None)
+    variables_str = request.GET.get('variables', None)
+    if variables_str:
+        variables = variables_str.split(",")
+    else:
+        variables = None
     query_folder = os.path.join(MEDIA_ROOT, folder, "query", "comparisons" ,comparison)
     perc_file = os.path.join(query_folder, "percentil.tsv")
 
     # read files into dfs
     perc_df = pandas.read_csv(perc_file, sep="\t")
     data = {}
-    data["plot"] = plot_heatmap(perc_df)
+    data["plot"] = plot_heatmap(perc_df, variables)
     return JsonResponse(data)
 
 def ajax_percentiles(request):
@@ -430,10 +444,17 @@ class loadResults(FormView):
             comparisons = [[f, comp_dict.get(f)] for f in comp_dict.keys() if os.path.isdir(os.path.join(comp_folder, f))]
             # print(comparisons)
             # query_folder = os.path.join(MEDIA_ROOT,folder,"query",)
+
+            #download links
             val_file = os.path.join(query_folder,"value.tsv")
             perc_file = os.path.join(query_folder,"percentil.tsv")
+            RPM_file = os.path.join(MEDIA_ROOT,folder,"query", "comparisons","RPMlib_adj.tsv")
+            RC_file = os.path.join(MEDIA_ROOT,folder,"query", "comparisons","RCadj.tsv")
             context["vals_link"] = val_file.replace(MEDIA_ROOT,MEDIA_URL)
             context["perc_link"] = perc_file.replace(MEDIA_ROOT,MEDIA_URL)
+            context["RC_link"] = RC_file.replace(MEDIA_ROOT,MEDIA_URL)
+            context["RPM_link"] = RPM_file.replace(MEDIA_ROOT,MEDIA_URL)
+
 
             #parameters
             context["par_tab"] = par_table(os.path.join(MEDIA_ROOT,folder,"query", "comparisons","summary_results.tsv"))

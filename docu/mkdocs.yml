@@ -1,0 +1,12 @@
+site_name: mirnaQC documentation
+nav:
+    - Getting Started: index.md
+    - Quality Features: features.md
+#    - Interpretation Guide: variables_.md
+    - Workflow: workflow.md
+    # - Comparisons: comparison.md
+    - Samples Database: database.md
+    - Code and Dependencies: code.md
+    - FAQs (Frequently Asked Questions): FAQs.md
+    - About: about.md
+theme: readthedocs

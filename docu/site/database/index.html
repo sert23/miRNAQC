@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Samples Database - mirnaQC documentation</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../css/theme.css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Samples Database";
+    var mkdocs_page_input_path = "database.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> mirnaQC documentation</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="..">Getting Started</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../features/">Quality Features</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../workflow/">Workflow</a>
+                    </li>
+                </ul>
+                <ul class="current">
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Samples Database</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#database-generation">Database generation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#database-contents">Database contents</a>
+    </li>
+    </ul>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../code/">Code and Dependencies</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../FAQs/">FAQs (Frequently Asked Questions)</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../about/">About</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">mirnaQC documentation</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Samples Database</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="database">Database</h1>
+<h2 id="database-generation">Database generation</h2>
+<p>To generate the ranking for a given quality attribute (for example ‘total number of reads’) we
+first obtain the corresponding values of all samples from a reference corpus. Note that we
+use different reference corpus: same kingdom, same sample protocol, same sample species and same
+species and protocol. The obtained values are sorted into ascending order and the
+corresponding percentile of the observed value is calculated. </p>
+<p>Therefore, each variable can hold desired values either when the percintiles are low (percentage of adapter-dimers or ribosomal RNA for example) or when they are high (number of reads or detected microRNAs). Either way, the quartile-based colour code is always asigned taking the nature of the feature into account, i.e. the ‘best’ quartile will always be displayed in green while the ‘worst’ quartile will be red. </p>
+<p>To represent the heatmap we had to make all percentiles coherent as the colors are programmatically filled. To achieve this, we internally calculate (100-Percentile) for those attributes for which high percentiles indicate good quality.</p>
+<h2 id="database-contents">Database contents</h2>
+<table>
+<thead>
+<tr>
+<th>Species</th>
+<th>Samples</th>
+<th>Studies</th>
+<th>total number of raw reads</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Human</td>
+<td>17745</td>
+<td>850</td>
+<td>2.32244E+11</td>
+</tr>
+<tr>
+<td>Mouse</td>
+<td>7303</td>
+<td>460</td>
+<td>1.01064E+11</td>
+</tr>
+<tr>
+<td>Arabidopsis thaliana</td>
+<td>1863</td>
+<td>199</td>
+<td>40669870610</td>
+</tr>
+<tr>
+<td>Bos taurus</td>
+<td>1753</td>
+<td>82</td>
+<td>23052849107</td>
+</tr>
+<tr>
+<td>Rattus norvegicus</td>
+<td>1662</td>
+<td>80</td>
+<td>13839004606</td>
+</tr>
+<tr>
+<td>Drosophila melanogaster</td>
+<td>1514</td>
+<td>163</td>
+<td>36856287588</td>
+</tr>
+<tr>
+<td>Caenorhabditis elegans</td>
+<td>1255</td>
+<td>99</td>
+<td>21744837798</td>
+</tr>
+<tr>
+<td>Sus scrofa</td>
+<td>751</td>
+<td>80</td>
+<td>9338528047</td>
+</tr>
+<tr>
+<td>Zea mays</td>
+<td>603</td>
+<td>52</td>
+<td>14216151487</td>
+</tr>
+<tr>
+<td>Equus caballus</td>
+<td>480</td>
+<td>21</td>
+<td>6354331280</td>
+</tr>
+<tr>
+<td>Danio rerio</td>
+<td>268</td>
+<td>32</td>
+<td>4146066655</td>
+</tr>
+<tr>
+<td>Solanum lycopersicum</td>
+<td>244</td>
+<td>47</td>
+<td>4169714559</td>
+</tr>
+<tr>
+<td>Gallus gallus</td>
+<td>242</td>
+<td>35</td>
+<td>3708335610</td>
+</tr>
+<tr>
+<td>Aedes aegypti</td>
+<td>232</td>
+<td>24</td>
+<td>4514242092</td>
+</tr>
+<tr>
+<td>Canis lupus familiaris</td>
+<td>165</td>
+<td>11</td>
+<td>1869150079</td>
+</tr>
+<tr>
+<td>Apis mellifera</td>
+<td>71</td>
+<td>13</td>
+<td>827627067</td>
+</tr>
+<tr>
+<td>Oryctolagus cuniculus</td>
+<td>54</td>
+<td>8</td>
+<td>556118648</td>
+</tr>
+<tr>
+<td>Other</td>
+<td>133</td>
+<td></td>
+<td>3919986171</td>
+</tr>
+</tbody>
+</table>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../code/" class="btn btn-neutral float-right" title="Code and Dependencies">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../workflow/" class="btn btn-neutral" title="Workflow"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../workflow/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../code/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

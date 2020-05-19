@@ -5,9 +5,52 @@
 {% endblock %}
 {% block text %}
 
-<div id="add_basic_hm">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
+
+
+
+
+
+
+<div class="row">
+<div class="col-lg-6">
+    <label >Select variables:</label>
+        <select class="group1" name="group1" multiple="multiple" id="heatmap_select">
+
+                    {% for f,name in perc_list %}
+{#        <option>{{ f }}</option>#}
+                    <option value="{{ f }}">{{ name }}</option>
+                    {% endfor %}
+
+                </select>
+</div>
+</div>
+    <div id="add_basic_hm">
 
 </div>
+
+<script>
+$(document).ready(function() {
+    $('.group1').select2({
+        width: "100%",
+        templateSelection: function (data, container) {
+            console.log(">>Selection", data);
+            {#$(container).css("background-color", "#5c0000");#}
+            {#$(container).css("color", "#f8f8ff");#}
+            return data.text;
+        }
+    });
+
+    {#$('#heatmap_select').val(['1','2']); // Select the option with a value of '1'#}
+    $('#heatmap_select').val(["readsRaw", "readsPerc","adapterDimerPerc","detectedMatureSA","maturePercofReads","meanofp50",
+               "mainPeakMiRNAlength","stdDevMiRNAlength"]);
+    $('#heatmap_select').trigger('change');
+
+    {#$("#heatmap_select").select2('data', {id: '1', text: '1'});#}
+
+});
+    </script>
 
 
 {% endblock %}

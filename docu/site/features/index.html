@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Quality Features - mirnaQC documentation</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../css/theme.css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Quality Features";
+    var mkdocs_page_input_path = "features.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> mirnaQC documentation</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="..">Getting Started</a>
+                    </li>
+                </ul>
+                <ul class="current">
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Quality Features</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#sequencing-yield">Sequencing yield</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#library-complexity">Library complexity</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#library-quality">Library quality</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#putative-contamination">Putative contamination</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#read-length-distribution">Read length distribution</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#sequencing-quality">Sequencing quality</a>
+    </li>
+    </ul>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../workflow/">Workflow</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../database/">Samples Database</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../code/">Code and Dependencies</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../FAQs/">FAQs (Frequently Asked Questions)</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../about/">About</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">mirnaQC documentation</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Quality Features</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="quality-features">Quality features</h1>
+<h2 id="sequencing-yield">Sequencing yield</h2>
+<p><strong><u>Raw number of reads</u></strong> (Raw reads): Total number of raw input reads, i.e. before adapter trimming and filtering</p>
+<p><strong><u>Number of reads in analysis</u></strong> (Reads): Number of reads that are used for the analysis, i.e. that are not filtered out due to quality or length criterion</p>
+<p><strong><u>Number of unique reads</u></strong> (Unique reads): The number of unique sequence reads after read collapsing</p>
+<p><strong><u>Number of miRNAs detected</u></strong> (miRNAs): The number of detected microRNAs (applying single assignment)</p>
+<p><strong><u>Percentage of miRNA reads</u></strong> (miRNA reads %): The percentage of effective reads assigned to mature microRNAs</p>
+<p><strong><u>Number of adapter-trimmed reads</u></strong> (Trimmed reads): Number of reads for which the adapter was found (and trimmed).  Fail to detect he adapter can have several reasons: i) bad sequencing quality towards the 3' end of the read (sequencing errors impede the detection of the adapter), ii) longer fragments for which the adapter is not sequenced, iii) the wrong adapter sequence was specified</p>
+<p><strong><u>Percentage of adapter-trimmed reads</u></strong> (Trimmed reads %): Percentage of reads for which the adapter was found (and trimmed).  Fail to detect he adapter can have several reasons: i) bad sequencing quality towards the 3' end of the read (sequencing errors impede the detection of the adapter), ii) longer fragments for which the adapter is not sequenced, iii) the wrong adapter sequence was specified</p>
+<p><strong><u>Number of reads per unique read</u></strong> (Reads per unique): The number of reads in analysis divided by the number of unique reads</p>
+<h2 id="library-complexity">Library complexity</h2>
+<p><strong><u>Percentage of top miRNA reads</u></strong> (% top miRNA): Percentage of reads assigned to the most expressed miRNA</p>
+<p><strong><u>Percentage of top 5 miRNA reads</u></strong> (% top5 miRNA): Percentage of reads assigned to the 5 most expressed miRNAs</p>
+<p><strong><u>Percentage of top 20 miRNA reads</u></strong> (% top20 miRNA): Percentage of reads assigned to the 20 most expressed miRNAs</p>
+<p><strong><u>miRNAs needed to reach 50% miRNA reads</u></strong> (#miRNA p50): Number of miRNAs needed to reach 50% miRNA reads</p>
+<p><strong><u>miRNAs needed to reach 75% miRNA reads</u></strong> (#miRNA p75): Number of miRNAs needed to reach 75% miRNA reads</p>
+<p><strong><u>miRNAs needed to reach 95% miRNA reads</u></strong> (#miRNA p95): Number of miRNAs needed to reach 95% miRNA reads</p>
+<p><strong><u>miRNAs detected per 1kb mapped</u></strong> (miRNAs per 1000 reads): Number of miRNAs detected per 1kb mapped to miRNAs</p>
+<h2 id="library-quality">Library quality</h2>
+<p><strong><u>Percentage of adapter dimers</u></strong> (Dimers %): The percentage of reads that correspond to adapter-dimer, i.e. those that are shorter or equal to 2nt after adapter trimming </p>
+<p><strong><u>Percentage of ultra short fragments</u></strong> (ultra short fragments %): Percentage of reads between 3 and 14 nt. A high number is usually indicative of issues in library preparation or low RNA quality</p>
+<p><strong><u>Percentage of short fragments</u></strong> (short fragments %): Percentage of reads between 15 and 17 nt. This range was choosen because tRNA fragments are frequently of 18 nt length.</p>
+<p><strong><u>Percentage of ribosomal RNA</u></strong> (ribosomal RNA %): Percentage of ribosome derived reads</p>
+<h2 id="putative-contamination">Putative contamination</h2>
+<p><strong><u>Percentage of genome mapping reads</u></strong> (% ref.genome): Percentage of reads mapped to the reference genome</p>
+<p><strong><u>Percentage of non genome mapping reads</u></strong> (% unmapped): Percentage of reads not mapped to the reference genome</p>
+<p><strong><u>Percentage of bacteria mapping reads</u></strong> (% bacteria): Percentage of reads mapped to a collection of different bacteria</p>
+<p><strong><u>Percentage of virus mapping reads</u></strong> (% virus): Percentage of reads mapped to a collection of different virus</p>
+<h2 id="read-length-distribution">Read length distribution</h2>
+<p><strong><u>Percentage of reads in miRNA "peak"</u></strong> (miRNA "peak"): The percentage of miRNA-assigned reads of lengths 21, 22 and 23</p>
+<p><strong><u>Mean of miRNA mapping reads length</u></strong> (miRNA mean length): Mean of miRNA mapping reads read length</p>
+<p><strong><u>miRNA length distribution Std. Dev.</u></strong> (miRNA SD): The standard deviation of the read lengths of he reads mapped to microRNAs</p>
+<p><strong><u>miRNA length mode</u></strong> (miRNA length mode): miRNA length mode</p>
+<p><strong><u>skewness read length distribution</u></strong> (skewness): skewness read length distribution</p>
+<p><strong><u>absolute read length distribution skewness</u></strong> (|skewness|): absolute read length distribution skewness</p>
+<h2 id="sequencing-quality">Sequencing quality</h2>
+<p><strong><u>Average mean Phred Score</u></strong> (Average mean Phred Score): The mean Phred Scores are obtained from FastQC per position, then the average of these values are calculated using positions 1 to 40</p>
+<p><strong><u>Average Phred Score</u></strong> (Avg Phred): This is the average Phred Score of the median scores at a given position</p>
+<p><strong><u>Average percentile 10 Phred Score </u></strong> (Average percentile 10 Phred Score ): The Phred Scores of percentile 10 are obtained from FastQC per position, then the average of these values are calculated using positions 1 to 40</p>
+<p><strong><u>Average percentile 25 Phred Score </u></strong> (Average percentile 25 Phred Score ): The Phred Scores of percentile 25 are obtained from FastQC per position, then the average of these values are calculated using positions 1 to 40</p>
+<p><strong><u>Average percentile 75 Phred Score </u></strong> (Average percentile 75 Phred Score ): The Phred Scores of percentile 175 are obtained from FastQC per position, then the average of these values are calculated using positions 1 to 40</p>
+<p><strong><u>Average percentile 90 Phred Score </u></strong> (Average percentile 90 Phred Score ): The Phred Scores of percentile 90 are obtained from FastQC per position, then the average of these values are calculated using positions 1 to 40</p>
+<p><strong><u>Percentage of reads in analysis</u></strong> (Reads %): Percentage of reads that are used for the analysis, i.e. that are not filtered out due to quality or length criterion</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../workflow/" class="btn btn-neutral float-right" title="Workflow">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href=".." class="btn btn-neutral" title="Getting Started"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href=".." style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../workflow/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

@@ -63,6 +63,7 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
+                'django.template.context_processors.media',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -70,6 +71,8 @@ TEMPLATES = [
         },
     },
 ]
+
+
 
 WSGI_APPLICATION = 'miRQC.wsgi.application'
 
@@ -126,7 +129,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
-
+MAIN_SITE = "https://arn.ugr.es"
 SUB_SITE = ''
 STATIC_URL = SUB_SITE + '/static/'
 
@@ -134,3 +137,5 @@ MEDIA_ROOT = "/Users/ernesto/PycharmProjects/miRQC/upload"
 MEDIA_URL = SUB_SITE + "/media/"
 
 SPECIES_FILE = "/Users/ernesto/Downloads/species.txt"
+
+VAR_DICT_PATH = "/Users/ernesto/PycharmProjects/miRQC/miRQC/variables.json"

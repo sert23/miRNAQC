@@ -56,6 +56,7 @@
 
                         {% if pca_button %}
                         <button class="btn btn-info" id="seep_button" type="button" onclick="$('#basic_pca').modal('show');"> Show PCA </button>
+                        <button class="btn btn-info" id="seep_button" type="button" onclick="$('#basic_pcs').modal('show');"> Explore PCs </button>
                         {% endif %}
                         {% if groups_button and pca_button %}
                         <button class="btn btn-info" id="seep_button" type="button" onclick="$('#group_bp').modal('show');"> Compare Groups </button>
@@ -75,29 +76,44 @@
             {% include "Messages/basic/percentiles.html" %}
             {% include "Messages/basic/groups.html" %}
             {% include "Messages/basic/PCA.html" %}
+            {% include "Messages/basic/PCs.html" %}
             {% include "Messages/basic/warnings.html" %}
 
 
  <script>
 
-$('#basic_heatmap').on('shown.bs.modal', function (e) {
+     var loadHm = function(e) {
+
+        var hmselected = $("#heatmap_select").val() || [];
+
         {#alert("eyo");#}
         $.ajax({
         url: '{% url "ajax_hm" %}',
         data: {
             "id" : "{{ jobID }}",
              "comp_set": $("#comp_set").val(),
+             "variables": hmselected.join(","),
         },
         dataType: 'json',
         success: function (data) {
-
+            {#alert($("#heatmap_select").val().join(","));#}
+            $("#add_basic_hm").html("");
             $("#add_basic_hm").html(data.plot);
-
-
+            {#alert("ea");#}
         }
       });
+     };
 
-});
+    $('#basic_heatmap').on('shown.bs.modal', function (e) {
+        loadHm();
+    });
+
+    $('#heatmap_select').on('change', function (e) {
+        loadHm();
+    });
+
+
+
 
 </script>
 
@@ -241,6 +257,57 @@ $('#perc_sel').on('change', function (e) {
     $('#pca_sel').on('change', function (e) {
         {#alert($("#perc_sel").val());#}
         loadPCA();
+        });
+
+</script>
+
+<script>
+
+    var loadPCs = function(e) {
+
+        $.ajax({
+        url: '{% url "ajax_pcs" %}',
+        data: {
+            "id" : "{{ jobID }}",
+            {#"variable" : $("#pca_sel").val(),#}
+            "x_axis" : $("#pcs_x").val(),
+            "comp_set": $("#comp_set").val(),
+            "y_axis": $("#pcs_y").val(),
+            "values":  $("#pcs_vals").val(),
+        },
+        dataType: 'json',
+        success: function (data) {
+
+            $("#add_basic_pcs").html(data.plot);
+            $("#var_exp_pcs").html("<label> Description:</label> <pre>" + data.desc + "</pre>");
+
+
+        }
+      });
+
+};
+
+    $('#basic_pcs').on('shown.bs.modal', function (e) {
+        {#alert($("#perc_sel").val());#}
+        loadPCs();
+
+});
+
+
+    $('#pcs_x').on('change', function (e) {
+        {#alert($("#perc_sel").val());#}
+        loadPCs();
+
+    });
+
+    $('#pcs_y').on('change', function (e) {
+        {#alert($("#perc_sel").val());#}
+        loadPCs();
+
+    });
+    $('#pcs_vals').on('change', function (e) {
+        {#alert($("#perc_sel").val());#}
+        loadPCs();
         });
 
 </script>

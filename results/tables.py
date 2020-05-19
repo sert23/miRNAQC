@@ -200,13 +200,13 @@ def par_table(input_file):
         #     }
         if "Species" in keep:
             headers["Species"] = {
-                'title': "Scientific species name",
+                'title': "Species name",
                 # 'description': 'Total number of reads sequenced',
                 # 'is_int': True
             }
         if "short species name" in keep:
             headers["short species name"] = {
-                'title': "short <br>species name",
+                'title': "short name",
                 # 'description': 'Total number of reads sequenced',
                 # 'is_int': True
             }
@@ -219,7 +219,7 @@ def par_table(input_file):
             }
         if "adapter" in keep:
             headers["adapter"] = {
-                'title': "detected adapter",
+                'title': "detected adapter                                                               ",
                 # 'description': 'Total number of reads sequenced',
                 # 'is_int': True
             }

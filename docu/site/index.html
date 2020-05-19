@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="None">
+  
+  
+  <link rel="shortcut icon" href="img/favicon.ico">
+  <title>mirnaQC documentation</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="css/theme.css" />
+  <link rel="stylesheet" href="css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Getting Started";
+    var mkdocs_page_input_path = "index.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="js/jquery-2.1.1.min.js" defer></script>
+  <script src="js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href="." class="icon icon-home"> mirnaQC documentation</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="./search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul class="current">
+                    <li class="toctree-l1 current"><a class="reference internal current" href=".">Getting Started</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#availability">Availability</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#quick-start">Quick Start</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#input-data">Input data</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#queue-system">Queue system</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#results-page">Results page</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#report-sections">Report sections</a>
+    </li>
+    </ul>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="features/">Quality Features</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="workflow/">Workflow</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="database/">Samples Database</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="code/">Code and Dependencies</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="FAQs/">FAQs (Frequently Asked Questions)</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="about/">About</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href=".">mirnaQC documentation</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Getting Started</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="welcome-to-mirnaqc-documentation-page">Welcome to mirnaQC documentation page</h1>
+<p>mirnaQC is a webserver dedicated to miRNA-seq Quality Control. 
+mirnaQC provides several quality features that can help researchers identify issues in their samples. 
+These features are provided as absolute values and ranked with a percentile calculated from a corpus of more than 36,000 samples.</p>
+<h2 id="availability">Availability</h2>
+<p>To use mirnaQC webserver visit <a href="https://arn.ugr.es/mirnaqc/">arn.ugr.es/mirnaqc/</a></p>
+<h2 id="quick-start">Quick Start</h2>
+<p>mirnaQC is quite intuitive so we recommend to go ahead and try to explore the tool by yourself.
+Here we provide a basic description of the analysis available.</p>
+<h2 id="input-data">Input data</h2>
+<p>You can see an interactive tutorial <a href="https://arn.ugr.es/mirnaqc/tourstart">here</a></p>
+<p><img alt="Screenshot" src="img/Input_page.png" /></p>
+<p>mirnaQC will calculate quality control parameters for each of the miRNA-seq samples provided. Several input formats are supported and they can all be combined: </p>
+<ul>
+<li><code>Reads files</code> can be directly uploaded to the page (fastq, fastq.gz).</li>
+<li><code>Links to files</code> can be pasted. More than one can be provided if they are comma-separated.</li>
+<li><code>SRA run accessions</code> (they start with SRR, ERR or DRR e.g. SRR1563062) can be pasted. More than one can be provided if they are comma-separated.</li>
+<li><code>zip files</code> zipped files (.zip, .7z, .tar.gz or .tgz) containing one or several samples can also be uploaded. They need to have the correct extension (.zip, .7z, .tar.gz or .tgz).
+Zip files (need to have extension 'zip' like reads.zip), gzipped tar files (extension tar.gz or' tgz' like reads.tar.gz or reads.tgz) or 7z files (extension '7z' like reads.7z). </li>
+</ul>
+<p>Please note that we recommend uploading your files to a server and providing links. 
+This will help jobs run faster and files can be reused.</p>
+<p>Technical details should also be provided (if available) to ensure your samples are profiled correctly.
+If these are not provided mirnaQC will try to guess them.</p>
+<h2 id="queue-system">Queue system</h2>
+<p>To ensure our servers do not collapse, jobs are run sequentially. Once a job has been correctly placed in queue, a view will be displayed to inform of job progress.
+Once a job starts running, it should take approximately 5 minutes per sample. Of course this can vary depending on input size.</p>
+<p><img alt="Screenshot" src="img/Queue.png" /></p>
+<h2 id="results-page">Results page</h2>
+<p>You can see an interactive tutorial <a href="https://arn.ugr.es/mirnaqc/tourresults/T227DTB9FS2ZBU9">here</a></p>
+<p><img alt="Screenshot" src="img/results_page.png" /></p>
+<h2 id="report-sections">Report sections</h2>
+<p><strong>Sequencing yield</strong></p>
+<p>This section focuses on the amount of reads and the fraction that can be assigned to known miRNAs. Generally parameters in this category (percentage of valid reads, detected microRNAs) indicate high quality when they hold high values. Low numbers (especially for the percentage of valid input reads) can be related to problems in most aspects of RNA processing or low input. Some sources like exosomes extracted from bodily fluids however, are known to hold low levels of miRNA, thus high numbers should not be expected for all sample types even for high quality libraries.</p>
+<p><strong>Library quality</strong></p>
+<p>In this category we list the number of reads that are filtered out due to minimal length (15nt), the percentage of ribosomal RNA and the percentage of short reads (15-17 nt) which might be degradation products from longer RNA molecules as no small RNAs are known in this length range. 
+High percentages of adapter-dimers (0, 1 or 2nt fragments after trimming) normally indicate issues with the ratio of adapter to input RNA concentration. In practice, it is very difficult to completely avoid adapter-dimers, especially in low input samples such as blood, but the percentile may show a reasonable potential of improvement. 
+Ultra-short reads are defined as fragments with lengths between 3nt and 14nt (both inclusive).  </p>
+<p><strong>Library complexity</strong></p>
+<p>In general it is also interesting to assess the complexity of the sample since low complexity libraries provide very little information, even for a high quality sequencing, which is not desired. Several measurements are provided to grasp the complexity at two levels that should be interpreted together:
+Sequencing library complexity: This is simply estimated by the total number of reads to unique reads ratio. Lower numbers suggest higher RNA diversity but it can also be caused by degradation. 
+microRNA complexity: Frequently few microRNAs accumulate virtually all miRNA reads preventing lowly expressed miRNAs from being detected. Several measures are given to estimate complexity at this level: i) percentage of miRNA reads taken by the first 5 and first 20 miRNAs, ii) the number of miRNAs required to reach 50%, 75% and 95% of the miRNA expression. </p>
+<p><strong>Putative contamination</strong></p>
+<p>Percentage of reads that could not be mapped to the species genome are calculated. Contamination is subsequently estimated by mapping against a collection of bacterial and viral genomes. </p>
+<p><strong>Read length distribution</strong></p>
+<p>A narrow peak around 22 nucleotides in the read length distribution indicates good quality samples whereas degraded or poor RNA quality manifests in a broader distribution. Furthermore, it is clear that the 22nt peak should be present for miRNA assigned reads and RNA quality issues might exist if samples deviate from this. 
+We summarise the miRNA read length distribution in several ways: mean length, mode of the distribution, the fraction of reads with lengths 21, 22 or 23, the standard deviation and the skewness of the distribution. </p>
+<p><strong>RNA composition</strong></p>
+<p>The relative abundance of other RNA molecules is automatically profiled using the sRNAtoolbox database (9). Most of these longer RNA species (rRNA,mRNA, lincRNA) are not known to be processed into smaller molecules that can be picked up by miRNA-seq. Their presence is a symptom of degradation since smaller fragments are randomly generated and then sequenced. Among these, rRNA is typically used because it’s the most abundant one.</p>
+<p><strong>Sequencing quality</strong></p>
+<p>Sequencing quality is determined by means of FastQC program. We determine the mean values of the different percentiles provided by fastqc over all positions of the read.  </p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="features/" class="btn btn-neutral float-right" title="Quality Features">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+      
+        <span style="margin-left: 15px"><a href="features/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '.';</script>
+    <script src="js/theme.js" defer></script>
+      <script src="search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>
+
+<!--
+MkDocs version : 1.1
+Build Date UTC : 2020-04-27 23:58:37
+-->

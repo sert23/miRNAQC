@@ -561,6 +561,119 @@ def plot_PCA(input_df, variance_R, tag, x_axis, y_axis):
     div = plot(fig, show_link=False, auto_open=False, include_plotlyjs=False, output_type="div")
     return div, desc
 
+def plot_PCs(input_df, xtag, ytag):
+    alpha = 0.3
+
+    xtag_dict = var_dict.get(xtag)
+    xtick = ""
+    if xtag_dict:
+        xlab = xtag_dict.get("full_name")
+        if xtag_dict.get("is_percentage"):
+            xtick = "%"
+    else:
+        xlab = xtag
+
+    ytag_dict = var_dict.get(ytag)
+    ytick = ""
+    if ytag_dict:
+        ylab = ytag_dict.get("full_name")
+        if ytag_dict.get("is_percentage"):
+            ytick = "%"
+    else:
+        ylab = ytag
+
+    title = xlab + " VS " + ylab
+    # if tag_dict:
+    #     colorscale = tag_dict.get("color_scale")
+    #     if tag_dict.get("is_percentage"):
+    #         tick_su = "%"
+    #     else:
+    #         tick_su=""
+    # else:
+    #     colorscale = None
+
+    data = []
+    uniq_groups = pandas.unique(input_df.groups.values)
+    print(uniq_groups)
+    shapes = ["circle", "square", 'star-triangle-up', "diamond", "x"] * 5
+    for i,g in enumerate(uniq_groups):
+        k1 = input_df.loc[(input_df.groups == g)]
+        print(k1)
+
+        # text = ["<b>Sample</b>: {} <br><b>Percentile</b>: {} <br><b>Value</b>: {}".format(row["labels"],round(row["percs"],2),round(row["vals"],2)) for ind,row in k1.iterrows()]
+        trace = dict(
+            type='scatter',
+            x=k1.x.values,
+            y=k1.y.values,
+            mode='markers',
+            name="",
+            hovertemplate=
+            '<b>Group</b>: ' + g +
+            '<br>%{text}',
+            # text=text,
+            marker=dict(
+                # color=col,
+                symbol=shapes[i],
+                opacity=1,
+                size=15,
+                # color=k1.groups.values,
+                line=dict(
+                    # color='rgba(217, 217, 217, 0.14)',
+                    # color=k1.colors.values,
+                    width=0.5),
+                )
+        )
+        data.append(trace)
+
+    layout = go.Layout(
+        margin=go.layout.Margin(
+            l=50,
+            r=50,
+            b=100,
+            t=100,
+            pad=4
+        ),
+        showlegend=False,
+        title= title,
+        font=dict(size=18),
+        # autosize=False,
+        # height=650,
+        # width=1150,
+        xaxis=dict(
+            automargin=True,
+            title=xlab,
+            # tick0=0,
+            # dtick=2,
+        ),
+        yaxis=dict(
+            # type='log',
+            automargin=True,
+            # ticksuffix='%',
+            # tickprefix="   ",
+            title=ylab,
+        )
+    )
+    # desc = tag_dict.get("description")
+    fig = dict(data=data, layout=layout)
+    # div = plot(fig, output_type="div", show_link=False, auto_open=False, include_plotlyjs=True)
+    div = plot(fig, show_link=False, auto_open=False, include_plotlyjs=False, output_type="div")
+    # return div, desc
+    if xtag_dict:
+        xdesc = xtag_dict.get("description")
+    else:
+        xdesc = "Principal Component " + xtag.split("PC")[1]
+
+    if ytag_dict:
+        ydesc = ytag_dict.get("description")
+    else:
+        ydesc = "Principal Component " + ytag.split("PC")[1]
+
+    description = xdesc + "<br>vs "+ ydesc
+
+    return div,description
+
+
+
 def ajax_boxplots(request):
 
     folder = request.GET.get('id', None)
@@ -652,6 +765,112 @@ def ajax_PCA(request):
     div,desc = plot_PCA(idf, explained, variable, x_axis, y_axis)
 
 
+
+    data = {}
+
+    data["plot"] = div
+    data["desc"] = desc
+    # data["plot"] = plot_PCA(perc_df, variable, x_axis, y_axis, group_dict)
+
+    return JsonResponse(data)
+
+def ajax_PCs(request):
+
+    folder = request.GET.get('id', None)
+    comparison = request.GET.get('comp_set', None)
+    query_folder = os.path.join(MEDIA_ROOT, folder, "query", "comparisons", comparison)
+    # variable = request.GET.get('variable', None)
+    values = request.GET.get('values', None)
+    x_axis = request.GET.get('x_axis', None)
+    y_axis = request.GET.get('y_axis', None)
+
+    #decide PC or qual
+    if x_axis[0].isdigit():
+        x_axis = int(x_axis)-1
+    if y_axis[0].isdigit():
+        y_axis = int(y_axis)-1
+
+    c_folder = os.path.join(MEDIA_ROOT, folder, "query", "comparisons")
+    exp_file = os.path.join(c_folder, "RPMlib_adj.tsv")
+    if not os.path.exists(os.path.join(c_folder,"pca.pickle")):
+        makePCA(exp_file,c_folder)
+    with open(os.path.join(c_folder,"pca.pickle"), 'rb') as f:
+        xt = pickle.load(f)
+    with open(os.path.join(c_folder,"pca_perc.pickle"), 'rb') as f:
+        explained = pickle.load(f)
+    # print(len(explained))
+    # print(explained)
+    perc_file = os.path.join(query_folder, "percentil.tsv")
+    val_file = os.path.join(query_folder, "value.tsv")
+    try:
+        if int(x_axis) == x_axis:
+            x_to_plot = [item[x_axis] for item in xt]
+            xtag = 'PC' + str(x_axis + 1) + ' (' + str(round(explained[x_axis] * 100, 2)) + "%)"
+
+    except:
+        xtag = str(x_axis)
+        perc_df = pandas.read_csv(perc_file, sep="\t")[["sample", x_axis]]
+        val_df = pandas.read_csv(val_file, sep="\t")[["sample", x_axis]]
+        val_df.columns = ["sample", "values"]
+        perc_df = perc_df.join(val_df.set_index('sample'), on='sample')
+        percs = perc_df[x_axis].values
+        vals = perc_df["values"].values
+        if values == "perc":
+            x_to_plot = percs
+        else:
+            x_to_plot = vals
+
+    try:
+        if int(y_axis) == y_axis:
+            y_to_plot = [item[y_axis] for item in xt]
+            ytag = 'PC' + str(y_axis + 1) + ' (' + str(round(explained[y_axis] * 100, 2)) + "%)"
+    except:
+        ytag = str(y_axis)
+        perc_df = pandas.read_csv(perc_file, sep="\t")[["sample", y_axis]]
+        val_df = pandas.read_csv(val_file, sep="\t")[["sample", y_axis]]
+        val_df.columns = ["sample", "values"]
+        perc_df = perc_df.join(val_df.set_index('sample'), on='sample')
+        percs = perc_df[y_axis].values
+        print(percs)
+        vals = perc_df["values"].values
+        print(vals)
+        if values == "perc":
+            y_to_plot = percs
+        else:
+            y_to_plot = vals
+
+    perc_df = pandas.read_csv(perc_file, sep="\t")
+    init_df = pandas.read_csv(
+        filepath_or_buffer=exp_file,
+        sep='\t')
+    df_t = init_df.T
+    sample_names = df_t.index.values[1:]
+    y = sample_names
+    # to_plot = [item[[x_axis, y_axis]] for item in xt]
+    # to_plot = [item[[0, 1]] for item in xt]
+    group_file = os.path.join(MEDIA_ROOT, folder, "query", "comparisons", "sampleSheet.tsv")
+
+    # tag_dict = var_dict.get(variable)
+    # sense = tag_dict.get("color_scale")
+    # colors = make_color_list(percs,sense)
+    labels = perc_df["sample"].values
+    # print(labels)
+    if os.path.exists(group_file):
+        group_list = make_group_list(group_file)
+    else:
+        group_list = ["samples"] * len(labels)
+
+    d = {'x': x_to_plot, 'y':y_to_plot, 'groups': group_list,
+         "labels": labels}
+    # for k in d.keys():
+    #     print(k)
+    #     print(len(d[k]))
+
+
+
+    idf = pandas.DataFrame(data=d)
+
+    div,desc = plot_PCs(idf, xtag, ytag)
 
     data = {}
 
