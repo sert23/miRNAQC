@@ -599,8 +599,10 @@ def plot_PCs(input_df, xtag, ytag):
     for i,g in enumerate(uniq_groups):
         k1 = input_df.loc[(input_df.groups == g)]
         print(k1)
-
-        # text = ["<b>Sample</b>: {} <br><b>Percentile</b>: {} <br><b>Value</b>: {}".format(row["labels"],round(row["percs"],2),round(row["vals"],2)) for ind,row in k1.iterrows()]
+        pretext = "<b>Sample</b>: {} <br><b>"+ xlab.split("(")[0] + "</b>: {} <br><b>"+ ylab.split("(")[0]  +"</b>: {}"
+        text = [pretext.format(row["labels"],round(row["x"],2),round(row["y"],2)) for ind,row in k1.iterrows()]
+        print(text)
+        print(len(text))
         trace = dict(
             type='scatter',
             x=k1.x.values,
@@ -610,7 +612,7 @@ def plot_PCs(input_df, xtag, ytag):
             hovertemplate=
             '<b>Group</b>: ' + g +
             '<br>%{text}',
-            # text=text,
+            text=text,
             marker=dict(
                 # color=col,
                 symbol=shapes[i],
@@ -642,13 +644,14 @@ def plot_PCs(input_df, xtag, ytag):
         xaxis=dict(
             automargin=True,
             title=xlab,
+            ticksuffix=xtick,
             # tick0=0,
             # dtick=2,
         ),
         yaxis=dict(
             # type='log',
             automargin=True,
-            # ticksuffix='%',
+            ticksuffix=ytick,
             # tickprefix="   ",
             title=ylab,
         )
