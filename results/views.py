@@ -448,8 +448,10 @@ class loadResults(FormView):
             #download links
             val_file = os.path.join(query_folder,"value.tsv")
             perc_file = os.path.join(query_folder,"percentil.tsv")
-            RPM_file = os.path.join(MEDIA_ROOT,folder,"query", "comparisons","RPMlib_adj.tsv")
-            RC_file = os.path.join(MEDIA_ROOT,folder,"query", "comparisons","RCadj.tsv")
+            RPM_file = os.path.join(MEDIA_ROOT,folder,"query", "comparisons","RPMlib_full_adj.tsv")
+            #
+            #
+            RC_file = os.path.join(MEDIA_ROOT,folder,"query", "comparisons","RCadj_full.tsv")
             context["vals_link"] = val_file.replace(MEDIA_ROOT,MEDIA_URL)
             context["perc_link"] = perc_file.replace(MEDIA_ROOT,MEDIA_URL)
             context["RC_link"] = RC_file.replace(MEDIA_ROOT,MEDIA_URL)
