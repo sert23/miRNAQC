@@ -118,9 +118,14 @@
 
                   var launch_url = "{% url 'launch' %}?";
 
+
+
+                  $("#protocol").val($("input[name=protocol]:checked").val());
+                {#alert($("#protocol").val());#}
                 {#var plot_url = "?";#}
-                var pars = $("#id_sra_input,#species,#uploadID,#id_url_input").serialize();
+                var pars = $("#id_sra_input,#species,#uploadID,#id_url_input,#protocol").serialize();
                 {#alert(pars);#}
+                    {#alert(pars);#}
                 $("#run_link").attr("href", launch_url.concat(pars));
 
                 }
@@ -233,6 +238,7 @@
                                     <input type="hidden" id="jobId" name="jobId" value="{{ jobID }}">
                                     <input type="hidden" id="uploadID" name="uploadID" value="{{ uploadID }}">
                                     <input type="hidden" id="something_up" value="">
+                                    <input type="hidden" id="protocol" name="protocol" value="">
                         {#  SRR1563062,SRR1563057                               #}
                                 </div>
 
