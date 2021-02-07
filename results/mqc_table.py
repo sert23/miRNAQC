@@ -39,16 +39,16 @@ def plot(data, headers=None, pconfig=None, hide_bar=None):
         for s_name in d.keys():
             s_names.add(s_name)
 
-    # Make a beeswarm plot if we have lots of samples
-    # if len(s_names) >= config.max_table_rows and pconfig.get('no_beeswarm') is not True:
-    if len(s_names) >= 100 and pconfig.get('no_beeswarm') is not True:
-        logger.debug('Plotting beeswarm instead of table, {} samples'.format(len(s_names)))
-        warning = '<p class="text-muted"><span class="glyphicon glyphicon-exclamation-sign" ' \
-                  'title="A beeswarm plot has been generated instead because of the large number of samples. ' \
-                  'See http://multiqc.info/docs/#tables--beeswarm-plots"' \
-                  ' data-toggle="tooltip"></span> Showing {} samples.</p>'.format(len(s_names))
-        return warning + beeswarm.make_plot(dt)
-    else:
+    # # Make a beeswarm plot if we have lots of samples
+    # # if len(s_names) >= config.max_table_rows and pconfig.get('no_beeswarm') is not True:
+    # if len(s_names) >= 100 and pconfig.get('no_beeswarm') is not True:
+    #     logger.debug('Plotting beeswarm instead of table, {} samples'.format(len(s_names)))
+    #     warning = '<p class="text-muted"><span class="glyphicon glyphicon-exclamation-sign" ' \
+    #               'title="A beeswarm plot has been generated instead because of the large number of samples. ' \
+    #               'See http://multiqc.info/docs/#tables--beeswarm-plots"' \
+    #               ' data-toggle="tooltip"></span> Showing {} samples.</p>'.format(len(s_names))
+    #     return warning + beeswarm.make_plot(dt)
+    # else:
         return make_table(dt, hide_bar)
 
 
