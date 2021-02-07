@@ -264,6 +264,20 @@
 {#          <i class="fas fa-fw fa-chart-area"></i>#}
           <span>Contact us</span></a>
       </li>
+
+       <li class="nav-item">
+        <a class="nav-link" href="#" onclick="$('#Tools').modal('show');">
+           <i class="fas fa-lg fa-toolbox"></i>
+{#          <i class="fas fa-fw fa-chart-area"></i>#}
+          <span>Sister tools</span></a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="#" onclick="$('#HTC').modal('show');">
+           <i class="fas fa-lg fa-graduation-cap"></i>
+{#          <i class="fas fa-fw fa-chart-area"></i>#}
+          <span>How to cite</span></a>
+      </li>
             </ul>
         </div>
 
@@ -286,6 +300,8 @@
         </div>
     {% include "Messages/base/About.html" %}
     {% include "Messages/base/contact.html" %}
+    {% include "Messages/base/tools.html" %}
+    {% include "Messages/base/HTC.html" %}
     {% include "Messages/base/tutorial.html" %}
     {% include "Messages/base/percentiles.html" %}
     {% include "Messages/base/FAQs.html" %}

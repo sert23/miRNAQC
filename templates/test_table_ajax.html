@@ -1,0 +1,38 @@
+
+<link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
+
+<table id="example" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Office</th>
+                <th>Extn.</th>
+                <th>Start date</th>
+                <th>Salary</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Office</th>
+                <th>Extn.</th>
+                <th>Start date</th>
+                <th>Salary</th>
+            </tr>
+        </tfoot>
+    </table>
+
+<script src="/Users/ernesto/Desktop/jquery-3.5.1.js"></script>
+<script src="/Users/ernesto/Desktop/jquery.dataTables.min.js"></script>
+
+<script>
+
+    $(document).ready(function() {
+    $('#example').DataTable( {
+        "ajax": '/Users/ernesto/Desktop/array.txt'
+    } );
+} );
+
+</script>
