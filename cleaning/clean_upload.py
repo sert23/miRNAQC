@@ -20,13 +20,16 @@ to_rem = [os.path.join(folder_to_clean,x) for x in folders if x not in white_lis
 
 
 with open(os.path.join(folder_to_clean,"test.txt") , "w") as testfile:
-    for dir in to_rem:
-        timestamp = os.path.getmtime(dir)
-        #testfile.write(dir + " " + str(timestamp) +" " + str(now - numdays) + "\n")
-        if now - numdays > timestamp:
-            #testfile.write(dir + " " + str(timestamp) + "\n")
-            try:
-                testfile.write(dir+"\n")
-                shutil.rmtree(dir) #uncomment to use
-            except:
-                testfile.write("")
+    with open(os.path.join(folder_to_clean, "deleted.txt"), "w") as dfile:
+        for dir in to_rem:
+            timestamp = os.path.getmtime(dir)
+            #testfile.write(dir + " " + str(timestamp) +" " + str(now - numdays) + "\n")
+            if now - numdays > timestamp:
+                #testfile.write(dir + " " + str(timestamp) + "\n")
+                try:
+                    testfile.write(dir+"\n")
+                    shutil.rmtree(dir) #uncomment to use
+                    dfile.write(dir + "\n")
+                    print(dir)
+                except:
+                    testfile.write("")
