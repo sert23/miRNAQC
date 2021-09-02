@@ -49,7 +49,7 @@ with open(os.path.join(folder_to_clean,"test.txt") , "w") as testfile:
                 # testfile.write(dir + "\n")
                 shutil.rmtree(dir)  # uncomment to use
                 # dfile.write(dir + "\n")
-                print(dir)
+                # print(dir)
             except:
                 testfile.write("")
     # uploaded_files
@@ -66,6 +66,6 @@ with open(os.path.join(folder_to_clean,"test.txt") , "w") as testfile:
                 # testfile.write(dir + "\n")
                 shutil.rmtree(dir)  # uncomment to use
                 # dfile.write(dir + "\n")
-                print(dir)
+                # print(dir)
             except:
                 testfile.write("")
