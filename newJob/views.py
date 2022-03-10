@@ -238,6 +238,15 @@ class checkStatus(FormView):
             context["message"] = "Your Job is in queue"
             return render(self.request, 'status.html', context)
 
+def fix_periods_names(input_name):
+    dot_number = input_name.count(".")
+    if input_name.endswith("zip") or input_name.endswith("gz"):
+        fixed_name = input_name.replace(".", "_", dot_number - 2)
+    else:
+        fixed_name = input_name.replace(".", "_", dot_number - 1)
+    return fixed_name
+
+
 
 class startNew(FormView):
 
@@ -289,7 +298,8 @@ class startNew(FormView):
                 is_new = True
                 name = ufile.file.name.split("/")[-1]
                 temp_path = ufile.file.name
-                dest_path = os.path.join(upload_folder, name)
+                # dest_path = os.path.join(upload_folder, name)
+                dest_path = os.path.join(upload_folder, fix_periods_names(name))
                 if os.path.exists(dest_path):
                     is_new = False
                 url = dest_path.replace(MEDIA_ROOT,MEDIA_URL)
@@ -303,6 +313,9 @@ class startNew(FormView):
                 data = {}
                 data["alert"] = True
                 return JsonResponse(data)
+
+
+
 
 
 class startNew2(FormView):
@@ -356,8 +369,10 @@ class startNew2(FormView):
 
                 is_new = True
                 name = ufile.file.name.split("/")[-1]
+                name = fix_periods_names(name)
                 temp_path = ufile.file.name
                 dest_path = os.path.join(upload_folder, name)
+                # dest_path = os.path.join(upload_folder, fix_periods_names(name))
                 if os.path.exists(dest_path):
                     is_new = False
                 url = dest_path.replace(MEDIA_ROOT,MEDIA_URL)
